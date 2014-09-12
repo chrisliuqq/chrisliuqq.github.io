@@ -88,6 +88,10 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 								<td><span id="damage_elemental"></span></td>
 							</tr>
 							<tr>
+								<th>武器傷害（混沌）</th>
+								<td><span id="damage_chaos"></span></td>
+							</tr>
+							<tr>
 								<th>武器傷害（混合）</th>
 								<td><span id="damage_total"></span></td>
 							</tr>														
@@ -111,6 +115,7 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 var damage = { 
 	physical: { max: 0, min: 0 },
 	elemental: { max: 0, min: 0 },
+	chaos: { max: 0, min: 0},
 };
 
 function update_damage() {
@@ -122,6 +127,13 @@ function update_damage() {
 	var attack_speed;
 	var damage_physical = 0;
 	var damage_elemental = 0;
+	var damage_chaos = 0;
+	
+	damage = { 
+		physical: { max: 0, min: 0 },
+		elemental: { max: 0, min: 0 },
+		chaos: { max: 0, min: 0},
+	};
 	
 	// 物理傷害
 	regex = /(.*?)傷害: (\d+)-(\d+)/g;
@@ -133,7 +145,8 @@ function update_damage() {
 			damage.physical.min = parseInt(match[2], 10);
 		}
 		else if ( match[1] == "混沌") {
-			
+			damage.chaos.max = parseInt(match[3], 10);
+			damage.chaos.min = parseInt(match[2], 10);
 		}
 	}
 	
@@ -156,10 +169,12 @@ function update_damage() {
 	
 	damage_physical = (damage.physical.max + damage.physical.min) / 2 * attack_speed;
 	damage_elemental = (damage.elemental.max + damage.elemental.min) / 2 * attack_speed;
-	
+	damage_chaos = (damage.chaos.max + damage.chaos.min) / 2 * attack_speed;
+
 	$("#damage_physical").html( damage_physical );
 	$("#damage_elemental").html( damage_elemental );
-	$("#damage_total").html( damage_elemental + damage_physical );
+	$("#damage_chaos").html( damage_chaos );
+	$("#damage_total").html( damage_elemental + damage_physical + damage_chaos );
 }
 
 $(document).ready(function() {
