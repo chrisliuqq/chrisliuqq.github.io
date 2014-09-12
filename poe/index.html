@@ -134,7 +134,7 @@ function update_damage() {
 		elemental: { max: 0, min: 0 },
 		chaos: { max: 0, min: 0},
 	};
-	
+
 	// 物理傷害
 	regex = /(.*?)傷害: (\d+)-(\d+)/g;
 	while(match = regex.exec( $("#raw_data").val() )) {
@@ -148,6 +148,11 @@ function update_damage() {
 			damage.chaos.max = parseInt(match[3], 10);
 			damage.chaos.min = parseInt(match[2], 10);
 		}
+	}
+
+	if ( match == null ) {
+		alert("竟然貼不是武器的裝備上來，算你厲害。");
+		return;
 	}
 	
 	// 元素傷害
