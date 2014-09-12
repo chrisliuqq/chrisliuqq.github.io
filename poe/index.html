@@ -128,7 +128,8 @@ function update_damage() {
 	var damage_physical = 0;
 	var damage_elemental = 0;
 	var damage_chaos = 0;
-	
+	var damage_check = false;
+
 	damage = { 
 		physical: { max: 0, min: 0 },
 		elemental: { max: 0, min: 0 },
@@ -143,6 +144,8 @@ function update_damage() {
 		if ( match[1] == "物理") {
 			damage.physical.max = parseInt(match[3], 10);
 			damage.physical.min = parseInt(match[2], 10);
+
+			damage_check = true;
 		}
 		else if ( match[1] == "混沌") {
 			damage.chaos.max = parseInt(match[3], 10);
@@ -150,7 +153,7 @@ function update_damage() {
 		}
 	}
 
-	if ( match == null ) {
+	if ( damage_check != true ) {
 		alert("竟然貼不是武器的裝備上來，算你厲害。");
 		return;
 	}
