@@ -207,6 +207,8 @@ function update_damage() {
 		if (itemlevel < 60) {
 			return $("#description").html("可以賣店了！");
 		}
+		
+		return $("#description").html("就只是個 DPS < 200 但是 itemlevel >= 60 的裝備。");
 	}
 	else if ( damage_elemental + damage_physical + damage_chaos > 400 ) {
 		return $("#description").html("這把兇兇的！竟然大於 400！");
