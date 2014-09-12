@@ -97,6 +97,9 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 							</tr>														
 					</table>
 				</div>
+				
+				<h4>&lt;烏拉博士&gt;cowshut: <span id="description"></span></h4>
+				
 			</div>		
 		</div>
 	
@@ -129,12 +132,24 @@ function update_damage() {
 	var damage_elemental = 0;
 	var damage_chaos = 0;
 	var damage_check = false;
+	var rarity;
+	var itemlevel = 0;
 
 	damage = { 
 		physical: { max: 0, min: 0 },
 		elemental: { max: 0, min: 0 },
 		chaos: { max: 0, min: 0},
 	};
+
+	// 品質
+	regex = /Rarity: (.*)/g;
+	match = regex.exec( $("#raw_data").val() );
+	rarity = match[1];
+	
+	// 物品等級
+	regex = /Itemlevel: (.*)/g;
+	match = regex.exec( $("#raw_data").val() );
+	itemlevel = parseInt(match[1] , 10);
 
 	// 物理傷害
 	regex = /(.*?)傷害: (\d+)-(\d+)/g;
@@ -183,6 +198,22 @@ function update_damage() {
 	$("#damage_elemental").html( damage_elemental );
 	$("#damage_chaos").html( damage_chaos );
 	$("#damage_total").html( damage_elemental + damage_physical + damage_chaos );
+	
+	if ( damage_elemental + damage_physical + damage_chaos < 200 ) {
+		if ( rarity == "Unique" ) {
+			return $("#description").html("小朋友金裝嗎？可以考慮留一下");
+		}
+
+		if (itemlevel < 60) {
+			return $("#description").html("可以賣店了！");
+		}
+	}
+	else if ( damage_elemental + damage_physical + damage_chaos > 400 ) {
+		return $("#description").html("這把兇兇的！竟然大於 400！");
+	}
+	else {
+		return $("#description").html("200 - 400 中間");
+	}
 }
 
 $(document).ready(function() {
