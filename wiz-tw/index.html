@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zh-TW">
+    <!--<![endif]-->
+    <!--
+    Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="ChrisLiu">
+        <title>《問答RPG 魔法使與黑貓維茲》問題搜尋</title>
+        <meta content="website" property="og:type">
+        <meta content="《問答RPG 魔法使與黑貓維茲》問題搜尋" property="og:title">
+        <meta content="《問答RPG 魔法使與黑貓維茲》問題搜尋" name="twitter:title">
+        <meta content="《問答RPG 魔法使與黑貓維茲》問題搜尋" name="description">
+        <meta content="《問答RPG 魔法使與黑貓維茲》問題搜尋" property="og:description">
+        <meta content="《問答RPG 魔法使與黑貓維茲》問題搜尋" name="twitter:description">
+        <meta content="" property="og:image">
+        <meta content="" name="twitter:image:src">
+        <meta content="https://dl.dropboxusercontent.com/u/209570/wiz/" property="og:url">
+        <link media="all" type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link media="all" type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <style>
+        html {
+            position: relative;
+            height: 100%;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+        .container .list-inline {
+            margin: 20px 0;
+        }
+        #overlay-loading {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background-color: rgba(0,0,0,0.5);
+        }
+        #overlay-loading-content{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 300px;
+            height: 100px;
+            text-align: center;
+            color: #fff;
+        }
+        #search-box {
+            margin-top: 50px;
+        }
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href=".">《問答RPG 魔法使與黑貓維茲》問題搜尋</a>
+                </div>
+            </div>
+        </nav>
+
+        <div id="search-box">
+
+            <div class="container">
+
+                <form class="form-signin">
+                    <h2 class="form-signin-heading">請輸入問題關鍵字<small id="load-count"></small></h2>
+                    <label for="inputKeyword" class="sr-only">關鍵字</label>
+                    <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入問題關鍵字" required autofocus>
+                </form>
+                <table class="table table-striped">
+                    <tbody id="result">
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <footer id="footer" class="footer hidden-print">
+            <div class="container text-center">
+                <ul class="list-inline">
+                    <li>
+                         Copyright © 2015 ChrisLiu All Rights Reserved.
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/htmlview">資料來源</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://docs.google.com/forms/d/1Oy4-8Ttfz_rXDgSgytCkB1ai34NusJ3l-Nss6_cXD1E/viewform?c=0&w=1">填寫問題表單</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+
+        <div id="overlay-loading">
+            <div id="overlay-loading-content">
+                <i class="fa fa-spinner fa-pulse fa-4x"></i>
+                <div>從 google spreadsheets 讀取問題資料（<span id="loaded-count"></span>）</div>
+            </div>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//chrisliuqq.github.io/assets/js/console.js"></script>
+        <script>
+        /*
+        https://spreadsheets.google.com/feeds/worksheets/{SHEET-ID}/public/basic?alt=json       get grid ids
+        https://spreadsheets.google.com/feeds/list/{SHEET-ID}/{GRID-ID}/public/values?alt=json  get whole sheet data
+        https://spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values          get all cell data
+        alt=json                                                                                return json
+        alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
+        */
+        var sheetId = '1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g';
+        var finishCount = 0;
+        var gridIds = {
+            '四排序題'   : ['o5ocq9n', 'load4'],
+            // '生活常識'   : 'oeoitdq',
+            // '動漫與遊戲' : 'ozgygxx',
+            // '文科'      : 'oi5vngs',
+            // '理科'      : 'oz9vlq0',
+            // '演藝'      : 'oxjyjj7',
+            // '體育'      : 'olwf17n',
+            '單色'      : ['op8lky3', 'load'],
+            '雙色'      : ['ozgt7u4', 'load'],
+            '三色'      : ['o8ur44h', 'load']
+        };
+        var qaData = [];
+
+        function load(data) {
+            var tmp = [];
+            var col = 0;
+            $.each( data.feed.entry, function(index, value){
+                
+                if (parseInt(value.gs$cell.row) <= 1 ) return true;
+
+                col = parseInt(value.gs$cell.col);
+
+                if ( col >= 3 && col <= 4 ) {
+                    if (col == 3) tmp = [];
+                    tmp.push(value.content.$t)
+                    if (col == 4) qaData.push(tmp);
+                }
+
+            });
+            loadFinish();
+        }
+
+        function load4(data) {
+            var tmp = [];
+            var col = 0;
+            $.each( data.feed.entry, function(index, value){
+                
+                if (parseInt(value.gs$cell.row) <= 2 ) return true;
+
+                col = parseInt(value.gs$cell.col);
+
+                if ( col >= 2 && col <= 6 ) {
+                    if (col == 2) tmp = [];
+                    tmp.push(value.content.$t)
+                    if (col == 6) qaData.push(tmp);
+                }
+
+            });
+
+            loadFinish();
+        }
+
+        function addScript( src ) {
+            var s = document.createElement( 'script' );
+            s.setAttribute( 'src', src );
+            document.body.appendChild( s );
+        }
+
+        function log(msg) {
+            console.info(msg);
+        }
+
+        function htmlEncode( html ) {
+            return document.createElement( 'a' ).appendChild( 
+                document.createTextNode( html ) ).parentNode.innerHTML;
+        };
+
+        function loadFinish() {
+            finishCount++;
+            if ( finishCount == Object.keys(gridIds).length ) {
+                $("#overlay-loading").remove();
+                $("#load-count").text('共讀取了 ' + qaData.length + '個問題。');
+            }
+            else {
+                $("#loaded-count").text(finishCount + '/' + Object.keys(gridIds).length);
+            }
+        }
+
+        $(document).ready(function() {
+            $.each( gridIds , function(key, value) {
+                var urlScript = "https://spreadsheets.google.com/feeds/cells/" + sheetId + "/" + value[0] + "/public/values?alt=json-in-script&callback=" + value[1];
+                addScript(urlScript);
+                log('Add [' + key + '] script from ' + urlScript);
+            });
+
+            $("#inputKeyword").on("keyup", function() {
+                var val = $(this).val();
+                if (val.length <= 0) return $("#result").html("");
+                $("#result").html("");
+                $.each( qaData, function(index, value){
+
+                    if (value[0].indexOf(val) !== -1) {
+                        //console.debug(htmlEncode(value.join('')));
+                        $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
+                    }
+                });
+            });
+        });
+        </script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-59043056-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+    </script>
