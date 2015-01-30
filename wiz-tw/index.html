@@ -141,9 +141,10 @@
             // '理科'      : 'oz9vlq0',
             // '演藝'      : 'oxjyjj7',
             // '體育'      : 'olwf17n',
-            '單色'      : ['op8lky3', 'load'],
-            '雙色'      : ['ozgt7u4', 'load'],
-            '三色'      : ['o8ur44h', 'load']
+            //'單色'      : ['op8lky3', 'load'],
+            //'雙色'      : ['ozgt7u4', 'load'],
+            //'三色'      : ['o8ur44h', 'load'],
+            '總覽'      : ['o6hvqd7', 'loadAll']
         };
         var qaData = [];
 
@@ -184,6 +185,25 @@
             });
 
             loadFinish();
+        }
+
+        function loadAll(data) {
+            var tmp = [];
+            var col = 0;
+            $.each( data.feed.entry, function(index, value){
+                
+                if (parseInt(value.gs$cell.row) <= 1 ) return true;
+
+                col = parseInt(value.gs$cell.col);
+
+                if ( col >= 4 && col <= 5 ) {
+                    if (col == 4) tmp = [];
+                    tmp.push(value.content.$t)
+                    if (col == 5) qaData.push(tmp);
+                }
+
+            });
+            loadFinish();            
         }
 
         function addScript( src ) {
