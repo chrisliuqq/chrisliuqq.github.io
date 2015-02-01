@@ -76,8 +76,14 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href=".">《問答RPG 魔法使與黑貓維茲》問題搜尋</a>
+                    <a class="navbar-brand" href=".">《問答RPG 魔法使與黑貓維茲》題庫搜尋</a>
                 </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="http://chrisliuqq.github.io/wiz-tw/">首頁 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#material-model">素材時間表</a></li>
+                    </ul>
             </div>
         </nav>
 
@@ -102,7 +108,7 @@
             <div class="container text-center">
                 <ul class="list-inline">
                     <li>
-                         本著作係採用<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/">創用 CC 姓名標示-相同方式分享 3.0 台灣 授權條款</a>授權.
+                         本著作係採用<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/">創用 CC 姓名標示-相同方式分享 3.0 台灣 授權條款</a>授權
                     </li>
                     <li>
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/htmlview">檢視資料來源</a>
@@ -130,7 +136,57 @@
             </div>
         </div>
 
+        <div class="modal fade" id="material-model" tabindex="-1" role="dialog" aria-labelledby="material-modelLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="material-modelLabel">素材時間表</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>如果時間顯示為 09 代表開放時間為 09:00～09:59</p>
+                        <p>如果時間顯示為 09-10 代表開放時間為 09:00～10:59</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>素材/時間</th><th>曜日任務</th><th>週末特殊任務</th>
+                            </tr>
+                            <tr>
+                                <th>碰碰吉</th><td>週一全天</td><td>週六 09、14、19</td>
+                            </tr>
+                            <tr>
+                                <th>花</th><td>週二全天</td><td>週六 10、15、20</td>
+                            </tr>
+                            <tr>
+                                <th>蘑菇</th><td>週三全天</td><td>週六 11、16、21</td>
+                            </tr>
+                            <tr>
+                                <th>神木</th><td>週四全天</td><td>週六 12、17、22</td>
+                            </tr>
+                            <tr>
+                                <th>狸貓</th><td>週五全天</td><td>週六 13、18、23</td>
+                            </tr>
+                            <tr>
+                                <th>火魔導書</th><td colspan="2">週一、週四、週日：09-10、12-13、15-16、19-20</td>
+                            </tr>
+                            <tr>
+                                <th>水魔導書</th><td colspan="2">週二、週五、週日：09-10、12-13、15-16、19-20</td>
+                            </tr>
+                            <tr>
+                                <th>電魔導書</th><td colspan="2">週三、週六、週日：09-10、12-13、15-16、19-20</td>
+                            </tr>
+                            <tr>
+                                <th>金幣</th><td>週五全天</td><td>週日全天</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <script src="//chrisliuqq.github.io/assets/js/console.js"></script>
         <script>
         /*
