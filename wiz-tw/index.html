@@ -249,12 +249,12 @@
             });
 
             $("#inputKeyword").on("keyup", function() {
-                var val = $(this).val();
+                var val = $(this).val().toLowerCase();
                 if (val.length <= 0) return $("#result").html("");
                 $("#result").html("");
                 $.each( qaData, function(index, value){
 
-                    if (value[0].indexOf(val) !== -1) {
+                    if (value[0].toLowerCase().indexOf(val) !== -1) {
                         //console.debug(htmlEncode(value.join('')));
                         $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
                     }
