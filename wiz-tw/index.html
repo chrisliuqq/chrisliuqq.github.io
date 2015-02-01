@@ -41,6 +41,9 @@
             height: 60px;
             background-color: #f5f5f5;
         }
+        .footer img {
+            vertical-align: text-bottom;
+        }
         .container .list-inline {
             margin: 20px 0;
         }
@@ -107,15 +110,17 @@
         <footer id="footer" class="footer hidden-print">
             <div class="container text-center">
                 <ul class="list-inline">
-                    <li>
-                         本著作係採用<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/">創用 CC 姓名標示-相同方式分享 3.0 台灣 授權條款</a>授權
-                    </li>
+                    <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/"><img alt="創用 CC 授權條款" src="https://i.creativecommons.org/l/by-sa/3.0/tw/80x15.png"></a></li>
                     <li>
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/htmlview">檢視資料來源</a>
                     </li>
                     <li>
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit#gid=392831457">編輯題庫</a>
                     </li>
+                    <li>
+                        <a target="_blank" href="https://docs.google.com/forms/d/13OreUrF__DqppRzefPGJ1wimz5NPO5FjWTWxyE0JULk/viewform">填寫問題表單</a>
+                    </li>
+                    
                     <li>
                         <a target="_blank" href="https://docs.google.com/forms/d/1Oy4-8Ttfz_rXDgSgytCkB1ai34NusJ3l-Nss6_cXD1E/viewform?c=0&w=1">填寫四排序問題表單</a>
                     </li>
@@ -200,6 +205,7 @@
         var finishCount = 0;
         var gridIds = {
             '四排序題'   : ['o5ocq9n', 'load4'],
+            // '每日問答'   : ['o7rkuej', 'loadDaily'],
             // '生活常識'   : 'oeoitdq',
             // '動漫與遊戲' : 'ozgygxx',
             // '文科'      : 'oi5vngs',
@@ -271,6 +277,25 @@
             loadFinish();            
         }
 
+        function loadDaily(data) {
+            var tmp = [];
+            var col = 0;
+            $.each( data.feed.entry, function(index, value){
+                
+                if (parseInt(value.gs$cell.row) <= 1 ) return true;
+
+                col = parseInt(value.gs$cell.col);
+
+                if ( col >= 2 && col <= 3 ) {
+                    if (col == 2) tmp = [];
+                    tmp.push(value.content.$t)
+                    if (col == 3) qaData.push(tmp);
+                }
+
+            });
+            loadFinish();
+        } 
+
         function addScript( src ) {
             var s = document.createElement( 'script' );
             s.setAttribute( 'src', src );
@@ -290,7 +315,7 @@
             finishCount++;
             if ( finishCount == Object.keys(gridIds).length ) {
                 $("#overlay-loading").remove();
-                $("#load-count").text('共讀取了 ' + qaData.length + '個問題。');
+                $("#load-count").text('共讀取了 ' + qaData.length + ' 個問題。');
             }
             else {
                 $("#loaded-count").text(finishCount + '/' + Object.keys(gridIds).length);
