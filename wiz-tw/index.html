@@ -72,6 +72,9 @@
             margin-top: 50px;
             margin-bottom: 70px;
         }
+        #result img {
+            max-width: 100%;
+        }
         @media (max-width: 767px) {
             #load-count {
                 display: block;
@@ -119,10 +122,22 @@
 
             <div class="container">
 
-                <form class="form-signin">
+                <form class="form">
                     <h2 class="form-signin-heading">請輸入問題關鍵字<small id="load-count"></small></h2>
                     <label for="inputKeyword" class="sr-only">關鍵字</label>
                     <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入問題關鍵字" required autofocus>
+                    <div class="">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="from-source" id="fromNormal" name="from[]" value="1" checked> 一般問題
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="from-source" id="fromSort" name="from[]" value="1" checked> 四排序題
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="from-source" id="fromDaily" name="from[]" value="1"> 每日問答
+                        </label>
+
+                    </div>
                 </form>
                 <table class="table table-striped">
                     <tbody id="result">
@@ -230,7 +245,7 @@
         var finishCount = 0;
         var gridIds = {
             '四排序題'   : ['o5ocq9n', 'load4'],
-            // '每日問答'   : ['o7rkuej', 'loadDaily'],
+            '每日問答'   : ['oqqi90o', 'loadDaily'],
             // '生活常識'   : 'oeoitdq',
             // '動漫與遊戲' : 'ozgygxx',
             // '文科'      : 'oi5vngs',
@@ -242,26 +257,31 @@
             //'三色'      : ['o8ur44h', 'load'],
             '總覽'      : ['o6hvqd7', 'loadAll']
         };
-        var qaData = [];
+        var qaData = {
+            normal: [],
+            sort: [],
+            daily: [],
+            count: 0
+        };
 
-        function load(data) {
-            var tmp = [];
-            var col = 0;
-            $.each( data.feed.entry, function(index, value){
+        // function load(data) {
+        //     var tmp = [];
+        //     var col = 0;
+        //     $.each( data.feed.entry, function(index, value){
 
-                if (parseInt(value.gs$cell.row) <= 1 ) return true;
+        //         if (parseInt(value.gs$cell.row) <= 1 ) return true;
 
-                col = parseInt(value.gs$cell.col);
+        //         col = parseInt(value.gs$cell.col);
 
-                if ( col >= 3 && col <= 4 ) {
-                    if (col == 3) tmp = [];
-                    tmp.push(value.content.$t)
-                    if (col == 4) qaData.push(tmp);
-                }
+        //         if ( col >= 3 && col <= 4 ) {
+        //             if (col == 3) tmp = [];
+        //             tmp.push(value.content.$t)
+        //             if (col == 4) qaData.normal.push(tmp);
+        //         }
 
-            });
-            loadFinish();
-        }
+        //     });
+        //     loadFinish();
+        // }
 
         function load4(data) {
             var tmp = [];
@@ -275,7 +295,7 @@
                 if ( col >= 2 && col <= 6 ) {
                     if (col == 2) tmp = [];
                     tmp.push(value.content.$t)
-                    if (col == 6) qaData.push(tmp);
+                    if (col == 6) qaData.sort.push(tmp);
                 }
 
             });
@@ -295,7 +315,7 @@
                 if ( col >= 4 && col <= 5 ) {
                     if (col == 4) tmp = [];
                     tmp.push(value.content.$t)
-                    if (col == 5) qaData.push(tmp);
+                    if (col == 5) qaData.normal.push(tmp);
                 }
 
             });
@@ -310,11 +330,12 @@
                 if (parseInt(value.gs$cell.row) <= 1 ) return true;
 
                 col = parseInt(value.gs$cell.col);
-
-                if ( col >= 2 && col <= 3 ) {
+                // 2 url, 4 quesiton, 5 answer
+                if ( col == 3 ) return true;
+                if ( col >= 2 && col <= 5 ) {
                     if (col == 2) tmp = [];
                     tmp.push(value.content.$t)
-                    if (col == 3) qaData.push(tmp);
+                    if (col == 5) qaData.daily.push(tmp);
                 }
 
             });
@@ -340,7 +361,7 @@
             finishCount++;
             if ( finishCount == Object.keys(gridIds).length ) {
                 $("#overlay-loading").remove();
-                $("#load-count").text('共讀取了 ' + qaData.length + ' 個問題。');
+                $("#load-count").text('共讀取了 ' + (qaData.normal.length + qaData.sort.length + qaData.daily.length ) + ' 個問題。');
             }
             else {
                 $("#loaded-count").text(finishCount + '/' + Object.keys(gridIds).length);
@@ -354,17 +375,47 @@
                 log('Add [' + key + '] script from ' + urlScript);
             });
 
+            $(".from-source").on("change", function() {
+                $("#inputKeyword").trigger("keyup");
+            });
+
             $("#inputKeyword").on("keyup", function() {
                 var val = $(this).val().toLowerCase();
                 if (val.length <= 0) return $("#result").html("");
                 $("#result").html("");
-                $.each( qaData, function(index, value){
 
-                    if (value[0].toLowerCase().indexOf(val) !== -1) {
-                        //console.debug(htmlEncode(value.join('')));
-                        $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
-                    }
-                });
+                if ( $("#fromNormal:checked").val() === '1' ) {
+
+                    $.each( qaData.normal, function(index, value){
+
+                        if (value[0].toLowerCase().indexOf(val) !== -1) {
+                            //console.debug(htmlEncode(value.join('')));
+                            $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
+                        }
+                    });
+                }
+
+                if ( $("#fromSort:checked").val() === '1' ) {
+
+                    $.each( qaData.sort, function(index, value){
+
+                        if (value[0].toLowerCase().indexOf(val) !== -1) {
+                            //console.debug(htmlEncode(value.join('')));
+                            $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
+                        }
+                    });
+                }
+
+                if ( $("#fromDaily:checked").val() === '1' ) {
+
+                    $.each( qaData.daily, function(index, value){
+
+                        if (value[1].toLowerCase().indexOf(val) !== -1) {
+                            //console.debug(htmlEncode(value.join('')));
+                            $("#result").append('<tr><td><div class="col-sm-3"><img src="' + value[0] + '" /></div><div class="col-sm-5">' + value[1] + '</div><div class="col-sm-4 text-danger">' + htmlEncode(value[2]) + '</div></td></tr>');
+                        }
+                    });
+                }
             });
         });
         </script>
