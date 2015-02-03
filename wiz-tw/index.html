@@ -10,9 +10,9 @@
     -->
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-        <meta name="author" content="ChrisLiu">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" >
+        <meta content="ChrisLiu" name="author">
         <title>《問答RPG 魔法使與黑貓維茲》題庫搜尋</title>
         <meta content="website" property="og:type">
         <meta content="《問答RPG 魔法使與黑貓維茲》題庫搜尋" property="og:title">
@@ -82,6 +82,18 @@
         #result img {
             max-width: 100%;
         }
+        #nav-share.navbar-nav>li>#link-svg-plurk {
+            padding-top: 16px;
+            padding-bottom: 11px;
+        }
+        #svg-plurk {
+            display: inline-block;
+            background-color: #9d9d9d;
+            border-radius: 3px;
+        }
+        #svg-plurk:hover {
+            background-color: #fff;
+        }
         @media (max-width: 767px) {
             #load-count {
                 display: block;
@@ -129,6 +141,12 @@
                         <li><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://chrisliuqq.github.io/wiz-tw/" title="分享到 Facebook"><i class="fa fa-facebook-square"></i></a></li>
                         <li><a target="_blank" href="https://twitter.com/home?status=%E3%80%8A%E5%95%8F%E7%AD%94RPG%20%E9%AD%94%E6%B3%95%E4%BD%BF%E8%88%87%E9%BB%91%E8%B2%93%E7%B6%AD%E8%8C%B2%E3%80%8B%E9%A1%8C%E5%BA%AB%E6%90%9C%E5%B0%8B%20http://chrisliuqq.github.io/wiz-tw/" title="分享到 Twitter"><i class="fa fa-twitter-square"></i></a></li>
                         <li><a target="_blank" href="https://plus.google.com/share?url=http://chrisliuqq.github.io/wiz-tw/" title="分享到 Google+"><i class="fa fa-google-plus-square"></i></a></li>
+
+                        <!-- <li>
+                            <a id="link-svg-plurk" target="_blank" href="http://www.plurk.com/?status=%E3%80%8A%E5%95%8F%E7%AD%94RPG%20%E9%AD%94%E6%B3%95%E4%BD%BF%E8%88%87%E9%BB%91%E8%B2%93%E7%B6%AD%E8%8C%B2%E3%80%8B%E9%A1%8C%E5%BA%AB%E6%90%9C%E5%B0%8B%20http://chrisliuqq.github.io/wiz-tw/&qualifier=shares" title="分享到 Plurk">
+                                <svg id="svg-plurk" enable-background="new 0 0 18 18" width="18px" height="18px" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M65.777,5.5H33.439H22.024H10.609v90h22.83V70.609h55.17v-3.777V47.961V5.5h-4.76H65.777z M65.777,47.961H33.439V28.149  h32.338V47.961z"/></svg>
+                            </a>
+                        </li> -->
                     </ul>
             </div>
         </nav>
@@ -278,6 +296,8 @@
             daily: [],
             count: 0
         };
+
+        console = window.console || {log:function(){}, info: function(){}};
 
         // function load(data) {
         //     var tmp = [];
