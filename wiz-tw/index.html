@@ -68,6 +68,13 @@
             text-align: center;
             color: #fff;
         }
+        #nav-share.navbar-nav>li>a {
+            padding-top: 15px;
+            padding-bottom: 12px;
+        }
+        #nav-share .fa {
+            font-size: 1.5em;
+        }
         #search-box {
             margin-top: 50px;
             margin-bottom: 70px;
@@ -78,6 +85,9 @@
         @media (max-width: 767px) {
             #load-count {
                 display: block;
+            }
+            #nav-share li {
+                display: inline-block;
             }
 
             #footer .list-inline {
@@ -115,6 +125,11 @@
                             <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/wiz-tw">專案原始碼</a>
                         </li>
                     </ul>
+                    <ul id="nav-share" class="nav navbar-nav navbar-right">
+                        <li><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://chrisliuqq.github.io/wiz-tw/" title="分享到 Facebook"><i class="fa fa-facebook-square"></i></a></li>
+                        <li><a target="_blank" href="https://twitter.com/home?status=%E3%80%8A%E5%95%8F%E7%AD%94RPG%20%E9%AD%94%E6%B3%95%E4%BD%BF%E8%88%87%E9%BB%91%E8%B2%93%E7%B6%AD%E8%8C%B2%E3%80%8B%E9%A1%8C%E5%BA%AB%E6%90%9C%E5%B0%8B%20http://chrisliuqq.github.io/wiz-tw/" title="分享到 Twitter"><i class="fa fa-twitter-square"></i></a></li>
+                        <li><a target="_blank" href="https://plus.google.com/share?url=http://chrisliuqq.github.io/wiz-tw/" title="分享到 Google+"><i class="fa fa-google-plus-square"></i></a></li>
+                    </ul>
             </div>
         </nav>
 
@@ -128,13 +143,13 @@
                     <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入問題關鍵字" required autofocus>
                     <div class="">
                         <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromNormal" value="1" checked> 一般問題
+                            <input type="checkbox" class="from-source" id="fromNormal" name="from[]" value="1" checked> 一般問題
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromSort" value="1" checked> 四排序題
+                            <input type="checkbox" class="from-source" id="fromSort" name="from[]" value="1" checked> 四排序題
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromDaily" value="1"> 每日問答
+                            <input type="checkbox" class="from-source" id="fromDaily" name="from[]" value="1"> 每日問答
                         </label>
 
                     </div>
