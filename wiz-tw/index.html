@@ -128,13 +128,13 @@
                     <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入問題關鍵字" required autofocus>
                     <div class="">
                         <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromNormal" name="from[]" value="1" checked> 一般問題
+                            <input type="checkbox" class="from-source" id="fromNormal" value="1" checked> 一般問題
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromSort" name="from[]" value="1" checked> 四排序題
+                            <input type="checkbox" class="from-source" id="fromSort" value="1" checked> 四排序題
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromDaily" name="from[]" value="1"> 每日問答
+                            <input type="checkbox" class="from-source" id="fromDaily" value="1"> 每日問答
                         </label>
 
                     </div>
@@ -373,6 +373,11 @@
                 var urlScript = "https://spreadsheets.google.com/feeds/cells/" + sheetId + "/" + value[0] + "/public/values?alt=json-in-script&callback=" + value[1];
                 addScript(urlScript);
                 log('Add [' + key + '] script from ' + urlScript);
+            });
+
+            $(".form").submit(function(e) {
+                e.preventDefault();
+                return false;
             });
 
             $(".from-source").on("change", function() {
