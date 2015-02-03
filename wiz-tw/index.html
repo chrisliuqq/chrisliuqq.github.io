@@ -11,7 +11,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
         <meta name="author" content="ChrisLiu">
         <title>《問答RPG 魔法使與黑貓維茲》題庫搜尋</title>
         <meta content="website" property="og:type">
@@ -72,6 +72,15 @@
             margin-top: 50px;
             margin-bottom: 70px;
         }
+        @media (max-width: 767px) {
+            #load-count {
+                display: block;
+            }
+
+            #footer .list-inline {
+                margin: 10px 0;
+            }
+        }
         </style>
     </head>
     <body>
@@ -79,13 +88,29 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href=".">《問答RPG 魔法使與黑貓維茲》題庫搜尋</a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href=".">
+                        <span class="hidden-xs">《問答RPG 魔法使與黑貓維茲》題庫搜尋</span>
+                        <span class="visible-xs-inline">《黑貓維茲》題庫搜尋</span>
+                    </a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="navbar">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="http://chrisliuqq.github.io/wiz-tw/">首頁 <span class="sr-only">(current)</span></a></li>
                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#material-model">素材時間表</a></li>
+                        <li class="visible-xs-block divider"></li>
+                        <li class="visible-xs-block">
+                            <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit#gid=392831457">編輯題庫</a>
+                        </li>
+                        <li class="visible-xs-block">
+                            <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/wiz-tw">專案原始碼</a>
+                        </li>
                     </ul>
             </div>
         </nav>
@@ -114,17 +139,17 @@
                     <li>
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/htmlview">檢視資料來源</a>
                     </li>
-                    <li>
+                    <li class="hidden-xs">
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit#gid=392831457">編輯題庫</a>
                     </li>
                     <li>
                         <a target="_blank" href="https://docs.google.com/forms/d/13OreUrF__DqppRzefPGJ1wimz5NPO5FjWTWxyE0JULk/viewform">填寫問題表單</a>
                     </li>
-                    
+
                     <li>
                         <a target="_blank" href="https://docs.google.com/forms/d/1Oy4-8Ttfz_rXDgSgytCkB1ai34NusJ3l-Nss6_cXD1E/viewform?c=0&w=1">填寫四排序問題表單</a>
                     </li>
-                    <li>
+                    <li class="hidden-xs">
                         <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/wiz-tw">專案原始碼</a>
                     </li>
                     <li>
@@ -223,7 +248,7 @@
             var tmp = [];
             var col = 0;
             $.each( data.feed.entry, function(index, value){
-                
+
                 if (parseInt(value.gs$cell.row) <= 1 ) return true;
 
                 col = parseInt(value.gs$cell.col);
@@ -242,7 +267,7 @@
             var tmp = [];
             var col = 0;
             $.each( data.feed.entry, function(index, value){
-                
+
                 if (parseInt(value.gs$cell.row) <= 2 ) return true;
 
                 col = parseInt(value.gs$cell.col);
@@ -262,7 +287,7 @@
             var tmp = [];
             var col = 0;
             $.each( data.feed.entry, function(index, value){
-                
+
                 if (parseInt(value.gs$cell.row) <= 1 ) return true;
 
                 col = parseInt(value.gs$cell.col);
@@ -274,14 +299,14 @@
                 }
 
             });
-            loadFinish();            
+            loadFinish();
         }
 
         function loadDaily(data) {
             var tmp = [];
             var col = 0;
             $.each( data.feed.entry, function(index, value){
-                
+
                 if (parseInt(value.gs$cell.row) <= 1 ) return true;
 
                 col = parseInt(value.gs$cell.col);
@@ -294,7 +319,7 @@
 
             });
             loadFinish();
-        } 
+        }
 
         function addScript( src ) {
             var s = document.createElement( 'script' );
@@ -307,7 +332,7 @@
         }
 
         function htmlEncode( html ) {
-            return document.createElement( 'a' ).appendChild( 
+            return document.createElement( 'a' ).appendChild(
                 document.createTextNode( html ) ).parentNode.innerHTML;
         };
 
