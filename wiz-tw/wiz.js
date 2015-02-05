@@ -139,6 +139,10 @@ wizLoader = (function() {
     return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML;
   };
 
+  wizLoader.highlight = function(keyword, msg) {
+    return msg.split(keyword).join("<b>" + keyword + "</b>");
+  };
+
   wizLoader._initEvent = function() {
     $(".form").submit(function(e) {
       e.preventDefault();
@@ -208,7 +212,7 @@ wizLoader = (function() {
           }
           if (entry.question.toLowerCase().indexOf(val) !== -1) {
             if (entry.question.toLowerCase().indexOf(val) !== -1) {
-              $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + entry.question + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
+              $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry.question) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
             }
           }
         }
@@ -218,7 +222,7 @@ wizLoader = (function() {
         for (index in _ref1) {
           entry = _ref1[index];
           if (entry[0].toLowerCase().indexOf(val) !== -1) {
-            $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + entry[0] + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
+            $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry[0]) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
           }
         }
       }
@@ -227,7 +231,7 @@ wizLoader = (function() {
         for (index in _ref2) {
           entry = _ref2[index];
           if (entry[1].toLowerCase().indexOf(val) !== -1) {
-            $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + entry[1] + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
+            $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + wizLoader.highlight(val, entry[1]) + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
           }
         }
       }

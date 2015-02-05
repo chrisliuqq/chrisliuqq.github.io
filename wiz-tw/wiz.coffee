@@ -108,6 +108,9 @@ class wizLoader
     @htmlEncode: ( html ) ->
         return document.createElement( 'a' ).appendChild(document.createTextNode( html ) ).parentNode.innerHTML
 
+    @highlight: ( keyword, msg) ->
+        msg.split(keyword).join("<b>#{keyword}</b>")
+
     @_initEvent: () ->
         $(".form").submit (e) ->
             e.preventDefault()
@@ -166,17 +169,17 @@ class wizLoader
 
                     if entry.question.toLowerCase().indexOf(val) != -1
                         if (entry.question.toLowerCase().indexOf(val) != -1)
-                            $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + entry.question + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
+                            $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry.question) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
 
             if $("#fromSort:checked").val() == '1'
                 for index, entry of wizLoader.data.sort
                     if entry[0].toLowerCase().indexOf(val) != -1
-                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + entry[0] + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
+                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry[0]) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
 
             if $("#fromDaily:checked").val() == '1'
                 for index, entry of wizLoader.data.daily
                     if entry[1].toLowerCase().indexOf(val) != -1
-                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + entry[1] + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
+                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + wizLoader.highlight(val, entry[1]) + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
 
             return
 
