@@ -146,8 +146,8 @@ class wizLoader
             question = encodeURIComponent($(this).data("question"))
             answer = encodeURIComponent($(this).data("answer"))
             url = "https://docs.google.com/forms/d/1GYyqSKOfF2KMkMGfEuKtyE8oZadgTRRj_ZClYZRX2Qc/viewform?entry.699244241=%E9%A1%8C%E7%9B%AE%EF%BC%9A#{question}%0A%E5%8E%9F%E5%A7%8B%E7%AD%94%E6%A1%88%EF%BC%9A#{answer}%0A%E6%AD%A3%E7%A2%BA%E7%AD%94%E6%A1%88%EF%BC%9A";
-            $("#report-model iframe").attr("src", url)
-            $('#report-model').modal('show')
+            $("#report-modal iframe").attr("src", url)
+            $('#report-modal').modal('show')
 
         $("#inputKeyword").on "keyup", ->
             val = $(this).val()
