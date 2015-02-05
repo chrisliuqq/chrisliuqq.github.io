@@ -25,88 +25,11 @@
         <meta content="http://chrisliuqq.github.io/wiz-tw/" property="og:url">
         <link media="all" type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link media="all" type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link media="all" type="text/css" rel="stylesheet" href="wiz.css">
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
         <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <style>
-        html {
-            position: relative;
-            height: 100%;
-        }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #f5f5f5;
-        }
-        .footer img {
-            vertical-align: text-bottom;
-        }
-        .container .list-inline {
-            margin: 20px 0;
-        }
-        #overlay-loading {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background-color: rgba(0,0,0,0.5);
-        }
-        #overlay-loading-content{
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin: auto;
-            width: 300px;
-            height: 100px;
-            text-align: center;
-            color: #fff;
-        }
-        #nav-share.navbar-nav>li>a {
-            padding-top: 15px;
-            padding-bottom: 12px;
-        }
-        #nav-share .fa {
-            font-size: 1.5em;
-        }
-        #search-box {
-            margin-top: 50px;
-            margin-bottom: 70px;
-        }
-        #result img {
-            max-width: 100%;
-        }
-        #nav-share.navbar-nav>li>#link-svg-plurk {
-            padding-top: 16px;
-            padding-bottom: 11px;
-        }
-        #svg-plurk {
-            display: inline-block;
-            background-color: #9d9d9d;
-            border-radius: 3px;
-        }
-        #svg-plurk:hover {
-            background-color: #fff;
-        }
-        @media (max-width: 767px) {
-            #load-count {
-                display: block;
-            }
-            #nav-share li {
-                display: inline-block;
-            }
-
-            #footer .list-inline {
-                margin: 10px 0;
-            }
-        }
-        </style>
     </head>
     <body>
 
@@ -114,7 +37,7 @@
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
+                        <span class="sr-only">切換導覽列</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -128,11 +51,18 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="http://chrisliuqq.github.io/wiz-tw/">首頁 <span class="sr-only">(current)</span></a></li>
-                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#material-model">素材時間表</a></li>
-                        <li class="visible-xs-block divider"></li>
-                        <li class="visible-xs-block">
-                            <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit#gid=392831457">編輯題庫</a>
+                        <li><a href="#" data-toggle="modal" data-target="#material-modal">素材時間表</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">填寫表單<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a target="_blank" href="https://docs.google.com/forms/d/13OreUrF__DqppRzefPGJ1wimz5NPO5FjWTWxyE0JULk/viewform">一般問題</a></li>
+                                <li><a target="_blank" href="https://docs.google.com/forms/d/1Oy4-8Ttfz_rXDgSgytCkB1ai34NusJ3l-Nss6_cXD1E/viewform?c=0&w=1">四排序問題</a></li>
+                                <li><a target="_blank" href="https://docs.google.com/forms/d/1GYyqSKOfF2KMkMGfEuKtyE8oZadgTRRj_ZClYZRX2Qc/viewform">錯誤回報</a></li>
+                            </ul>
                         </li>
+                        <!-- <li><a href="#" data-toggle="modal" data-target="#post-modal">填寫表單</a></li> -->
+                        <li><a href="#" data-toggle="modal" data-target="#disqus-modal">留言</a></li>
+                        <li class="visible-xs-block divider"></li>
                         <li class="visible-xs-block">
                             <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/wiz-tw">專案原始碼</a>
                         </li>
@@ -185,9 +115,9 @@
                 <ul class="list-inline">
                     <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/"><img alt="創用 CC 授權條款" src="https://i.creativecommons.org/l/by-sa/3.0/tw/80x15.png"></a></li>
                     <li>
-                        <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/htmlview">檢視資料來源</a>
+                        <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/htmlview">檢視題庫</a>
                     </li>
-                    <li class="hidden-xs">
+<!--                     <li class="hidden-xs">
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit#gid=392831457">編輯題庫</a>
                     </li>
                     <li>
@@ -196,12 +126,18 @@
 
                     <li>
                         <a target="_blank" href="https://docs.google.com/forms/d/1Oy4-8Ttfz_rXDgSgytCkB1ai34NusJ3l-Nss6_cXD1E/viewform?c=0&w=1">填寫四排序問題表單</a>
-                    </li>
+                    </li> -->
                     <li class="hidden-xs">
                         <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/wiz-tw">專案原始碼</a>
                     </li>
                     <li>
                         <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/issues">回報網頁問題</a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#update-modal">更新紀錄</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="http://about.me/chrisliu">關於作者</a>
                     </li>
                 </ul>
             </div>
@@ -210,16 +146,16 @@
         <div id="overlay-loading">
             <div id="overlay-loading-content">
                 <i class="fa fa-spinner fa-pulse fa-4x"></i>
-                <div>從 google spreadsheets 讀取問題資料（<span id="loaded-count"></span>）</div>
+                <div>從 google spreadsheets 讀取問題資料（<span id="loaded-count">0/4</span>）</div>
             </div>
         </div>
 
-        <div class="modal fade" id="material-model" tabindex="-1" role="dialog" aria-labelledby="material-modelLabel" aria-hidden="true">
+        <div class="modal fade" id="material-modal" tabindex="-1" role="dialog" aria-labelledby="material-modalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="material-modelLabel">素材時間表</h4>
+                        <h4 class="modal-title" id="material-modalLabel">素材時間表</h4>
                     </div>
                     <div class="modal-body">
                         <p>如果時間顯示為 09 代表開放時間為 09:00～09:59</p>
@@ -263,211 +199,102 @@
             </div>
         </div>
 
+<!--         <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="https://docs.google.com/forms/d/13OreUrF__DqppRzefPGJ1wimz5NPO5FjWTWxyE0JULk/formResponse" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="post-modalLabel">一般問答表單</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="embed-responsive embed-responsive-4by3">
+                                <iframe class="embed-responsive-item" src="https://docs.google.com/forms/d/13OreUrF__DqppRzefPGJ1wimz5NPO5FjWTWxyE0JULk/viewform"></iframe>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="modal fade" id="report-modal" tabindex="-1" role="dialog" aria-labelledby="report-modalLabal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="report-modalLabel">問題回報表單</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="embed-responsive embed-responsive-4by3">
+                            <iframe class="embed-responsive-item" src="about:blank"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="disqus-modal" tabindex="-1" role="dialog" aria-labelledby="disqus-modalLabal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="disqus-modalLabel">留言</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="disqus_thread"></div>
+                        <noscript>請開啟 javascript 來檢視 <a href="https://disqus.com/?ref_noscript">Disqus 提供的留言</a></noscript>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="update-modal" tabindex="-1" role="dialog" aria-labelledby="update-modalLabal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="update-modalLabel">更新紀錄</h4>
+                    </div>
+                    <div class="modal-body">
+                        <dl>
+                            <dt>更新留言功能、回報功能、問題屬性</dt>
+                            <dd>因為版面配置問題，回報功能與問題屬性目前僅顯示在解析度大於 768px 的裝置上面。css 改用 scss 重寫過，js 也改用 coffee-script 重寫過。 -- 2015-02-06 04:00</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="question-info">
+            <div class="box-close">
+                <a href="javascript:void(0);" class="btn-close btn-more">關閉</a>
+            </div>
+            <div class="info"><div></div></div>
+        </div>
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <script src="//chrisliuqq.github.io/assets/js/console.js"></script>
+        <script src="wiz.js"></script>
         <script>
-        /*
-        https://spreadsheets.google.com/feeds/worksheets/{SHEET-ID}/public/basic?alt=json       get grid ids
-        https://spreadsheets.google.com/feeds/list/{SHEET-ID}/{GRID-ID}/public/values?alt=json  get whole sheet data
-        https://spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values          get all cell data
-        alt=json                                                                                return json
-        alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
-        */
-        var sheetId = '1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g';
-        var finishCount = 0;
-        var gridIds = {
-            '四排序題'          : ['o5ocq9n', 'load4'],
-            '每日問答'          : ['oqqi90o', 'loadDaily'],
-            '總覽'             : ['o6hvqd7', 'loadAll'],
-            '表單填寫'          : ['oj7l0gb', 'loadAll']
-            // '生活常識'   : 'oeoitdq',
-            // '動漫與遊戲' : 'ozgygxx',
-            // '文科'      : 'oi5vngs',
-            // '理科'      : 'oz9vlq0',
-            // '演藝'      : 'oxjyjj7',
-            // '體育'      : 'olwf17n',
-            //'單色'      : ['op8lky3', 'load'],
-            //'雙色'      : ['ozgt7u4', 'load'],
-            //'三色'      : ['o8ur44h', 'load'],
-        };
-        var qaData = {
-            normal: [],
-            sort: [],
-            daily: [],
-            count: 0
-        };
+        $(document).ready( function() {
+            wizLoader.init();
+        } );
+        var disqus_shortname = 'wiz-tw';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
 
-        console = window.console || {log:function(){}, info: function(){}};
+        // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        // function load(data) {
-        //     var tmp = [];
-        //     var col = 0;
-        //     $.each( data.feed.entry, function(index, value){
-
-        //         if (parseInt(value.gs$cell.row) <= 1 ) return true;
-
-        //         col = parseInt(value.gs$cell.col);
-
-        //         if ( col >= 3 && col <= 4 ) {
-        //             if (col == 3) tmp = [];
-        //             tmp.push(value.content.$t)
-        //             if (col == 4) qaData.normal.push(tmp);
-        //         }
-
-        //     });
-        //     loadFinish();
-        // }
-
-        function load4(data) {
-            var tmp = [];
-            var col = 0;
-            $.each( data.feed.entry, function(index, value){
-
-                if (parseInt(value.gs$cell.row) <= 2 ) return true;
-
-                col = parseInt(value.gs$cell.col);
-
-                if ( col >= 2 && col <= 6 ) {
-                    if (col == 2) tmp = [];
-                    tmp.push(value.content.$t)
-                    if (col == 6) qaData.sort.push(tmp);
-                }
-
-            });
-
-            loadFinish();
-        }
-
-        function loadAll(data) {
-            var tmp = [];
-            var col = 0;
-            $.each( data.feed.entry, function(index, value){
-
-                if (parseInt(value.gs$cell.row) <= 1 ) return true;
-
-                col = parseInt(value.gs$cell.col);
-
-                if ( col >= 4 && col <= 5 ) {
-                    if (col == 4) tmp = [];
-                    tmp.push(value.content.$t)
-                    if (col == 5) qaData.normal.push(tmp);
-                }
-
-            });
-            loadFinish();
-        }
-
-        function loadDaily(data) {
-            var tmp = [];
-            var col = 0;
-            $.each( data.feed.entry, function(index, value){
-
-                if (parseInt(value.gs$cell.row) <= 1 ) return true;
-
-                col = parseInt(value.gs$cell.col);
-                // 2 url, 4 quesiton, 5 answer
-                if ( col == 3 ) return true;
-                if ( col >= 2 && col <= 5 ) {
-                    if (col == 2) tmp = [];
-                    tmp.push(value.content.$t)
-                    if (col == 5) qaData.daily.push(tmp);
-                }
-
-            });
-            loadFinish();
-        }
-
-        function addScript( src ) {
-            var s = document.createElement( 'script' );
-            s.setAttribute( 'src', src );
-            document.body.appendChild( s );
-        }
-
-        function log(msg) {
-            console.info(msg);
-        }
-
-        function htmlEncode( html ) {
-            return document.createElement( 'a' ).appendChild(
-                document.createTextNode( html ) ).parentNode.innerHTML;
-        };
-
-        function loadFinish() {
-            finishCount++;
-            if ( finishCount == Object.keys(gridIds).length ) {
-                $("#overlay-loading").remove();
-                $("#load-count").text('共讀取了 ' + (qaData.normal.length + qaData.sort.length + qaData.daily.length ) + ' 個問題。');
-            }
-            else {
-                $("#loaded-count").text(finishCount + '/' + Object.keys(gridIds).length);
-            }
-        }
-
-        $(document).ready(function() {
-            $.each( gridIds , function(key, value) {
-                var urlScript = "https://spreadsheets.google.com/feeds/cells/" + sheetId + "/" + value[0] + "/public/values?alt=json-in-script&callback=" + value[1];
-                addScript(urlScript);
-                log('Add [' + key + '] script from ' + urlScript);
-            });
-
-            $(".form").submit(function(e) {
-                e.preventDefault();
-                return false;
-            });
-
-            $(".from-source").on("change", function() {
-                $("#inputKeyword").trigger("keyup");
-            });
-
-            $("#inputKeyword").on("keyup", function() {
-                var val = $(this).val().toLowerCase();
-                if (val.length <= 0) return $("#result").html("");
-                $("#result").html("");
-
-                if ( $("#fromNormal:checked").val() === '1' ) {
-
-                    $.each( qaData.normal, function(index, value){
-
-                        if (value[0].toLowerCase().indexOf(val) !== -1) {
-                            //console.debug(htmlEncode(value.join('')));
-                            $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
-                        }
-                    });
-                }
-
-                if ( $("#fromSort:checked").val() === '1' ) {
-
-                    $.each( qaData.sort, function(index, value){
-
-                        if (value[0].toLowerCase().indexOf(val) !== -1) {
-                            //console.debug(htmlEncode(value.join('')));
-                            $("#result").append('<tr><td><div class="question">' + value[0] + '</div><div class="text-danger">' + htmlEncode(value.slice(1).join('、')) + '</div></td></tr>');
-                        }
-                    });
-                }
-
-                if ( $("#fromDaily:checked").val() === '1' ) {
-
-                    $.each( qaData.daily, function(index, value){
-
-                        if (value[1].toLowerCase().indexOf(val) !== -1) {
-                            //console.debug(htmlEncode(value.join('')));
-                            $("#result").append('<tr><td><div class="col-sm-3"><img src="' + value[0] + '" /></div><div class="col-sm-5">' + value[1] + '</div><div class="col-sm-4 text-danger">' + htmlEncode(value[2]) + '</div></td></tr>');
-                        }
-                    });
-                }
-            });
-        });
-        </script>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-59043056-1', 'auto');
-            ga('send', 'pageview');
+        // ga('create', 'UA-59043056-1', 'auto');
+        // ga('send', 'pageview');
         </script>
     </body>
     </script>
