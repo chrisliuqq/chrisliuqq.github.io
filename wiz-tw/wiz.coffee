@@ -18,8 +18,8 @@ class wizLoader
         gridIds:
             '四排序題':     'o5ocq9n'
             '每日問答':     'oqqi90o'
-            '總覽':       'o6hvqd7'
-            '表單填寫':     'oj7l0gb'
+            # '總覽':       'o6hvqd7'
+            '黑貓題庫(表單填寫)':     'oj7l0gb'
         loadCount: 0
 
     @addScript: (gridEntry) ->
