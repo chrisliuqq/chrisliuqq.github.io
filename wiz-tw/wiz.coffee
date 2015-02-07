@@ -158,6 +158,8 @@ class wizLoader
                 $("#question-info").removeClass("active")
                 return $("#result").html("")
 
+            val = val.toLowerCase()
+
             $("#question-info").removeClass("active")
             $("#result").html("")
 

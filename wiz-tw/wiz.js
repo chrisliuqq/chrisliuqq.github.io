@@ -199,6 +199,7 @@ wizLoader = (function() {
         $("#question-info").removeClass("active");
         return $("#result").html("");
       }
+      val = val.toLowerCase();
       $("#question-info").removeClass("active");
       $("#result").html("");
       if ($("#fromNormal:checked").val() === '1') {
