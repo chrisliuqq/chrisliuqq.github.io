@@ -195,13 +195,12 @@ wizLoader = (function() {
     $("#inputKeyword").on("keyup", function() {
       var entry, index, val, _ref, _ref1, _ref2;
       val = $(this).val();
-      if (val.length <= 0) {
-        $("#question-info").removeClass("active");
-        return $("#result").html("");
-      }
-      val = val.toLowerCase();
       $("#question-info").removeClass("active");
       $("#result").html("");
+      if (val.length <= 0) {
+        return;
+      }
+      val = val.toLowerCase();
       if ($("#fromNormal:checked").val() === '1') {
         _ref = wizLoader.data.normal;
         for (index in _ref) {

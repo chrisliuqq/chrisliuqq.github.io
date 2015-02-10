@@ -139,6 +139,7 @@
                     <li>
                         <a target="_blank" href="http://about.me/chrisliu">關於作者</a>
                     </li>
+                    <li class="visible-xs-inline-block"><a id="btn-hide-footer" href="javascript:void(0)">隱藏版尾</a></li>
                 </ul>
             </div>
         </footer>
@@ -258,6 +259,8 @@
                     </div>
                     <div class="modal-body">
                         <dl>
+                            <dt>隱藏版尾</dt>
+                            <dd>手機版新增隱藏版尾按鈕 -- 2015-02-10 13:20</dd>
                             <dt>關鍵字提示</dt>
                             <dd>題目加上搜尋關鍵字高亮提示 -- 2015-02-06 04:40</dd>
                             <dt>更新留言功能、回報功能、問題屬性</dt>
@@ -282,6 +285,9 @@
         <script>
         $(document).ready( function() {
             wizLoader.init();
+            $("#btn-hide-footer").click(function() {
+                $("#footer").hide();
+            });
         } );
         var disqus_shortname = 'wiz-tw';
         (function() {

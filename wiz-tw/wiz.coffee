@@ -154,14 +154,14 @@ class wizLoader
 
         $("#inputKeyword").on "keyup", ->
             val = $(this).val()
-            if val.length <= 0
-                $("#question-info").removeClass("active")
-                return $("#result").html("")
-
-            val = val.toLowerCase()
 
             $("#question-info").removeClass("active")
             $("#result").html("")
+
+            if val.length <= 0
+                return
+
+            val = val.toLowerCase()
 
             if $("#fromNormal:checked").val() == '1'
                 for index, entry of wizLoader.data.normal
