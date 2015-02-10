@@ -4,6 +4,8 @@ https://spreadsheets.google.com/feeds/list/{SHEET-ID}/{GRID-ID}/public/values?al
 https://spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values          get all cell data
 alt=json                                                                                return json
 alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
+
+https://spreadsheets.google.com/feeds/worksheets/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/public/basic?alt=json
 ###
 
 class wizLoader
@@ -16,8 +18,8 @@ class wizLoader
     @option =
         sheedId: "1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g"
         gridIds:
-            '四排序題':     'o5ocq9n'
-            '每日問答':     'oqqi90o'
+            '四排序題':     'otblre7'
+            '每日問答':     'oy2mxv6'
             # '總覽':       'o6hvqd7'
             '黑貓題庫(表單填寫)':     'oj7l0gb'
         loadCount: 0
