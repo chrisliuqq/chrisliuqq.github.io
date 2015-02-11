@@ -43,7 +43,7 @@ wizLoader = (function() {
     var tmp;
     tmp = data.feed.id.$t.split('/');
     if (tmp.length === 9) {
-      if (tmp[6] === 'o5ocq9n') {
+      if (tmp[6] === 'otblre7') {
         return this._loadSort(data.feed.entry);
       }
       if (tmp[6] === 'oqqi90o') {
