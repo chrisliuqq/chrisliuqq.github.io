@@ -35,7 +35,7 @@ class wizLoader
         if tmp.length == 9
             if tmp[6] == 'otblre7'
                 return @_loadSort (data.feed.entry)
-            if tmp[6] == 'oqqi90o'
+            if tmp[6] == 'oy2mxv6'
                 return @_loadDaily (data.feed.entry)
 
             return @_loadNormal (data.feed.entry)

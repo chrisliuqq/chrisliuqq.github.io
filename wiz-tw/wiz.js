@@ -46,7 +46,7 @@ wizLoader = (function() {
       if (tmp[6] === 'otblre7') {
         return this._loadSort(data.feed.entry);
       }
-      if (tmp[6] === 'oqqi90o') {
+      if (tmp[6] === 'oy2mxv6') {
         return this._loadDaily(data.feed.entry);
       }
       return this._loadNormal(data.feed.entry);
