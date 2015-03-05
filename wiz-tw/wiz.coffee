@@ -136,7 +136,7 @@ UI =
             data = wizLoader.data.db({type: type},{id: "#{pos}"}).first()
             text = ''
             if type == '四選一'
-                text = "題目顏色：#{data.color}，題目類型：#{data.type}"
+                text = "題目顏色：#{data.color}，題目類型：#{data.subType}"
 
             # text += "，，<a id=\"question-report\" href=\"javascript:void\" data-question=\"#{data.question}\" data-answer=\"#{data.answer}\">錯誤回報</a>"
             $("#question-info").css({ top: trOffset.top,left: trOffset.left,width: tr.width(),height: tr.height()}).addClass("active")

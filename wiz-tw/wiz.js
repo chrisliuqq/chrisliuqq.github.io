@@ -216,7 +216,7 @@ UI = {
       }).first();
       text = '';
       if (type === '四選一') {
-        text = "題目顏色：" + data.color + "，題目類型：" + data.type;
+        text = "題目顏色：" + data.color + "，題目類型：" + data.subType;
       }
       $("#question-info").css({
         top: trOffset.top,
