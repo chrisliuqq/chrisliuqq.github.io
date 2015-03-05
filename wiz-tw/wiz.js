@@ -6,145 +6,196 @@ https://spreadsheets.google.com/feeds/list/{SHEET-ID}/{GRID-ID}/public/values?al
 https://spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values          get all cell data
 alt=json                                                                                return json
 alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
-
-https://spreadsheets.google.com/feeds/worksheets/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/public/basic?alt=json
  */
-var wizLoader;
+var UI, util, wizLoader,
+  __hasProp = {}.hasOwnProperty;
+
+util = (function() {
+  function util() {}
+
+  util.pop = function(obj) {
+    var key, result;
+    for (key in obj) {
+      if (!__hasProp.call(obj, key)) continue;
+      result = obj[key];
+      if (!delete obj[key]) {
+        throw new Error();
+      }
+      return result;
+    }
+  };
+
+  util.cleanObject = function(obj) {
+    return util.pop(util.pop(util.pop(obj)));
+  };
+
+  util.parseContent = function(obj) {
+    return obj.revisions[0]["*"];
+  };
+
+  util.parseType = function(obj) {
+    return obj.title.match(/模板:題庫\/([^\/]+)?/).slice(1).join();
+  };
+
+  util.htmlEncode = function(html) {
+    return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+  };
+
+  util.highlight = function(keyword, msg) {
+    return msg.split(keyword).join("<b>" + keyword + "</b>");
+  };
+
+  util.getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  return util;
+
+})();
 
 wizLoader = (function() {
   function wizLoader() {}
 
   wizLoader.data = {
-    normal: [],
-    sort: [],
-    daily: [],
-    count: 0
+    totalQuestion: 0,
+    totalPage: 0,
+    loadQuestion: 0,
+    loadedPage: 0,
+    loadedType: 0,
+    db: TAFFY()
   };
 
   wizLoader.option = {
-    sheedId: "1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g",
-    gridIds: {
-      '四排序題': 'otblre7',
-      '每日問答': 'oy2mxv6',
-      '黑貓題庫(表單填寫)': 'oj7l0gb'
-    },
-    loadCount: 0
+    type: ['四選一', '每日', '排序']
   };
 
-  wizLoader.addScript = function(gridEntry) {
-    var s, src;
-    src = "https://spreadsheets.google.com/feeds/cells/" + this.option.sheedId + "/" + gridEntry + "/public/values?alt=json-in-script&callback=wizLoader.load";
-    s = document.createElement('script');
-    s.setAttribute('src', src);
-    return document.body.appendChild(s);
+  wizLoader.queryMaxId = function(type) {
+    return $.ajax({
+      url: "http://zh.nekowiz.wikia.com/api.php",
+      crossDomain: true,
+      dataType: "jsonp",
+      data: {
+        format: "json",
+        callback: "wizLoader.queryMaxIdCallback",
+        action: "query",
+        prop: "revisions",
+        titles: "模板:題庫/" + type,
+        rvprop: "content"
+      }
+    });
   };
 
-  wizLoader.load = function(data) {
-    var tmp;
-    tmp = data.feed.id.$t.split('/');
-    if (tmp.length === 9) {
-      if (tmp[6] === 'otblre7') {
-        return this._loadSort(data.feed.entry);
+  wizLoader.queryMaxIdCallback = function(data) {
+    var maxId, maxPage, type;
+    data = util.cleanObject(data);
+    type = util.parseType(data);
+    maxId = parseInt(util.parseContent(data));
+    maxPage = Math.floor((maxId - 1) / 500) + 1;
+    wizLoader.data.totalQuestion += maxId;
+    wizLoader.data.totalPage += maxPage;
+    return this.queryQuestion(type, maxPage);
+  };
+
+  wizLoader.queryQuestionCallback = function(data) {
+    var content, db, line, question, type, _i, _len, _ref;
+    data = util.cleanObject(data);
+    type = util.parseType(data);
+    content = util.parseContent(data);
+    db = [];
+    _ref = content.split("\n");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      line = _ref[_i];
+      question = line.split("|");
+      if (type === "四選一") {
+        db.push({
+          id: question[0],
+          type: type,
+          question: question[2],
+          answer: question[3],
+          subType: question[1],
+          color: question[4],
+          fulltext: "" + question[2] + question[3]
+        });
+      } else if (type === "排序") {
+        db.push({
+          id: question[0],
+          type: type,
+          question: question[1],
+          answer: question.slice(2).join("、"),
+          fulltext: question.slice(1).join("")
+        });
+      } else {
+        db.push({
+          id: question[0],
+          type: type,
+          question: question[1],
+          answer: question[2],
+          fulltext: "" + question[1] + question[2],
+          imgname: question[3]
+        });
       }
-      if (tmp[6] === 'oy2mxv6') {
-        return this._loadDaily(data.feed.entry);
-      }
-      return this._loadNormal(data.feed.entry);
+      wizLoader.data.loadQuestion++;
+      UI.updateNotification(wizLoader.data.loadQuestion + "/" + wizLoader.data.totalQuestion);
+    }
+    wizLoader.data.db.insert(db);
+    if (++wizLoader.data.loadedPage === wizLoader.data.totalPage) {
+      UI.init();
     }
   };
 
-  wizLoader._loadNormal = function(data) {
-    var col, entry, index, keys, tmp;
-    tmp = {};
-    col = 0;
-    keys = ['', '', 'color', 'type', 'question', 'answer'];
-    for (index in data) {
-      entry = data[index];
-      if (parseInt(entry.gs$cell.row) <= 1) {
-        continue;
-      }
-      col = parseInt(entry.gs$cell.col);
-      if (col >= 2 && col <= 5) {
-        if (col === 2) {
-          tmp = {};
+
+  /*
+  四選一：題號|type|題目|答案|顏色
+  每日：題號|題目|答案|圖片檔名
+  排序：題號|題目|答案1|答案2|答案3|答案4
+   */
+
+  wizLoader.queryQuestion = function(type, maxPage) {
+    var loadedPage, page, _i, _ref, _results;
+    loadedPage = 0;
+    _results = [];
+    for (page = _i = 1, _ref = maxPage + 1; 1 <= _ref ? _i < _ref : _i > _ref; page = 1 <= _ref ? ++_i : --_i) {
+      _results.push($.ajax({
+        url: "http://zh.nekowiz.wikia.com/api.php",
+        crossDomain: true,
+        dataType: "jsonp",
+        data: {
+          format: "json",
+          callback: "wizLoader.queryQuestionCallback",
+          action: "query",
+          prop: "revisions",
+          titles: "模板:題庫/" + type + "/" + page,
+          rvprop: "content"
         }
-        tmp[keys[col]] = entry.content.$t;
-        if (col === 5) {
-          this.data.normal.push(tmp);
-        }
-      }
+      }));
     }
-    return this._loadComplete();
+    return _results;
   };
 
-  wizLoader._loadSort = function(data) {
-    var col, entry, index, tmp;
-    tmp = [];
-    col = 0;
-    for (index in data) {
-      entry = data[index];
-      if (parseInt(entry.gs$cell.row) <= 2) {
-        continue;
-      }
-      col = parseInt(entry.gs$cell.col);
-      if (col >= 2 && col <= 6) {
-        if (col === 2) {
-          tmp = [];
-        }
-        tmp.push(entry.content.$t);
-        if (col === 6) {
-          this.data.sort.push(tmp);
-        }
-      }
-    }
-    return this._loadComplete();
-  };
-
-  wizLoader._loadDaily = function(data) {
-    var col, entry, index, tmp;
-    tmp = [];
-    col = 0;
-    for (index in data) {
-      entry = data[index];
-      if (parseInt(entry.gs$cell.row) <= 2) {
-        continue;
-      }
-      col = parseInt(entry.gs$cell.col);
-      if (col === 3) {
-        continue;
-      }
-      if (col >= 2 && col <= 5) {
-        if (col === 2) {
-          tmp = [];
-        }
-        tmp.push(entry.content.$t);
-        if (col === 5) {
-          this.data.daily.push(tmp);
-        }
-      }
-    }
-    return this._loadComplete();
-  };
-
-  wizLoader._loadComplete = function() {
-    this.data.count++;
-    if (this.data.count === Object.keys(this.option.gridIds).length) {
-      $("#overlay-loading").remove();
-      $("#load-count").text('共讀取了 ' + (this.data.normal.length + this.data.sort.length + this.data.daily.length) + ' 個問題。');
-    } else {
-      $("#loaded-count").text(this.data.count + '/' + Object.keys(this.option.gridIds).length);
+  wizLoader.load = function() {
+    var type, _i, _len, _ref;
+    _ref = this.option.type;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      type = _ref[_i];
+      this.queryMaxId(type);
     }
   };
 
-  wizLoader.htmlEncode = function(html) {
-    return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+  wizLoader.init = function() {
+    return this.load();
   };
 
-  wizLoader.highlight = function(keyword, msg) {
-    return msg.split(keyword).join("<b>" + keyword + "</b>");
-  };
+  return wizLoader;
 
-  wizLoader._initEvent = function() {
+})();
+
+UI = {
+  init: function() {
+    $("#load-count").text("共讀取了 " + wizLoader.data.totalQuestion + " 個問題。");
+    $("#overlay-loading").remove();
+    $("#btn-hide-footer").click(function() {
+      return $("#footer").hide();
+    });
     $(".form").submit(function(e) {
       e.preventDefault();
       return false;
@@ -158,23 +209,15 @@ wizLoader = (function() {
       type = tr.data("type");
       pos = tr.data("pos");
       trOffset = tr.offset();
-      data = {};
+      data = wizLoader.data.db({
+        type: type
+      }, {
+        id: "" + pos
+      }).first();
       text = '';
-      if (type === 'normal') {
-        data = wizLoader.data[type][pos];
-        text = "題目顏色：" + data.color + "，題目類型：" + data.type + "，";
-      } else if (type === 'daily') {
-        data = {
-          question: wizLoader.data[type][pos][1] + "，網址：" + wizLoader.data[type][pos][0],
-          answer: wizLoader.data[type][pos][2]
-        };
-      } else {
-        data = {
-          question: wizLoader.data[type][pos][0],
-          answer: wizLoader.data[type][pos].slice(1).join('、')
-        };
+      if (type === '四選一') {
+        text = "題目顏色：" + data.color + "，題目類型：" + data.type;
       }
-      text += "<a id=\"question-report\" href=\"javascript:void\" data-question=\"" + data.question + "\" data-answer=\"" + data.answer + "\">錯誤回報</a>";
       $("#question-info").css({
         top: trOffset.top,
         left: trOffset.left,
@@ -186,16 +229,8 @@ wizLoader = (function() {
     $("#question-info").on("click", ".btn-close", function() {
       return $("#question-info").removeClass("active");
     });
-    $("#question-info").on("click", "#question-report", function() {
-      var answer, question, url;
-      question = encodeURIComponent($(this).data("question"));
-      answer = encodeURIComponent($(this).data("answer"));
-      url = "https://docs.google.com/forms/d/1GYyqSKOfF2KMkMGfEuKtyE8oZadgTRRj_ZClYZRX2Qc/viewform?entry.699244241=%E9%A1%8C%E7%9B%AE%EF%BC%9A" + question + "%0A%E5%8E%9F%E5%A7%8B%E7%AD%94%E6%A1%88%EF%BC%9A" + answer + "%0A%E6%AD%A3%E7%A2%BA%E7%AD%94%E6%A1%88%EF%BC%9A";
-      $("#report-modal iframe").attr("src", url);
-      return $('#report-modal').modal('show');
-    });
     $("#inputKeyword").on("keyup", function() {
-      var entry, index, val, _ref, _ref1, _ref2;
+      var type, val;
       val = $(this).val();
       $("#question-info").removeClass("active");
       $("#result").html("");
@@ -203,52 +238,226 @@ wizLoader = (function() {
         return;
       }
       val = val.toLowerCase();
-      if ($("#fromNormal:checked").val() === '1') {
-        _ref = wizLoader.data.normal;
-        for (index in _ref) {
-          entry = _ref[index];
-          if (typeof entry.question === 'undefined') {
-            console.debug(entry);
-            continue;
-          }
-          if (entry.question.toLowerCase().indexOf(val) !== -1) {
-            if (entry.question.toLowerCase().indexOf(val) !== -1) {
-              $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry.question) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
-            }
-          }
+      type = $(".from-source:checked").map(function() {
+        return this.value;
+      }).get();
+      wizLoader.data.db({
+        type: type
+      }, {
+        fulltext: {
+          likenocase: val
         }
-      }
-      if ($("#fromSort:checked").val() === '1') {
-        _ref1 = wizLoader.data.sort;
-        for (index in _ref1) {
-          entry = _ref1[index];
-          if (entry[0].toLowerCase().indexOf(val) !== -1) {
-            $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry[0]) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
-          }
+      }).each(function(r) {
+        var imgurl, md5name;
+        if (r.type === "四選一") {
+          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+        } else if (r.type === "排序") {
+          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+        } else {
+          md5name = CryptoJS.MD5(r.imgname).toString();
+          imgurl = "http://vignette" + (util.getRandomInt(1, 5)) + ".wikia.nocookie.net/nekowiz/images/" + (md5name.charAt(0)) + "/" + (md5name.charAt(0)) + (md5name.charAt(1)) + "/" + r.imgname + "/revision/latest?path-prefix=zh";
+          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><!--<a href="javascript:void(0);" class="btn-more">更多</a>--></td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + util.highlight(val, r.question) + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
         }
-      }
-      if ($("#fromDaily:checked").val() === '1') {
-        _ref2 = wizLoader.data.daily;
-        for (index in _ref2) {
-          entry = _ref2[index];
-          if (entry[1].toLowerCase().indexOf(val) !== -1) {
-            $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + wizLoader.highlight(val, entry[1]) + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
-          }
-        }
-      }
+      });
     });
-  };
+  },
+  updateNotification: function(msg) {
+    $("#loaded-count").text(msg);
+  }
+};
 
-  wizLoader.init = function() {
-    var entry, type, _ref;
-    _ref = this.option.gridIds;
-    for (type in _ref) {
-      entry = _ref[type];
-      this.addScript(entry);
-    }
-    this._initEvent();
-  };
 
-  return wizLoader;
+/*
+class wizLoader
+    @data =
+        normal: []
+        sort: []
+        daily: []
+        count: 0
 
-})();
+    @option =
+        sheedId: "1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g"
+        gridIds:
+            '四排序題':     'o5ocq9n'
+            '每日問答':     'oqqi90o'
+             * '總覽':       'o6hvqd7'
+            '黑貓題庫(表單填寫)':     'oj7l0gb'
+        loadCount: 0
+
+    @addScript: (gridEntry) ->
+        src = "https://spreadsheets.google.com/feeds/cells/#{@option.sheedId}/#{gridEntry}/public/values?alt=json-in-script&callback=wizLoader.load"
+        s = document.createElement( 'script' )
+        s.setAttribute( 'src', src )
+        document.body.appendChild( s )
+
+    @load: (data) ->
+        tmp = data.feed.id.$t.split('/')
+        if tmp.length == 9
+            if tmp[6] == 'o5ocq9n'
+                return @_loadSort (data.feed.entry)
+            if tmp[6] == 'oqqi90o'
+                return @_loadDaily (data.feed.entry)
+
+            return @_loadNormal (data.feed.entry)
+
+    @_loadNormal: (data) ->
+         * 2: color, 3: type
+        tmp = {}
+        col = 0
+        keys = ['','','color','type','question','answer']
+        for index, entry of data
+            if (parseInt(entry.gs$cell.row) <= 1 )
+                continue
+
+            col = parseInt(entry.gs$cell.col)
+
+            if col >= 2 && col <= 5
+
+                if col == 2
+                    tmp = {}
+
+                tmp[keys[col]] = entry.content.$t
+
+                if col == 5
+                    @data.normal.push(tmp)
+
+
+        return @_loadComplete()
+    @_loadSort: (data) ->
+        tmp = []
+        col = 0
+        for index, entry of data
+            if (parseInt(entry.gs$cell.row) <= 2 )
+                continue;
+            col = parseInt(entry.gs$cell.col)
+            if ( col >= 2 && col <= 6 )
+                    if (col == 2)
+                        tmp = []
+                    tmp.push(entry.content.$t)
+                    if (col == 6)
+                        @data.sort.push(tmp)
+
+        return @_loadComplete()
+
+    @_loadDaily: (data) ->
+         * 2 url, 4 question, 5 answer
+        tmp = []
+        col = 0
+        for index, entry of data
+            if (parseInt(entry.gs$cell.row) <= 2 )
+                continue;
+            col = parseInt(entry.gs$cell.col)
+            if col == 3
+                continue
+
+            if col >= 2 && col <= 5
+                if col == 2
+                    tmp = [];
+                tmp.push(entry.content.$t)
+                if (col == 5)
+                    @data.daily.push(tmp)
+
+        return @_loadComplete()
+
+    @_loadComplete: () ->
+        @data.count++
+        if @data.count == Object.keys(@option.gridIds).length
+            $("#overlay-loading").remove();
+            $("#load-count").text('共讀取了 ' + (@data.normal.length + @data.sort.length + @data.daily.length ) + ' 個問題。');
+        else
+            $("#loaded-count").text(@data.count + '/' + Object.keys(@option.gridIds).length);
+        return
+    @htmlEncode: ( html ) ->
+        return document.createElement( 'a' ).appendChild(document.createTextNode( html ) ).parentNode.innerHTML
+
+    @highlight: ( keyword, msg) ->
+        msg.split(keyword).join("<b>#{keyword}</b>")
+
+    @_initEvent: () ->
+        $(".form").submit (e) ->
+            e.preventDefault()
+            false
+
+        $(".from-source").on "change", ->
+            $("#inputKeyword").trigger "keyup"
+
+        $("#result").on "click", ".btn-more", ->
+            tr = $(this).parents("tr")
+            type = tr.data("type");
+            pos = tr.data("pos");
+            trOffset = tr.offset();
+            data = {}
+            text = ''
+            if type == 'normal'
+                data = wizLoader.data[type][pos]
+                text = "題目顏色：#{data.color}，題目類型：#{data.type}，"
+            else if type == 'daily'
+                data =
+                    question: "#{wizLoader.data[type][pos][1]}，網址：#{wizLoader.data[type][pos][0]}"
+                    answer: wizLoader.data[type][pos][2]
+            else
+                data =
+                    question: wizLoader.data[type][pos][0]
+                    answer: wizLoader.data[type][pos].slice(1).join('、')
+
+            text += "<a id=\"question-report\" href=\"javascript:void\" data-question=\"#{data.question}\" data-answer=\"#{data.answer}\">錯誤回報</a>"
+            $("#question-info").css({ top: trOffset.top,left: trOffset.left,width: tr.width(),height: tr.height()}).addClass("active")
+            $("#question-info .info div").html(text)
+
+        $("#question-info").on "click", ".btn-close", ->
+            return $("#question-info").removeClass("active")
+
+        $("#question-info").on "click", "#question-report", ->
+            question = encodeURIComponent($(this).data("question"))
+            answer = encodeURIComponent($(this).data("answer"))
+            url = "https://docs.google.com/forms/d/1GYyqSKOfF2KMkMGfEuKtyE8oZadgTRRj_ZClYZRX2Qc/viewform?entry.699244241=%E9%A1%8C%E7%9B%AE%EF%BC%9A#{question}%0A%E5%8E%9F%E5%A7%8B%E7%AD%94%E6%A1%88%EF%BC%9A#{answer}%0A%E6%AD%A3%E7%A2%BA%E7%AD%94%E6%A1%88%EF%BC%9A";
+            $("#report-modal iframe").attr("src", url)
+            $('#report-modal').modal('show')
+
+        $("#inputKeyword").on "keyup", ->
+            val = $(this).val()
+
+            $("#question-info").removeClass("active")
+            $("#result").html("")
+
+            if val.length <= 0
+                return
+
+            val = val.toLowerCase()
+
+
+
+            if $("#fromNormal:checked").val() == '1'
+                for index, entry of wizLoader.data.normal
+                    if typeof(entry.question) == 'undefined'
+                        console.debug (entry)
+                        continue
+
+                    if entry.question.toLowerCase().indexOf(val) != -1
+                        if (entry.question.toLowerCase().indexOf(val) != -1)
+                            $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry.question) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
+
+            if $("#fromSort:checked").val() == '1'
+                for index, entry of wizLoader.data.sort
+                    if entry[0].toLowerCase().indexOf(val) != -1
+                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry[0]) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
+
+            if $("#fromDaily:checked").val() == '1'
+                for index, entry of wizLoader.data.daily
+                    if entry[1].toLowerCase().indexOf(val) != -1
+                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + wizLoader.highlight(val, entry[1]) + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
+
+            return
+
+        return
+
+    @init: () ->
+        for type, entry of @option.gridIds
+            @addScript (entry)
+        @_initEvent()
+        return
+ */
+
+$(function() {
+  return wizLoader.init();
+});
