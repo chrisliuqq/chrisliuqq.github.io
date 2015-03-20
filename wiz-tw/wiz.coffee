@@ -6,6 +6,57 @@ alt=json                                                                        
 alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
 ###
 
+PreInit= () ->
+    $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").text() + "</p>" + $("#update-modal dd:first").text())
+    Setting.init()
+
+
+Setting =
+    localStorage: false
+    cache:
+        adLoading: "1"
+        searchMinLength: "1"
+
+    init: ->
+        Setting.localStorage = Setting.localStorageSupport()
+        if Setting.localStorage
+            localSetting = localStorage.getItem("wizSetting")
+        else
+            localSetting = util.getCookie("wizSetting")
+
+        Setting.cache = $.extend({}, Setting.cache, JSON.parse(localSetting))
+
+        for own key, result of Setting.cache
+            $('.' + key ).val(result)
+
+        if Setting.get("adLoading") != "1"
+            $("#overlay-loading-ad").remove()
+
+    get: (key) ->
+        Setting.cache[key]
+
+    save: (json)->
+        localSetting = {}
+        for v,k in json
+            localSetting[v.name] = v.value
+
+        Setting.cache = localSetting
+
+        if Setting.localStorage == true
+            localStorage.setItem("wizSetting", JSON.stringify(localSetting))
+        else
+            util.setCookie("wizSetting", JSON.stringify(localSetting), "")
+
+    localStorageSupport: ->
+        try
+            localStorage.setItem("test", "test")
+            localStorage.removeItem("test")
+            return true
+        catch e
+            return false
+
+        return
+
 class util
     @pop: (obj) ->
         for own key, result of obj
@@ -26,6 +77,29 @@ class util
         return msg.split(keyword).join("<b>#{keyword}</b>")
     @getRandomInt: (min, max) ->
         return Math.floor(Math.random() * (max - min)) + min;
+
+    @setCookie = (name, value, days) ->
+        if days
+            date = new Date()
+            date.setTime date.getTime() + (days * 24 * 60 * 60 * 1000)
+            expires = "; expires=" + date.toGMTString()
+        else
+            expires = ""
+            document.cookie = name + "=" + value + expires + "; path=/"
+    @getCookie = (name) ->
+        nameEQ = name + "="
+        ca = document.cookie.split(";")
+        i = 0
+
+        while i < ca.length
+            c = ca[i]
+            c = c.substring(1, c.length)  while c.charAt(0) is " "
+            return c.substring(nameEQ.length, c.length)  if c.indexOf(nameEQ) is 0
+            i++
+    null
+
+    @deleteCookie = (name) ->
+        @setCookie name, "", -1
 
 class wizLoader
 
@@ -81,8 +155,8 @@ class wizLoader
             wizLoader.data.loadQuestion++
             UI.updateNotification("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}")
         wizLoader.data.db.insert(db)
-        if ++wizLoader.data.loadedPage == wizLoader.data.totalPage
-            UI.init()
+        # if ++wizLoader.data.loadedPage == wizLoader.data.totalPage
+        #     UI.init()
 
         return
 
@@ -158,7 +232,7 @@ UI =
             $("#question-info").removeClass("active")
             $("#result").html("")
 
-            if val.length <= 0
+            if val.length < Setting.get("searchMinLength")
                 return
 
             val = val.toLowerCase()
@@ -215,6 +289,12 @@ UI =
                     $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
 
             return
+
+        $("#form-setting").on "submit", (e) ->
+            e.preventDefault()
+            Setting.save($("#form-setting").serializeArray())
+            $('#setting-modal').modal('hide')
+            return false
 
         return
     loading: (msg) ->
@@ -420,4 +500,5 @@ class wizLoader
 ###
 
 $ ->
-    wizLoader.init();
+    PreInit()
+    wizLoader.init()

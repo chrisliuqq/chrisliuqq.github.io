@@ -39,10 +39,15 @@ html {
     right: 0;
     margin: auto;
     width: 340px;
-    height: 100px;
+    height: 200px;
     text-align: center;
     color: #fff;
 }
+
+#overlay-loading-announce {
+    color: #E6D6F0;
+}
+
 #nav-share {
     &.navbar-nav>li>a {
         padding-top: 15px;

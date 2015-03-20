@@ -63,6 +63,7 @@
                         </li> -->
                         <!-- <li><a href="#" data-toggle="modal" data-target="#post-modal">填寫表單</a></li> -->
                         <li><a href="#" data-toggle="modal" data-target="#disqus-modal">留言</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#setting-modal">設定</a></li>
                         <li class="visible-xs-block divider"></li>
                         <li class="visible-xs-block">
                             <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/wiz-tw">專案原始碼</a>
@@ -229,8 +230,25 @@
 
         <div id="overlay-loading">
             <div id="overlay-loading-content">
+                <div id="overlay-loading-announce">
+                    <h4>最近更新</h4>
+                    <div class="content"></div>
+                </div>
                 <i class="fa fa-spinner fa-pulse fa-4x"></i>
                 <div>從 zh.nekowiz.wikia.com 讀取問題資料（<span id="loaded-count">初始化中</span>）</div>
+
+                <div id="overlay-loading-ad">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 黑貓題庫：讀取畫面 -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-6783310719953300"
+                         data-ad-slot="3740868116"
+                         data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
         </div>
 
@@ -343,6 +361,10 @@
                     </div>
                     <div class="modal-body">
                         <dl>
+                            <dt>增加設定模式</dt>
+                            <dd>自訂廣告與搜尋時最少關鍵字字數 -- 2015-03-20 16:16</dd>
+                            <dt>新增題庫檢視模式</dt>
+                            <dd>增加題庫檢視列表方便作功課用 -- 2015-03-20 16:16</dd>
                             <dt>更新題目來源</dt>
                             <dd>題目來源改從 wikia 抓取 -- 2015-03-05 16:46</dd>
                             <dt>隱藏版尾</dt>
@@ -352,6 +374,50 @@
                             <dt>更新留言功能、回報功能、問題屬性</dt>
                             <dd>因為版面配置問題，回報功能與問題屬性目前僅顯示在解析度大於 768px 的裝置上面。css 改用 scss 重寫過，js 也改用 coffee-script 重寫過。 -- 2015-02-06 04:00</dd>
                         </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="setting-modal" tabindex="-1" role="dialog" aria-labelledby="setting-modalLabal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="setting-modalLabel">設定</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-setting" class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label">讀取時顯示廣告</label>
+                                <div class="col-sm-9">
+                                    <select name="adLoading" class="adLoading form-control">
+                                        <option value="1">是，我願意顯示廣告來贊助本站</option>
+                                        <option value="0">否，廣告什麼的都去死吧</option>
+                                    </select>
+                                    <span class="help-block">只有在進站時從 wikia 讀取題庫的時間顯示，讀取完畢後不會再顯示</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label">搜尋時最小字數</label>
+                                <div class="col-sm-9">
+                                    <select name="searchMinLength" class="searchMinLength form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                    <span class="help-block">避免輸入常用字時顯示筆數太多而造成停頓，可自行設定輸入幾個字後才開始搜尋</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-default">儲存設定</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

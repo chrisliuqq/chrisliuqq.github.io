@@ -7,8 +7,68 @@ https://spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values  
 alt=json                                                                                return json
 alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
  */
-var UI, util, wizLoader,
+var PreInit, Setting, UI, util, wizLoader,
   __hasProp = {}.hasOwnProperty;
+
+PreInit = function() {
+  $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").text() + "</p>" + $("#update-modal dd:first").text());
+  return Setting.init();
+};
+
+Setting = {
+  localStorage: false,
+  cache: {
+    adLoading: "1",
+    searchMinLength: "1"
+  },
+  init: function() {
+    var key, localSetting, result, _ref;
+    Setting.localStorage = Setting.localStorageSupport();
+    if (Setting.localStorage) {
+      localSetting = localStorage.getItem("wizSetting");
+    } else {
+      localSetting = util.getCookie("wizSetting");
+    }
+    Setting.cache = $.extend({}, Setting.cache, JSON.parse(localSetting));
+    _ref = Setting.cache;
+    for (key in _ref) {
+      if (!__hasProp.call(_ref, key)) continue;
+      result = _ref[key];
+      $('.' + key).val(result);
+    }
+    if (Setting.get("adLoading") !== "1") {
+      return $("#overlay-loading-ad").remove();
+    }
+  },
+  get: function(key) {
+    return Setting.cache[key];
+  },
+  save: function(json) {
+    var k, localSetting, v, _i, _len;
+    localSetting = {};
+    for (k = _i = 0, _len = json.length; _i < _len; k = ++_i) {
+      v = json[k];
+      localSetting[v.name] = v.value;
+    }
+    Setting.cache = localSetting;
+    if (Setting.localStorage === true) {
+      return localStorage.setItem("wizSetting", JSON.stringify(localSetting));
+    } else {
+      return util.setCookie("wizSetting", JSON.stringify(localSetting), "");
+    }
+  },
+  localStorageSupport: function() {
+    var e;
+    try {
+      localStorage.setItem("test", "test");
+      localStorage.removeItem("test");
+      return true;
+    } catch (_error) {
+      e = _error;
+      return false;
+    }
+  }
+};
 
 util = (function() {
   function util() {}
@@ -47,6 +107,41 @@ util = (function() {
 
   util.getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  util.setCookie = function(name, value, days) {
+    var date, expires;
+    if (days) {
+      date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      return expires = "; expires=" + date.toGMTString();
+    } else {
+      expires = "";
+      return document.cookie = name + "=" + value + expires + "; path=/";
+    }
+  };
+
+  util.getCookie = function(name) {
+    var c, ca, i, nameEQ;
+    nameEQ = name + "=";
+    ca = document.cookie.split(";");
+    i = 0;
+    while (i < ca.length) {
+      c = ca[i];
+      while (c.charAt(0) === " ") {
+        c = c.substring(1, c.length);
+      }
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
+      i++;
+    }
+  };
+
+  null;
+
+  util.deleteCookie = function(name) {
+    return this.setCookie(name, "", -1);
   };
 
   return util;
@@ -138,9 +233,6 @@ wizLoader = (function() {
       UI.updateNotification(wizLoader.data.loadQuestion + "/" + wizLoader.data.totalQuestion);
     }
     wizLoader.data.db.insert(db);
-    if (++wizLoader.data.loadedPage === wizLoader.data.totalPage) {
-      UI.init();
-    }
   };
 
 
@@ -234,7 +326,7 @@ UI = {
       val = $(this).val();
       $("#question-info").removeClass("active");
       $("#result").html("");
-      if (val.length <= 0) {
+      if (val.length < Setting.get("searchMinLength")) {
         return;
       }
       val = val.toLowerCase();
@@ -314,6 +406,12 @@ UI = {
           return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
         }
       });
+    });
+    $("#form-setting").on("submit", function(e) {
+      e.preventDefault();
+      Setting.save($("#form-setting").serializeArray());
+      $('#setting-modal').modal('hide');
+      return false;
     });
   },
   loading: function(msg) {
@@ -522,5 +620,6 @@ class wizLoader
  */
 
 $(function() {
+  PreInit();
   return wizLoader.init();
 });
