@@ -86,27 +86,106 @@
 
             <div class="container">
 
-                <form class="form">
-                    <h2 class="form-signin-heading">請輸入問題關鍵字<small id="load-count"></small></h2>
-                    <label for="inputKeyword" class="sr-only">關鍵字</label>
-                    <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入問題關鍵字" required autofocus>
-                    <div class="">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromNormal" name="from[]" value="四選一" checked> 四選一
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromSort" name="from[]" value="排序" checked> 排序
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="from-source" id="fromDaily" name="from[]" value="每日"> 每日問答
-                        </label>
+                <div id="page-menu" class="pull-right" role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li role="presentation" class="active" ><a href="#page-search" aria-controls="page-search" role="tab" data-toggle="tab">搜尋</a></li>
+                      <li role="presentation"><a href="#page-list" aria-controls="page-list" role="tab" data-toggle="tab">列表</a></li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+
+                    <div role="tabpanel" class="tab-pane active" id="page-search">
+
+                        <form class="form">
+                            <h2 class="form-signin-heading">請輸入問題關鍵字<small id="load-count"></small></h2>
+                            <label for="inputKeyword" class="sr-only">關鍵字</label>
+                            <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入問題關鍵字" required autofocus>
+                            <div class="">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="from-source" name="from[]" value="四選一" checked> 四選一
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="from-source" name="from[]" value="排序" checked> 排序
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="from-source" name="from[]" value="每日"> 每日問答
+                                </label>
+
+                            </div>
+                        </form>
+                        <table class="table table-striped">
+                            <tbody id="result">
+                            </tbody>
+                        </table>
 
                     </div>
-                </form>
-                <table class="table table-striped">
-                    <tbody id="result">
-                    </tbody>
-                </table>
+
+                    <div role="tabpanel" class="tab-pane" id="page-list">
+                        <form class="form">
+                            <h2 class="form-signin-heading">請選擇題目類型</h2>
+                            <div class="">
+                                <label class="radio-inline">
+                                    <input type="radio" class="list-type" name="list-type" value="四選一"> 四選一
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="list-type" name="list-type" value="排序"> 排序
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="list-type" name="list-type" value="每日"> 每日問答
+                                </label>
+                            </div>
+                            <div class="list-detail">
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="all" checked="checked"> 全部
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="生活常識"> 生活常識
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="動漫與遊戲"> 動漫與遊戲
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="文科"> 文科
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="理科"> 理科
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="演藝"> 演藝
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-stype" name="list-stype" value="體育"> 體育
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-color" name="list-color" value="all" checked="checked"> 全部
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-color" name="list-color" value="1色"> 1色
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-color" name="list-color" value="2色"> 2色
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" class="list-color" name="list-color" value="3色"> 3色
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="alert alert-info" role="alert">
+                                顯示題目時依照裝置能力不同可能會需要耐心等候（尤其是四選一題目，連我電腦都需要讀 5 秒以上，手機可能需要更久…）
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                        </form>
+                        <table class="table table-striped">
+                            <tbody id="result-list">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -116,7 +195,10 @@
                 <ul class="list-inline">
                     <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/"><img alt="創用 CC 授權條款" src="https://i.creativecommons.org/l/by-sa/3.0/tw/80x15.png"></a></li>
                     <li>
-                        <a target="_blank" href="http://zh.nekowiz.wikia.com/wiki/%E9%A1%8C%E5%BA%AB%E6%90%9C%E5%B0%8B%E5%99%A8">檢視題庫</a>
+                        <a target="_blank" href="http://zh.nekowiz.wikia.com/wiki/%E9%A1%8C%E5%BA%AB%E6%90%9C%E5%B0%8B%E5%99%A8">wikia</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit">檢視題庫</a>
                     </li>
 <!--                     <li class="hidden-xs">
                         <a target="_blank" href="https://docs.google.com/spreadsheets/d/1wzAwAH4rJ72Zw6r-bjoUujfS5SMOEr38s99NxKmNk4g/edit#gid=392831457">編輯題庫</a>

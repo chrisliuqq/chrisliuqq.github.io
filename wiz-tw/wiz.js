@@ -260,6 +260,69 @@ UI = {
         }
       });
     });
+    $(".list-type, .list-stype, .list-color").on("change", function() {
+      var color, result, stype, type;
+      type = $(".list-type:checked").val();
+      stype = "";
+      color = "";
+      result = null;
+      if (type === "四選一") {
+        $(".list-detail").show();
+        stype = $(".list-stype:checked").val();
+        color = $(".list-color:checked").val();
+        if (stype !== "all" && color !== "all") {
+          result = wizLoader.data.db({
+            type: type
+          }, {
+            subType: stype
+          }, {
+            color: color
+          });
+        } else if (stype !== "all") {
+          result = wizLoader.data.db({
+            type: type
+          }, {
+            subType: stype
+          });
+        } else if (color !== "all") {
+          result = wizLoader.data.db({
+            type: type
+          }, {
+            color: color
+          });
+        } else {
+          result = wizLoader.data.db({
+            type: type
+          });
+        }
+      } else {
+        $(".list-detail").hide();
+        result = wizLoader.data.db({
+          type: type
+        });
+      }
+      $("#result-list").html("");
+      result.each(function(r) {
+        var imgurl, md5name;
+        if (r.type === "四選一") {
+          return $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+        } else if (r.type === "排序") {
+          return $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+        } else {
+          md5name = CryptoJS.MD5(r.imgname).toString();
+          imgurl = "http://vignette" + (util.getRandomInt(1, 5)) + ".wikia.nocookie.net/nekowiz/images/" + (md5name.charAt(0)) + "/" + (md5name.charAt(0)) + (md5name.charAt(1)) + "/" + r.imgname + "/revision/latest?path-prefix=zh";
+          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+        }
+      });
+    });
+  },
+  loading: function(msg) {
+    if (msg !== "") {
+      $("#overlay-loading-content div").text(msg);
+      $("#overlay-loading").show();
+    } else {
+      $("#overlay-loading").hide();
+    }
   },
   updateNotification: function(msg) {
     $("#loaded-count").text(msg);
