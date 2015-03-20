@@ -158,8 +158,8 @@ class wizLoader
             wizLoader.data.loadQuestion++
             UI.updateNotification("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}")
         wizLoader.data.db.insert(db)
-        # if ++wizLoader.data.loadedPage == wizLoader.data.totalPage
-        #     UI.init()
+        if ++wizLoader.data.loadedPage == wizLoader.data.totalPage
+            UI.init()
 
         return
 

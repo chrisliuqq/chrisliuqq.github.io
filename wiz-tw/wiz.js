@@ -238,6 +238,9 @@ wizLoader = (function() {
       UI.updateNotification(wizLoader.data.loadQuestion + "/" + wizLoader.data.totalQuestion);
     }
     wizLoader.data.db.insert(db);
+    if (++wizLoader.data.loadedPage === wizLoader.data.totalPage) {
+      UI.init();
+    }
   };
 
 
