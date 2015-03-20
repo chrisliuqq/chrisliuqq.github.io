@@ -9,7 +9,10 @@ alt=json-in-script&callback={CALLBACK}                                          
 PreInit= () ->
     $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").text() + "</p>" + $("#update-modal dd:first").text())
     Setting.init()
-
+    setTimeout ->
+        if $("#overlay-loading").length
+            $("#overlay-loading-content").html('讀取已經超過 15 秒了，有可能 wikia 發生錯誤，請<a href="javascript:location.reload();">按此重新整理</a>試試看')
+    , 15000
 
 Setting =
     localStorage: false
