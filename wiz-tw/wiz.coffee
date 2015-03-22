@@ -7,7 +7,7 @@ alt=json-in-script&callback={CALLBACK}                                          
 ###
 
 PreInit= () ->
-    $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").text() + "</p>" + $("#update-modal dd:first").text())
+    $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").html() + "</p>" + $("#update-modal dd:first").text())
     Setting.init()
     setTimeout ->
         if $("#overlay-loading").length

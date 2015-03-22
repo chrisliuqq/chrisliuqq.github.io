@@ -454,8 +454,11 @@
 
         ga('create', 'UA-59043056-1', 'auto');
         ga('send', 'pageview');
+        // if (Setting.cache.adLoading == 1) ga('send', 'event', 'adLoading', '1');
         ga('set', 'metric1', Setting.cache.adLoading);
-        ga('set', 'dimension1', Setting.cache.adLoading);
+        if (Setting.cache.adLoading == 1) {
+            ga('set', 'dimension1', 'ad-open');
+        }
         </script>
     </body>
     </script>

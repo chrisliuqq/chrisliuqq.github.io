@@ -11,7 +11,7 @@ var PreInit, Setting, UI, util, wizLoader,
   __hasProp = {}.hasOwnProperty;
 
 PreInit = function() {
-  $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").text() + "</p>" + $("#update-modal dd:first").text());
+  $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").html() + "</p>" + $("#update-modal dd:first").text());
   Setting.init();
   return setTimeout(function() {
     if ($("#overlay-loading").length) {
