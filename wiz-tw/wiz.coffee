@@ -6,13 +6,19 @@ alt=json                                                                        
 alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
 ###
 
-PreInit= () ->
-    $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").html() + "</p>" + $("#update-modal dd:first").text())
+loadingTimeout = null
+
+PreInit = () ->
+    $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").html() + "</p>")
     Setting.init()
-    setTimeout ->
+
+updateTimeout = () ->
+    clearTimeout(loadingTimeout)
+    loadingTimeout = setTimeout ->
         if $("#overlay-loading").length
-            $("#overlay-loading-content").html('讀取已經超過 15 秒了，有可能 wikia 發生錯誤，請<a href="javascript:location.reload();">按此重新整理</a>試試看')
-    , 15000
+            $("#overlay-loading-notification").html('距離讀取上一個題庫資料已經超過 10 秒了，有可能 wikia 發生錯誤，您如果處於網路品質較差的情況下可繼續等待，或者<a class="btn btn-default" href="javascript:location.reload();">按此重新整理</a>試試看')
+    , 10000
+    return
 
 Setting =
     localStorage: false
@@ -156,8 +162,10 @@ class wizLoader
             else
                 db.push({ id: question[0], type: type, question: question[1], answer: question[2], fulltext: "#{question[1]}#{question[2]}", imgname: question[3] })
             wizLoader.data.loadQuestion++
-            UI.updateNotification("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}")
+            # UI.updateNotification("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}")
+        UI.updateProcessbar("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}", Math.floor(wizLoader.data.loadQuestion*100/wizLoader.data.totalQuestion) )
         wizLoader.data.db.insert(db)
+        updateTimeout()
         if ++wizLoader.data.loadedPage == wizLoader.data.totalPage
             UI.init()
 
@@ -309,7 +317,8 @@ UI =
         return
     updateNotification: (msg) ->
         $("#loaded-count").text(msg)
-        return
+    updateProcessbar: (msg, percent) ->
+        $("#process-bar").text(msg).css("width", "#{percent}%");
 
 ###
 class wizLoader

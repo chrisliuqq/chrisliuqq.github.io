@@ -234,9 +234,12 @@
                     <h4>最近更新</h4>
                     <div class="content"></div>
                 </div>
-                <i class="fa fa-spinner fa-pulse fa-4x"></i>
-                <div>從 zh.nekowiz.wikia.com 讀取問題資料（<span id="loaded-count">初始化中</span>）</div>
-
+                <div>從 zh.nekowiz.wikia.com 讀取問題資料<!-- （<span id="loaded-count">初始化中</span>） --></div>
+                <div class="progress">
+                    <div id="process-bar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+                <div id="overlay-loading-notification"></div>
                 <div id="overlay-loading-ad">
                     <div>您知道嗎？廣告可以從「設定」選單中取消顯示喔！</div>
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -457,7 +460,7 @@
         // if (Setting.cache.adLoading == 1) ga('send', 'event', 'adLoading', '1');
         ga('set', 'metric1', Setting.cache.adLoading);
         if (Setting.cache.adLoading == 1) {
-            ga('set', 'dimension1', 'ad-open');
+            ga('set', 'dimension1', 'ad-openp');
         }
         </script>
     </body>

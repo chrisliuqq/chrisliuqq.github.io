@@ -33,19 +33,28 @@ html {
 }
 #overlay-loading-content{
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50px;
+    // top: 0;
+    // bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
     width: 340px;
-    height: 350px;
+    // height: 350px;
     text-align: center;
     color: #fff;
 }
 
 #overlay-loading-announce {
     color: #E6D6F0;
+    a {
+        color: #eee;
+    }
+}
+
+#process-bar {
+    text-align: center;
+    color: #000;
 }
 
 #nav-share {
