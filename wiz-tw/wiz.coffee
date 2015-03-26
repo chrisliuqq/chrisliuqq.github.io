@@ -202,6 +202,7 @@ class wizLoader
 
 UI =
     init: () ->
+        clearTimeout(loadingTimeout)
         $("#load-count").text("讀取 #{wizLoader.data.totalQuestion} 個問題。")
         $("#overlay-loading").remove()
         $("#btn-hide-footer").click () ->
