@@ -113,7 +113,16 @@ util = (function() {
   };
 
   util.highlight = function(keyword, msg) {
-    return msg.split(keyword).join("<b>" + keyword + "</b>");
+    var kw, _i, _len;
+    if (Array.isArray(keyword)) {
+      for (_i = 0, _len = keyword.length; _i < _len; _i++) {
+        kw = keyword[_i];
+        msg = msg.split(kw).join("<b>" + kw + "</b>");
+      }
+    } else {
+      msg = msg.split(keyword).join("<b>" + keyword + "</b>");
+    }
+    return msg;
   };
 
   util.getRandomInt = function(min, max) {
@@ -338,7 +347,7 @@ UI = {
       return $("#question-info").removeClass("active");
     });
     $("#inputKeyword").on("keyup", function() {
-      var type, val;
+      var html, i, result, type, v, val, _i, _len;
       val = $(this).val();
       $("#question-info").removeClass("active");
       $("#result").html("");
@@ -349,27 +358,62 @@ UI = {
       type = $(".from-source:checked").map(function() {
         return this.value;
       }).get();
-      wizLoader.data.db({
-        type: type
-      }, {
-        fulltext: {
-          likenocase: val
+      result = null;
+      try {
+        if (val.split(" ").length > 1) {
+          val = val.split(" ");
+          for (i = _i = 0, _len = val.length; _i < _len; i = ++_i) {
+            v = val[i];
+            if (v === "") {
+              delete val[i];
+            }
+          }
+          result = wizLoader.data.db(function() {
+            var keyword, _j, _len1;
+            if ($.inArray(this.type, type) === -1) {
+              return false;
+            }
+            for (_j = 0, _len1 = val.length; _j < _len1; _j++) {
+              keyword = val[_j];
+              if (this.fulltext.indexOf(keyword) === -1) {
+                return false;
+              }
+            }
+            return true;
+          });
+        } else {
+          val = [val];
+          result = wizLoader.data.db({
+            type: type
+          }, {
+            fulltext: {
+              likenocase: val
+            }
+          });
         }
-      }).each(function(r) {
+      } catch (_error) {
+        return;
+      }
+      html = "";
+      result.each(function(r) {
         var imgurl, md5name;
+        if (typeof r.question === "undefined") {
+          return true;
+        }
         if (r.type === "四選一") {
-          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+          return html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>';
         } else if (r.type === "排序") {
-          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+          return html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>';
         } else {
           md5name = CryptoJS.MD5(r.imgname).toString();
           imgurl = "http://vignette" + (util.getRandomInt(1, 5)) + ".wikia.nocookie.net/nekowiz/images/" + (md5name.charAt(0)) + "/" + (md5name.charAt(0)) + (md5name.charAt(1)) + "/" + r.imgname + "/revision/latest?path-prefix=zh";
-          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><!--<a href="javascript:void(0);" class="btn-more">更多</a>--></td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + util.highlight(val, r.question) + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+          return html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><!--<a href="javascript:void(0);" class="btn-more">更多</a>--></td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + util.highlight(val, r.question) + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>';
         }
       });
+      $("#result").append(html);
     });
     $(".list-type, .list-stype, .list-color").on("change", function() {
-      var color, result, stype, type;
+      var color, html, result, stype, type;
       type = $(".list-type:checked").val();
       stype = "";
       color = "";
@@ -410,18 +454,20 @@ UI = {
         });
       }
       $("#result-list").html("");
+      html = "";
       result.each(function(r) {
         var imgurl, md5name;
         if (r.type === "四選一") {
-          return $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+          return html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>';
         } else if (r.type === "排序") {
-          return $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+          return html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>';
         } else {
           md5name = CryptoJS.MD5(r.imgname).toString();
           imgurl = "http://vignette" + (util.getRandomInt(1, 5)) + ".wikia.nocookie.net/nekowiz/images/" + (md5name.charAt(0)) + "/" + (md5name.charAt(0)) + (md5name.charAt(1)) + "/" + r.imgname + "/revision/latest?path-prefix=zh";
-          return $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+          return html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>';
         }
       });
+      $("#result").append(html);
     });
     $("#form-setting").on("submit", function(e) {
       e.preventDefault();

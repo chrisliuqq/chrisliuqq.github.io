@@ -83,7 +83,12 @@ class util
         return document.createElement( 'a' ).appendChild(document.createTextNode( html ) ).parentNode.innerHTML
 
     @highlight: ( keyword, msg) ->
-        return msg.split(keyword).join("<b>#{keyword}</b>")
+        if Array.isArray(keyword)
+            for kw in keyword
+                msg = msg.split(kw).join("<b>#{kw}</b>")
+        else
+            msg = msg.split(keyword).join("<b>#{keyword}</b>")
+        return msg
     @getRandomInt: (min, max) ->
         return Math.floor(Math.random() * (max - min)) + min;
 
@@ -252,15 +257,57 @@ UI =
                 return this.value
             .get()
 
-            wizLoader.data.db({type: type},{fulltext: {likenocase: val}}).each (r) ->
+            result = null
+
+            try
+                if val.split(" ").length > 1
+                    val = val.split(" ")
+                    for v,i in val
+                        if (v == "")
+                            delete val[i]
+
+                    result = wizLoader.data.db(() ->
+
+                        if $.inArray(this.type, type) == -1
+                            return false
+
+                        for keyword in val
+                            if (this.fulltext.indexOf(keyword) == -1)
+                                return false
+                        return true
+                    )
+                else
+                    val = [val]
+                    result = wizLoader.data.db({type: type},{fulltext: {likenocase: val}})
+            catch
+                return
+
+            html = ""
+
+            result.each (r) ->
+
+                if typeof(r.question) == "undefined"
+                    return true
+
                 if r.type == "四選一"
-                    $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+                    html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
+
+                    # $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
                 else if r.type == "排序"
-                    $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+                    html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
+
+                    # $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + util.highlight(val, r.question) + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
                 else
                     md5name = CryptoJS.MD5(r.imgname).toString()
                     imgurl = "http://vignette#{util.getRandomInt(1,5)}.wikia.nocookie.net/nekowiz/images/#{md5name.charAt(0)}/#{md5name.charAt(0)}#{md5name.charAt(1)}/#{r.imgname}/revision/latest?path-prefix=zh"
-                    $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><!--<a href="javascript:void(0);" class="btn-more">更多</a>--></td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + util.highlight(val, r.question) + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+                    html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><!--<a href="javascript:void(0);" class="btn-more">更多</a>--></td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + util.highlight(val, r.question) + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
+
+                    # $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more"><!--<a href="javascript:void(0);" class="btn-more">更多</a>--></td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + util.highlight(val, r.question) + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+            $("#result").append(html)
 
             return
 
@@ -290,15 +337,27 @@ UI =
 
             $("#result-list").html("")
 
+            html = ""
+
             result.each (r) ->
                 if r.type == "四選一"
-                    $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+                    html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
+
+                    # $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
                 else if r.type == "排序"
-                    $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+                    html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
+
+                    # $("#result-list").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="question">' + r.question + '</div><div class="text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
                 else
                     md5name = CryptoJS.MD5(r.imgname).toString()
                     imgurl = "http://vignette#{util.getRandomInt(1,5)}.wikia.nocookie.net/nekowiz/images/#{md5name.charAt(0)}/#{md5name.charAt(0)}#{md5name.charAt(1)}/#{r.imgname}/revision/latest?path-prefix=zh"
-                    $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+                    html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
+                    # $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
+
+            $("#result").append(html)
 
             return
 
