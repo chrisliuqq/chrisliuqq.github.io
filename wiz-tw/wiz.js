@@ -229,7 +229,7 @@ wizLoader = (function() {
           answer: question[3],
           subType: question[1],
           color: question[4],
-          fulltext: "" + question[2] + question[3]
+          fulltext: ("" + question[2] + question[3]).toLowerCase()
         });
       } else if (type === "排序") {
         db.push({
@@ -237,7 +237,7 @@ wizLoader = (function() {
           type: type,
           question: question[1],
           answer: question.slice(2).join("、"),
-          fulltext: question.slice(1).join("")
+          fulltext: question.slice(1).join("").toLowerCase()
         });
       } else {
         db.push({
@@ -245,7 +245,7 @@ wizLoader = (function() {
           type: type,
           question: question[1],
           answer: question[2],
-          fulltext: "" + question[1] + question[2],
+          fulltext: ("" + question[1] + question[2]).toLowerCase(),
           imgname: question[3]
         });
       }

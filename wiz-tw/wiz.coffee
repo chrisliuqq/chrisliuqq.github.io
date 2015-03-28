@@ -161,11 +161,11 @@ class wizLoader
         for line in content.split("\n")
             question = line.split("|")
             if type == "四選一"
-                db.push({ id: question[0], type: type, question: question[2], answer: question[3], subType: question[1], color: question[4], fulltext: "#{question[2]}#{question[3]}" })
+                db.push({ id: question[0], type: type, question: question[2], answer: question[3], subType: question[1], color: question[4], fulltext: "#{question[2]}#{question[3]}".toLowerCase() })
             else if type == "排序"
-                db.push({ id: question[0], type: type, question: question[1], answer: question.slice(2).join("、"), fulltext: question.slice(1).join("") })
+                db.push({ id: question[0], type: type, question: question[1], answer: question.slice(2).join("、"), fulltext: question.slice(1).join("").toLowerCase() })
             else
-                db.push({ id: question[0], type: type, question: question[1], answer: question[2], fulltext: "#{question[1]}#{question[2]}", imgname: question[3] })
+                db.push({ id: question[0], type: type, question: question[1], answer: question[2], fulltext: "#{question[1]}#{question[2]}".toLowerCase(), imgname: question[3] })
             wizLoader.data.loadQuestion++
             # UI.updateNotification("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}")
         UI.updateProcessbar("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}", Math.floor(wizLoader.data.loadQuestion*100/wizLoader.data.totalQuestion) )
