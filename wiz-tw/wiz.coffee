@@ -357,7 +357,7 @@ UI =
                     html += '<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>'
                     # $("#result").append('<tr data-pos="' + r.id + '" data-type="' + r.type + '"><td class="td-more">' + r.id + '</td><td><div class="col-sm-3"><img src="' + imgurl + '" /></div><div class="col-sm-5">' + r.question + '</div><div class="col-sm-4 text-danger">' + util.htmlEncode(r.answer) + '</div></td></tr>');
 
-            $("#result").append(html)
+            $("#result-list").append(html)
 
             return
 
