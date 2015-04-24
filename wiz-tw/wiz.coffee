@@ -1,9 +1,9 @@
 ###
-https://spreadsheets.google.com/feeds/worksheets/{SHEET-ID}/public/basic?alt=json       get grid ids
-https://spreadsheets.google.com/feeds/list/{SHEET-ID}/{GRID-ID}/public/values?alt=json  get whole sheet data
-https://spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values          get all cell data
-alt=json                                                                                return json
-alt=json-in-script&callback={CALLBACK}                                                  return data to callback function
+https: //spreadsheets.google.com/feeds/worksheets/{SHEET-ID}/public/basic? alt = json get grid ids
+https: //spreadsheets.google.com/feeds/list/{SHEET-ID}/{GRID-ID}/public/values? alt = json get whole sheet data
+https: //spreadsheets.google.com/feeds/cells/{SHEET-ID}/{GRID-ID}/public/values get all cell data
+alt = json return json
+alt = json - in - script&callback = {CALLBACK} return data to callback function
 ###
 
 loadingTimeout = null
@@ -16,7 +16,7 @@ updateTimeout = () ->
     clearTimeout(loadingTimeout)
     loadingTimeout = setTimeout ->
         if $("#overlay-loading").length
-            $("#overlay-loading-notification").html('距離讀取上一個題庫資料已經超過 10 秒了，有可能 wikia 發生錯誤，您如果處於網路品質較差的情況下可繼續等待，或者<a class="btn btn-default" href="javascript:location.reload();">按此重新整理</a>試試看')
+            $("#overlay-loading-notification").html('距離讀取上一個題庫資料已經超過 10 秒了，有可能 wikia 發生錯誤，您如果處於網路品質較差的情況下可繼續等待，或者<a class="btn btn-default" href="javascript:location.reload();" > 按此重新整理</a > 試試看')
     , 10000
     return
 
@@ -33,7 +33,7 @@ Setting =
         else
             localSetting = util.getCookie("wizSetting")
 
-        Setting.cache = $.extend({}, Setting.cache, JSON.parse(localSetting))
+        Setting.cache = $.extend({} , Setting.cache, JSON.parse(localSetting))
 
         for own key, result of Setting.cache
             $('.' + key ).val(result)
@@ -44,9 +44,9 @@ Setting =
     get: (key) ->
         Setting.cache[key]
 
-    save: (json)->
+    save: (json) ->
         localSetting = {}
-        for v,k in json
+        for v, k in json
             localSetting[v.name] = v.value
 
         Setting.cache = localSetting
@@ -107,13 +107,13 @@ class util
 
         while i < ca.length
             c = ca[i]
-            c = c.substring(1, c.length)  while c.charAt(0) is " "
-            return c.substring(nameEQ.length, c.length)  if c.indexOf(nameEQ) is 0
+            c = c.substring(1, c.length) while c.charAt(0) is " "
+            return c.substring(nameEQ.length, c.length) if c.indexOf(nameEQ) is 0
             i++
     null
 
     @deleteCookie = (name) ->
-        @setCookie name, "", -1
+        @setCookie name, "", - 1
 
 class wizLoader
 
@@ -161,14 +161,14 @@ class wizLoader
         for line in content.split("\n")
             question = line.split("|")
             if type == "四選一"
-                db.push({ id: question[0], type: type, question: question[2], answer: question[3], subType: question[1], color: question[4], fulltext: "#{question[2]}#{question[3]}".toLowerCase() })
+                db.push({ id: question[0], type: type, question: question[2], answer: question[3], subType: question[1], color: question[4], fulltext: "#{question[2]}#{question[3]}".toLowerCase()  } )
             else if type == "排序"
-                db.push({ id: question[0], type: type, question: question[1], answer: question.slice(2).join("、"), fulltext: question.slice(1).join("").toLowerCase() })
+                db.push({ id: question[0], type: type, question: question[1], answer: question.slice(2).join("、"), fulltext: question.slice(1).join("").toLowerCase() } )
             else
                 db.push({ id: question[0], type: type, question: question[1], answer: question[2], fulltext: "#{question[1]}#{question[2]}".toLowerCase(), imgname: question[3] })
             wizLoader.data.loadQuestion++
             # UI.updateNotification("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}")
-        UI.updateProcessbar("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}", Math.floor(wizLoader.data.loadQuestion*100/wizLoader.data.totalQuestion) )
+        UI.updateProcessbar("#{wizLoader.data.loadQuestion}/#{wizLoader.data.totalQuestion}", Math.floor(wizLoader.data.loadQuestion * 100 / wizLoader.data.totalQuestion) )
         wizLoader.data.db.insert(db)
         updateTimeout()
         if ++wizLoader.data.loadedPage == wizLoader.data.totalPage
@@ -183,7 +183,7 @@ class wizLoader
     ###
     @queryQuestion = (type, maxPage) ->
         loadedPage = 0
-        for page in [1...(maxPage+1)]
+        for page in [1...(maxPage + 1) ]
             $.ajax
                 url: "http://zh.nekowiz.wikia.com/api.php"
                 crossDomain: true
@@ -198,7 +198,7 @@ class wizLoader
 
     @load: () ->
         for type in @option.type
-            @queryMaxId(type);
+            @queryMaxId(type) ;
         return
 
     @init: () ->
@@ -221,10 +221,10 @@ UI =
 
         $("#result").on "click", ".btn-more", ->
             tr = $(this).parents("tr")
-            type = tr.data("type");
-            pos = tr.data("pos");
-            trOffset = tr.offset();
-            data = wizLoader.data.db({type: type},{id: "#{pos}"}).first()
+            type = tr.data("type") ;
+            pos = tr.data("pos") ;
+            trOffset = tr.offset() ;
+            data = wizLoader.data.db({type: type} , {id: "#{pos}"}).first()
             text = ''
             if type == '四選一'
                 text = "題目顏色：#{data.color}，題目類型：#{data.subType}"
@@ -262,23 +262,23 @@ UI =
             try
                 if val.split(" ").length > 1
                     val = val.split(" ")
-                    for v,i in val
+                    for v, i in val
                         if (v == "")
                             delete val[i]
 
                     result = wizLoader.data.db(() ->
 
-                        if $.inArray(this.type, type) == -1
+                        if $.inArray(this.type, type) == - 1
                             return false
 
                         for keyword in val
-                            if (this.fulltext.indexOf(keyword) == -1)
+                            if (this.fulltext.indexOf(keyword) == - 1)
                                 return false
                         return true
                     )
                 else
                     val = [val]
-                    result = wizLoader.data.db({type: type},{fulltext: {likenocase: val}})
+                    result = wizLoader.data.db({type: type} , {fulltext: {likenocase: val} } )
             catch
                 return
 
@@ -323,17 +323,17 @@ UI =
                 stype = $(".list-stype:checked").val()
                 color = $(".list-color:checked").val()
 
-                if stype != "all" && color != "all"
-                    result = wizLoader.data.db({type: type},{subType: stype},{color: color})
-                else if stype != "all"
-                    result = wizLoader.data.db({type: type},{subType: stype})
-                else if color != "all"
-                    result = wizLoader.data.db({type: type},{color: color})
+                if stype ! = "all" && color != "all"
+                    result = wizLoader.data.db({type: type} , {subType: stype} , {color: color} )
+                else if stype ! = "all"
+                    result = wizLoader.data.db({type: type} , {subType: stype} )
+                else if color ! = "all"
+                    result = wizLoader.data.db({type: type} , {color: color} )
                 else
-                    result = wizLoader.data.db({type: type})
+                    result = wizLoader.data.db({type: type} )
             else
                 $(".list-detail").hide()
-                result = wizLoader.data.db({type: type})
+                result = wizLoader.data.db({type: type} )
 
             $("#result-list").html("")
 
@@ -369,7 +369,7 @@ UI =
 
         return
     loading: (msg) ->
-        if msg != ""
+        if msg ! = ""
             $("#overlay-loading-content div").text(msg)
             $("#overlay-loading").show()
         else
@@ -378,7 +378,7 @@ UI =
     updateNotification: (msg) ->
         $("#loaded-count").text(msg)
     updateProcessbar: (msg, percent) ->
-        $("#process-bar").text(msg).css("width", "#{percent}%");
+        $("#process-bar").text(msg).css("width", "#{percent}%") ;
 
 ###
 class wizLoader
@@ -475,10 +475,10 @@ class wizLoader
     @_loadComplete: () ->
         @data.count++
         if @data.count == Object.keys(@option.gridIds).length
-            $("#overlay-loading").remove();
-            $("#load-count").text('共讀取了 ' + (@data.normal.length + @data.sort.length + @data.daily.length ) + ' 個問題。');
+            $("#overlay-loading").remove() ;
+            $("#load-count").text('共讀取了 ' + (@data.normal.length + @data.sort.length + @data.daily.length ) + ' 個問題。') ;
         else
-            $("#loaded-count").text(@data.count + '/' + Object.keys(@option.gridIds).length);
+            $("#loaded-count").text(@data.count + '/' + Object.keys(@option.gridIds).length) ;
         return
     @htmlEncode: ( html ) ->
         return document.createElement( 'a' ).appendChild(document.createTextNode( html ) ).parentNode.innerHTML
@@ -496,9 +496,9 @@ class wizLoader
 
         $("#result").on "click", ".btn-more", ->
             tr = $(this).parents("tr")
-            type = tr.data("type");
-            pos = tr.data("pos");
-            trOffset = tr.offset();
+            type = tr.data("type") ;
+            pos = tr.data("pos") ;
+            trOffset = tr.offset() ;
             data = {}
             text = ''
             if type == 'normal'
@@ -546,19 +546,19 @@ class wizLoader
                         console.debug (entry)
                         continue
 
-                    if entry.question.toLowerCase().indexOf(val) != -1
-                        if (entry.question.toLowerCase().indexOf(val) != -1)
-                            $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry.question) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>');
+                    if entry.question.toLowerCase().indexOf(val) ! = - 1
+                        if (entry.question.toLowerCase().indexOf(val) ! = - 1)
+                            $("#result").append('<tr data-pos="' + index + '" data-type="normal"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry.question) + '</div><div class="text-danger" > ' + wizLoader.htmlEncode(entry.answer) + '</div></td></tr>') ;
 
             if $("#fromSort:checked").val() == '1'
                 for index, entry of wizLoader.data.sort
-                    if entry[0].toLowerCase().indexOf(val) != -1
-                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry[0]) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>');
+                    if entry[0].toLowerCase().indexOf(val) ! = - 1
+                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="sort"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="question">' + wizLoader.highlight(val, entry[0]) + '</div><div class="text-danger">' + wizLoader.htmlEncode(entry.slice(1).join('、')) + '</div></td></tr>') ;
 
             if $("#fromDaily:checked").val() == '1'
                 for index, entry of wizLoader.data.daily
-                    if entry[1].toLowerCase().indexOf(val) != -1
-                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + wizLoader.highlight(val, entry[1]) + '</div><div class="col-sm-4 text-danger">' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>');
+                    if entry[1].toLowerCase().indexOf(val) ! = - 1
+                        $("#result").append('<tr><tr data-pos="' + index + '" data-type="daily"><td class="td-more"><a href="javascript:void(0);" class="btn-more">更多</a></td><td><div class="col-sm-3"><img src="' + entry[0] + '" /></div><div class="col-sm-5">' + wizLoader.highlight(val, entry[1]) + '</div><div class="col-sm-4 text-danger" > ' + wizLoader.htmlEncode(entry[2]) + '</div></td></tr>') ;
 
             return
 
