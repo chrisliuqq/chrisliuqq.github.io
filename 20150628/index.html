@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zh-TW">
+    <!--<![endif]-->
+    <!--
+    Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" >
+        <meta content="ChrisLiu" name="author">
+        <title>八仙樂園火災傷者檢傷搜尋</title>
+        <meta content="website" property="og:type">
+        <meta content="八仙樂園火災傷者檢傷搜尋" property="og:title">
+        <meta content="八仙樂園火災傷者檢傷搜尋" name="twitter:title">
+        <link media="all" type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link media="all" type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link media="all" type="text/css" rel="stylesheet" href="20150628.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">切換導覽列</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href=".">
+                        <span class="hidden-xs">八仙樂園火災傷者檢傷搜尋</span>
+                        <span class="visible-xs-inline">八仙傷者檢傷搜尋</span>
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="http://chrisliuqq.github.io/20150628/">首頁 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                    <ul id="nav-share" class="nav navbar-nav navbar-right">
+                        <li><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://chrisliuqq.github.io/20150628/" title="分享到 Facebook"><i class="fa fa-facebook-square"></i></a></li>
+                        <li><a target="_blank" href="https://twitter.com/home?status=八仙樂園火災傷者檢傷搜尋%20http://chrisliuqq.github.io/20150628/" title="分享到 Twitter"><i class="fa fa-twitter-square"></i></a></li>
+                        <li><a target="_blank" href="https://plus.google.com/share?url=http://chrisliuqq.github.io/20150628/" title="分享到 Google+"><i class="fa fa-google-plus-square"></i></a></li>
+
+                        <!-- <li>
+                            <a id="link-svg-plurk" target="_blank" href="http://www.plurk.com/?status=%E3%80%8A%E5%95%8F%E7%AD%94RPG%20%E9%AD%94%E6%B3%95%E4%BD%BF%E8%88%87%E9%BB%91%E8%B2%93%E7%B6%AD%E8%8C%B2%E3%80%8B%E9%A1%8C%E5%BA%AB%E6%90%9C%E5%B0%8B%20http://chrisliuqq.github.io/wiz-tw/&qualifier=shares" title="分享到 Plurk">
+                                <svg id="svg-plurk" enable-background="new 0 0 18 18" width="18px" height="18px" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M65.777,5.5H33.439H22.024H10.609v90h22.83V70.609h55.17v-3.777V47.961V5.5h-4.76H65.777z M65.777,47.961H33.439V28.149  h32.338V47.961z"/></svg>
+                            </a>
+                        </li> -->
+                    </ul>
+            </div>
+        </nav>
+
+        <div id="search-box">
+
+            <div class="container">
+
+                        <form class="form">
+                            <h2 class="form-signin-heading">姓名搜尋<small id="load-count"></small></h2>
+                            <label for="inputKeyword" class="sr-only">關鍵字</label>
+                            <input type="text" id="inputKeyword" class="form-control" placeholder="請輸入姓名" required autofocus>
+                        </form>
+                        <table id="result-table" class="table table-striped">
+                            <thead>
+                                <tr><th>姓名</th><th>性別</th><th>國籍 - 縣市別</th><th>年齡</th><th>收治單位/醫療檢傷/救護檢傷</th><th>即時動向</th></tr>
+                            </thead>
+                            <tbody id="result">
+                            </tbody>
+                        </table>
+            </div>
+
+        </div>
+
+        <footer id="footer" class="footer hidden-print">
+            <div class="container text-center">
+                <ul class="list-inline">
+                    <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/tw/"><img alt="創用 CC 授權條款" src="https://i.creativecommons.org/l/by-sa/3.0/tw/80x15.png"></a></li>
+
+                    <li class="hidden-xs">
+                        <a target="_blank" href="https://github.com/chrisliuqq/chrisliuqq.github.io/tree/master/20150628">專案原始碼</a>
+                    </li>
+                    <li>
+                    <li class="visible-xs-inline-block"><a id="btn-hide-footer" href="javascript:void(0)">隱藏版尾</a></li>
+                </ul>
+            </div>
+        </footer>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+        <script src="//chrisliuqq.github.io/assets/js/console.js"></script>
+        <script src="taffy-min.js"></script>
+        <script src="20150628.js"></script>
+        <script>
+        </script>
+    </body>
+</html>
