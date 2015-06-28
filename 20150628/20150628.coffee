@@ -86,8 +86,8 @@ UI =
             $("#result").html("")
 
             val = val.toLowerCase()
-            if (val.length == 3)
-                val = val[0] + '○' + val[2]
+            # if (val.length == 3)
+            #     val = val[0] + '○' + val[2]
 
             result = dataLoader.data.db({"姓名": val})
 
