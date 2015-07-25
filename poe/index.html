@@ -25,11 +25,11 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 	<![endif]-->
 </head>
 <body>
-<div class="container"> 
-	
+<div class="container">
+
 	<!-- Static navbar -->
 	<div class="navbar navbar-default" role="navigation">
-	
+
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
@@ -40,15 +40,15 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 				</ul>
 
 			</div>
-			<!--/.nav-collapse --> 
+			<!--/.nav-collapse -->
 		</div>
-		
+
 	</div>
-		
+
 	<div class="row">
-	
+
 		<h1 class="page-header">DPS 計算器</h1>
-		
+
 		<div class="row">
 			<div class="col-sm-4">
 				<h2>貼上從裝備複製的資料</h2>
@@ -57,7 +57,7 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 			<div class="col-sm-8">
 				<!--
 				<h2>武器素質</h2>
-				
+
 				<div class="table-responsive">
 					<table class="table">
 							<tr>
@@ -71,12 +71,12 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 							<tr>
 								<th>武器傷害（混合）</th>
 								<td></td>
-							</tr>														
+							</tr>
 					</table>
 				</div>
 				-->
 				<h2>武器資訊</h2>
-				
+
 				<div class="table-responsive">
 					<table class="table">
 							<tr>
@@ -94,20 +94,20 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 							<tr>
 								<th>武器傷害（混合）</th>
 								<td><span id="damage_total"></span></td>
-							</tr>														
+							</tr>
 					</table>
 				</div>
-				
+
 				<h4>&lt;烏拉博士&gt;cowshut: <span id="description"></span></h4>
-				
-			</div>		
+
+			</div>
 		</div>
-	
-	</div>		
-		
-		<!--/.container-fluid --> 
+
 	</div>
-	
+
+		<!--/.container-fluid -->
+	</div>
+
 
 </div>
 <!-- /container -->
@@ -115,14 +115,14 @@ Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>
 
-var damage = { 
+var damage = {
 	physical: { max: 0, min: 0 },
 	elemental: { max: 0, min: 0 },
 	chaos: { max: 0, min: 0},
 };
 
 function update_damage() {
-	
+
 	//var match = $("#raw_data").val().match(/(.*?)傷害: (\d+)-(\d+)/g);
 	var regex;
 	var match;
@@ -135,7 +135,7 @@ function update_damage() {
 	var rarity;
 	var itemlevel = 0;
 
-	damage = { 
+	damage = {
 		physical: { max: 0, min: 0 },
 		elemental: { max: 0, min: 0 },
 		chaos: { max: 0, min: 0},
@@ -145,9 +145,9 @@ function update_damage() {
 	regex = /Rarity: (.*)/g;
 	match = regex.exec( $("#raw_data").val() );
 	rarity = match[1];
-	
+
 	// 物品等級
-	regex = /Itemlevel: (.*)/g;
+	regex = /Item Level: (.*)/g;
 	match = regex.exec( $("#raw_data").val() );
 	itemlevel = parseInt(match[1] , 10);
 
@@ -172,7 +172,7 @@ function update_damage() {
 		alert("竟然貼不是武器的裝備上來，算你厲害。");
 		return;
 	}
-	
+
 	// 元素傷害
 	regex = /^元素傷害:(.*?)$/gm;
 	if ( match = regex.exec( $("#raw_data").val() )) {
@@ -183,13 +183,13 @@ function update_damage() {
 			damage.elemental.min += parseInt(match[1] , 10);
 		}
 	}
-	
+
 	// 攻速
 	regex = /每秒攻擊次數: ([\d\.]+)/g;
 	match = regex.exec( $("#raw_data").val() );
-	
+
 	attack_speed = parseFloat( match[1] );
-	
+
 	damage_physical = (damage.physical.max + damage.physical.min) / 2 * attack_speed;
 	damage_elemental = (damage.elemental.max + damage.elemental.min) / 2 * attack_speed;
 	damage_chaos = (damage.chaos.max + damage.chaos.min) / 2 * attack_speed;
@@ -198,7 +198,7 @@ function update_damage() {
 	$("#damage_elemental").html( damage_elemental );
 	$("#damage_chaos").html( damage_chaos );
 	$("#damage_total").html( damage_elemental + damage_physical + damage_chaos );
-	
+
 	if ( damage_elemental + damage_physical + damage_chaos < 200 ) {
 		if ( rarity == "Unique" ) {
 			return $("#description").html("小朋友金裝嗎？可以考慮留一下");
@@ -207,7 +207,7 @@ function update_damage() {
 		if (itemlevel < 60) {
 			return $("#description").html("可以賣店了！");
 		}
-		
+
 		return $("#description").html("就只是個 DPS < 200 但是 itemlevel >= 60 的裝備。");
 	}
 	else if ( damage_elemental + damage_physical + damage_chaos > 400 ) {
