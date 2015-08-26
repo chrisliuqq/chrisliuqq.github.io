@@ -12,6 +12,17 @@ var PreInit, Setting, UI, loadingTimeout, updateTimeout, util, wizLoader,
 
 loadingTimeout = null;
 
+Array.prototype.unique = function() {
+  var a, i, _i, _ref;
+  a = [];
+  for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+    if (a.indexOf(this[i]) === -1) {
+      a.push(this[i]);
+    }
+  }
+  return a;
+};
+
 PreInit = function() {
   $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").html() + "</p>");
   return Setting.init();
@@ -362,6 +373,7 @@ UI = {
       try {
         if (val.split(" ").length > 1) {
           val = val.split(" ");
+          val = val.unique();
           for (i = _i = 0, _len = val.length; _i < _len; i = ++_i) {
             v = val[i];
             if (v === "") {

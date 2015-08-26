@@ -8,6 +8,13 @@ alt=json-in-script&callback={CALLBACK}                                          
 
 loadingTimeout = null
 
+Array.prototype.unique = () ->
+    a = [];
+    for i in [0...this.length]
+        if (a.indexOf(this[i]) == -1)
+            a.push(this[i]);
+    return a;
+
 PreInit = () ->
     $("#overlay-loading-announce .content").html("<p>" + $("#update-modal dt:first").html() + "</p>")
     Setting.init()
@@ -262,6 +269,7 @@ UI =
             try
                 if val.split(" ").length > 1
                     val = val.split(" ")
+                    val = val.unique()
                     for v,i in val
                         if (v == "")
                             delete val[i]
