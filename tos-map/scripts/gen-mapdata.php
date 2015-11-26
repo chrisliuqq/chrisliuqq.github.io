@@ -51,6 +51,8 @@ file_put_contents($output, $data);
 
 function get_map_data_from_tosbase($map_id)
 {
+    global $manual;
+
     $file_path = __DIR__ . "/../data/map/{$map_id}.map";
 
     if (file_exists($file_path)) {
@@ -73,7 +75,7 @@ function get_map_data_from_tosbase($map_id)
     $map['level'] = regex_one($pattern['level'], $data);
     $connectedMaps = regex_all($pattern['connectedMap'], $data);
     foreach ($connectedMaps as $mid) {
-        $map['connectedMap'][$mid] = [0,0];
+        $map['connectedMap'][$mid] = isset($manual[$map_id]['connectedMap'][$mid]) ? $manual[$map_id]['connectedMap'][$mid] : [0,0];
     }
 
     return $map;
