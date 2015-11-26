@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zh-TW">
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" >
+        <title>ToS Map 救世主之樹 世界地圖 | Pan Cat Technologies | Meow</title>
+        <meta content="website" property="og:type">
+        <meta content="ToS Map 救世主之樹 世界地圖 | Pan Cat Technologies | Meow" property="og:title">
+        <meta content="ToS Map 救世主之樹 世界地圖 | Pan Cat Technologies | Meow" name="twitter:title">
+        <meta content="ToS Map 救世主之樹 世界地圖 | Build software better, together, with cats." name="description">
+        <meta content="ToS Map 救世主之樹 世界地圖 | Build software better, together, with cats." property="og:description">
+        <meta content="ToS Map 救世主之樹 世界地圖 | Build software better, together, with cats." name="twitter:description">
+        <meta content="https://raw.githubusercontent.com/Pan-Cat/logo/master/pancat_01.png" property="og:image">
+        <meta content="https://raw.githubusercontent.com/Pan-Cat/logo/master/pancat_01.png" name="twitter:image:src">
+        <meta content="http://chrisliuqq.github.io/tos-map/" property="og:url">
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+
+    </head>
+    <body>
+
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container"><a id="logo-container" href="/tos-map/" class="brand-logo">ToS Map Search</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="javascript:void(0)" class="map-lang-button" data-lang="zh-TW">正體中文地名</a></li>
+                    <li><a href="javascript:void(0)" class="map-lang-button" data-lang="en-US">English Map name</a></li>
+                </ul>
+
+                <ul id="nav-mobile" class="side-nav">
+                    <li><a href="#">Navbar Link</a></li>
+                </ul>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            </div>
+        </nav>
+
+        <div id="container" class="row">
+            <div class="col s12 m4 l3 sidebar">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">search</i>
+                    <input id="input-keyword" type="text" class="validate">
+                    <label for="input-keyword">Map Keyword/level 地圖關鍵字/等級</label>
+                </div>
+                <ul id="keyword-result" class="collection col s12">
+                </ul>
+            </div>
+
+            <div class="col s12 m8 l9 main">
+                <div id="map-container">
+                    <div id="map-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="map-modal" class="modal">
+            <div class="modal-content">
+                <h4 class="title"></h4>
+                <div class="map-image"></div>
+            </div>
+        </div>
+
+        <!-- bottom js -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+        <script src="assets/js/mapdata.js"></script>
+        <script>
+            var global = {};
+            global.lang = "en-US";
+
+            $(document).ready(function() {
+                var icon = "";
+                $.each(MAPDATA, function(mapId, item) {
+                    icon = "";
+                    if (item.teleportor) icon = '<i class="material-icons tiny">info</i>';
+                    $("<div />").addClass("map-pointer").addClass(mapId).css({bottom: item.location[0], left: item.location[1]}).html('<div class="content minimap-trigger">' + icon + '<span class="name">' + item.name[global.lang] + '</span><span class="level">LV：' + item.level + '</span></div>').data("mapId", mapId).appendTo("#map-content");
+                });
+
+                $("#map-container").height( $( window ).height() - $("nav").height() );
+                $(".sidebar").height( $( window ).height() - $("nav").height() );
+
+                $("#input-keyword").keyup(function() {
+                    var keyword = $(this).val();
+                    $(".map-pointer").removeClass("highlight selected nearby");
+
+                    if (keyword.length == 0) {
+                        return $("#keyword-result").html("").hide();
+                    }
+
+                    $("#keyword-result").html("").show();
+
+                    if (/^\+?(0|[1-9]\d*)$/.test(keyword)) {
+
+                        var level = parseInt(keyword, 10);
+
+                        $.each(MAPDATA, function(mapId, item) {
+                        if ( Math.abs(item.level - level) < 10 ) {
+                            $('<li class="collection-item"><div>' + item.name["en-US"] + ' ' + item.name["zh-TW"] + ' <span class="level">LV: ' + item.level + '</span><a href="javascript:void(0)" class="map-scroller secondary-content" data-mapid="' + mapId + '"><i class="material-icons">send</i></a></div></li>').appendTo("#keyword-result");
+
+                            $(".map-pointer." + mapId).addClass("highlight");
+                        }
+                    });
+
+                        return;
+                    }
+
+                    $.each(MAPDATA, function(mapId, item) {
+                        if (item.name["en-US"].toLowerCase().concat(item.name["zh-TW"]).indexOf(keyword) > -1 ) {
+                            $('<li class="collection-item"><div>' + item.name["en-US"] + ' ' + item.name["zh-TW"] + ' <span class="level">LV: ' + item.level + '</span><a href="javascript:void(0)" class="map-scroller secondary-content" data-mapid="' + mapId + '"><i class="material-icons">send</i></a></div></li>').appendTo("#keyword-result");
+
+                            $(".map-pointer." + mapId).addClass("highlight");
+                        }
+                    });
+                });
+
+                $("#keyword-result").on("click", ".map-scroller", function() {
+                    var mapId = $(this).data("mapid");
+                    $(".map-pointer").removeClass("selected nearby");
+                    $(".map-pointer." + mapId).addClass("selected");
+                    $.each(MAPDATA[mapId]["connectedMap"], function(nearByMapId, loc) {
+                        $(".map-pointer." + nearByMapId).addClass("nearby");
+                    });
+                    // $("#map-container").scrollTop($(".map-pointer." + mapId).position().top - 200);
+                    $("#map-container").animate({ scrollTop: ($(".map-pointer." + mapId).position().top - 200) }, 800);
+                });
+
+                $(".map-lang-button").click(function() {
+                    var lang = $(this).data("lang");
+
+                    $.each($("#map-content > .map-pointer"), function(index, map) {
+                        var mapId = $(this).data("mapId");
+                        $(this).find(".name").html(MAPDATA[mapId]["name"][lang]);
+                    });
+
+                    global.lang = lang;
+                });
+
+                $("body").on("click", ".minimap-trigger", function() {
+                    var mapId = $(this).data("mapId") || $(this).parents(".map-pointer").data("mapId") || 0 ;
+                    if (mapId < 1) return;
+
+                    showMiniMap(mapId);
+                });
+            });
+
+            function showMiniMap(mapId) {
+                // alert(mapId);
+                var MAP = MAPDATA[mapId];
+                var model = $("#map-modal");
+                model.find('.map-image').html("");
+                model.find('.map-image').append('<img src="assets/img/' + mapId + '.jpg" />');
+                model.find('.title').html(MAP["name"][global.lang]);
+
+                $.each(MAP["connectedMap"], function(cMapId, position) {
+                    if (position[1] > 395) position[1] = 395;
+                    if (typeof(MAPDATA[cMapId]) === "undefined") return true;
+
+                    model.find('.map-image').append($('<span/>').addClass("map-pointer minimap-trigger").css({top: position[0] - 25,left: position[1] - 20}).data("mapId", cMapId).html(MAPDATA[cMapId]["name"][global.lang]));
+                });
+
+                model.openModal();
+            }
+        </script>
+    </body>
+</html>

@@ -1,4 +1,5 @@
-
 *.sublime-project
-
 *.sublime-workspace
+*.sass-cache*
+tos-map/data/map/*
+tos-map/data/worldmap.txt
