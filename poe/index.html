@@ -141,13 +141,13 @@ function update_damage() {
 		chaos: { max: 0, min: 0},
 	};
 
-	// 品質
-	regex = /Rarity: (.*)/g;
+	// 稀有度
+	regex = /稀有度: (.*)/g;
 	match = regex.exec( $("#raw_data").val() );
 	rarity = match[1];
 
 	// 物品等級
-	regex = /Item Level: (.*)/g;
+	regex = /物品等級: (.*)/g;
 	match = regex.exec( $("#raw_data").val() );
 	itemlevel = parseInt(match[1] , 10);
 
@@ -200,7 +200,7 @@ function update_damage() {
 	$("#damage_total").html( damage_elemental + damage_physical + damage_chaos );
 
 	if ( damage_elemental + damage_physical + damage_chaos < 200 ) {
-		if ( rarity == "Unique" ) {
+		if ( rarity == "傳奇" ) {
 			return $("#description").html("小朋友金裝嗎？可以考慮留一下");
 		}
 
