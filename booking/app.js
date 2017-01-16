@@ -44,7 +44,8 @@ bookingApp = new Vue({
             var name = event.target.value;
             if (this.dataRows.hasOwnProperty(name)) {
                 var target = this.dataRows[name];
-                var B = C = D = P = S = 0;
+                var B = C = D = P = 0;
+                var S = '';
                 if (target.D === '上冊：訂價600元，預購優惠價510元。(含郵資)') {
                     C = parseInt(target['E'], 10);
                 }
@@ -53,7 +54,8 @@ bookingApp = new Vue({
                 }
                 B = parseInt(target['C'], 10);
                 P = B*960 + (C+D) * 510;
-                this.currentData = { B: B, C: 0, D: 0, P: P, S: null };
+                S = target.F;
+                this.currentData = { B: B, C: 0, D: 0, P: P, S: S };
             }
             else {
                 this.currentData = { B: 0, C: 0, D: 0, P: 0, S: null };
