@@ -3,226 +3,219 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
-<!--
-Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
--->
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>POE DPS 計算器 :: Chris Liu :: 2014 (c)</title>
-	<meta name="description" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js"></script>
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-</head>
-<body>
-<div class="container">
+<html class="no-js" lang="zh-TW">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="ChrisLiu">
+        <title>POE Helper :: Chris Liu :: 2014 (c)</title>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <![endif]-->
+        <link rel="icon" href="/assets/images/logo/favicon.ico">
+        <style>
+        th {
+            text-align: right;
+        }
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+            vertical-align: middle;
+        }
+        #dps-raw-data {
+            margin-bottom: 16px;
+        }
+        </style>
+    </head>
+    <body>
 
-	<!-- Static navbar -->
-	<div class="navbar navbar-default" role="navigation">
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                    <a class="navbar-brand" href="/poe">POE 流亡闇道 小幫手</a>
+                </div>
+            </div>
+        </div>
 
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-				<a class="navbar-brand" href="/poe">POE 流亡闇道</a> </div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/poe/dps">DPS 計算器</a></li>
-				</ul>
+        <div id="main" class="container">
 
-			</div>
-			<!--/.nav-collapse -->
-		</div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><h3 class="panel-title">DPS 計算</h3></div>
+                        <div class="panel-body">
+                            <p>貼上從裝備複製的資料</p>
+                            <textarea id="dps-raw-data" class="form-control col-sm-12" rows="20" v-model="DPS.source" @keyup="dpsSourceUpdate"></textarea>
+                            <p>物理傷害：<span>{{ dpsPhysical }}</span></p>
+                            <p>元素傷害：<span>{{ dpsElemental }}</span></p>
+                            <p>混沌傷害：<span>{{ dpsChaos }}</span></p>
+                            <p>混和傷害：<span>{{ dpsTotal }}</span></p>
+                        </div>
+                    </div>
+                </div>
 
-	</div>
+                <div class="col-sm-6">
 
-	<div class="row">
+                    <div class="panel panel-success">
+                        <div class="panel-heading"><h3 class="panel-title">護盾 計算</h3></div>
+                        <table class="table">
+                            <tr>
+                                <th class="col-sm-2">頭盔</th>
+                                <td class="col-sm-2"><input type="text" class="form-control" v-model="ES.helmet" /></td>
+                                <th class="col-sm-2">身體</th>
+                                <td class="col-sm-2"><input type="text" class="form-control" v-model="ES.body" /></td>
+                                <th class="col-sm-2">手套</th>
+                                <td class="col-sm-2"><input type="text" class="form-control" v-model="ES.glove" /></td>
+                            <tr>
+                            </tr>
+                                <th>鞋子</th>
+                                <td><input type="text" class="form-control" v-model="ES.boot" /></td>
+                                <th>腰帶</th>
+                                <td><input type="text" class="form-control" v-model="ES.belt" /></td>
+                                <th>主手</th>
+                                <td><input type="text" class="form-control" v-model="ES.hand1" /></td>
+                            <tr>
+                            </tr>
+                                <th>戒指</th>
+                                <td><input type="text" class="form-control" v-model="ES.ring1" /></td>
+                                <th>戒指</th>
+                                <td><input type="text" class="form-control" v-model="ES.ring2" /></td>
+                                <th>副手</th>
+                                <td><input type="text" class="form-control" v-model="ES.hand2" /></td>
+                            </tr>
+                            </tr>
+                                <th>護身符(點)</th>
+                                <td><input type="text" class="form-control" v-model="ES.amulet" /></td>
+                                <th>護身符(％)</th>
+                                <td><input type="text" class="form-control" v-model="ES.amuletP" /></td>
+                                <th>天賦</th>
+                                <td><input type="text" class="form-control" v-model="ES.passive" /></td>
+                            </tr>
+                            </tr>
+                                <th>智慧</th>
+                                <td><input type="text" class="form-control" v-model="ES.wisdom" /></td>
+                                <th>%護盾</th>
+                                <td><input type="text" class="form-control" v-model="ES.pes" /></td>
+                                <th>更多護盾(CI)</th>
+                                <td><input type="text" class="form-control" v-model="ES.mes" /></td>
+                            </tr>
+                        </table>
+                        <div class="panel-body">
+                            <p>基礎護盾：<span>{{ esBase }}</span></p>
+                            <p>總和護盾為：<span>{{ esTotal }}</span></p>
+                            <p>增加 1 點基礎護盾：<span>{{ esBase1 }}</span></p>
+                            <p>增加 10 ％護盾：<span>{{ esP1 }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-		<h1 class="page-header">DPS 計算器</h1>
+        </div>
 
-		<div class="row">
-			<div class="col-sm-4">
-				<h2>貼上從裝備複製的資料</h2>
-				<textarea id="raw_data" class="control col-sm-12" rows="20"></textarea>
-			</div>
-			<div class="col-sm-8">
-				<!--
-				<h2>武器素質</h2>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+        <script>
+var app = new Vue({
+    el: '#main',
+    data: {
+        ES: {
+            helmet: 0,
+            body: 0,
+            glove: 0,
+            boot: 0,
+            belt: 0,
+            amulet: 0,
+            amuletP: 0,
+            ring1: 0,
+            ring2: 0,
+            hand1: 0,
+            hand2: 0,
+            passive: 0,
+            wisdom: 0,
+            pes: 0,
+            mes: 1
+        },
+        DPS: {
+            source: '',
+            attack_speed: 1,
+            physical: { max: 0, min: 0 },
+            elemental: { max: 0, min: 0 },
+            chaos: { max: 0, min: 0},
+        }
+    },
+    computed: {
+        dpsPhysical: function() {
+            var dps = (this.DPS.physical.max + this.DPS.physical.min) / 2 * this.DPS.attack_speed;
+            return dps;
+        },
+        dpsElemental: function() {
+            var dps = (this.DPS.elemental.max + this.DPS.elemental.min) / 2 * this.DPS.attack_speed;
+            return dps;
+        },
+        dpsChaos: function() {
+            var dps = (this.DPS.chaos.max + this.DPS.chaos.min) / 2 * this.DPS.attack_speed;
+            return dps;
+        },
+        dpsTotal: function() {
+            var dps = this.dpsPhysical + this.dpsElemental + this.dpsChaos;
+            return dps;
+        },
+        esBase: function() {
+            var ES = this.ES;
+            return parseInt(ES.helmet, 10) + parseInt(ES.body, 10) + parseInt(ES.glove, 10) + parseInt(ES.boot, 10) + parseInt(ES.belt, 10) + parseInt(ES.amulet, 10) + parseInt(ES.ring1, 10) + parseInt(ES.ring2, 10) + parseInt(ES.hand1, 10) + parseInt(ES.hand2, 10) + parseInt(ES.passive, 10);
+        },
+        esTotal: function() {
+            var ES = this.ES;
+            var total = this.esBase * ((parseInt(ES.pes, 10) + Math.floor(ES.wisdom/5))/100 + 1) * ES.mes;
+            return total;
+        },
+        esBase1: function() {
+            var ES = this.ES;
+            return ((parseInt(ES.pes, 10) + Math.floor(ES.wisdom/5))/100 + 1) * ES.mes;
+        },
+        esP1: function() {
+            var ES = this.ES;
+            return this.esBase * ((parseInt(ES.pes, 10) + 10 + Math.floor(ES.wisdom/5))/100 + 1) * ES.mes - this.esTotal;
+        }
+    },
+    methods: {
+        dpsSourceUpdate: function() {
+            var source = this.DPS.source;
 
-				<div class="table-responsive">
-					<table class="table">
-							<tr>
-								<th>武器傷害（物理）</th>
-								<td></td>
-							</tr>
-							<tr>
-								<th>武器傷害（元素）</th>
-								<td></td>
-							</tr>
-							<tr>
-								<th>武器傷害（混合）</th>
-								<td></td>
-							</tr>
-					</table>
-				</div>
-				-->
-				<h2>武器資訊</h2>
+            // 物理傷害
+            regex = /(.*?)傷害: (\d+)-(\d+)/g;
+            while(match = regex.exec( source )) {
+                if ( match[1] == "元素") continue;
+                if ( match[1] == "物理") {
+                    this.DPS.physical.max = parseInt(match[3], 10);
+                    this.DPS.physical.min = parseInt(match[2], 10);
+                }
+                else if ( match[1] == "混沌") {
+                    this.DPS.chaos.max = parseInt(match[3], 10);
+                    this.DPS.chaos.min = parseInt(match[2], 10);
+                }
+            }
 
-				<div class="table-responsive">
-					<table class="table">
-							<tr>
-								<th>武器傷害（物理）</th>
-								<td><span id="damage_physical"></span></td>
-							</tr>
-							<tr>
-								<th>武器傷害（元素）</th>
-								<td><span id="damage_elemental"></span></td>
-							</tr>
-							<tr>
-								<th>武器傷害（混沌）</th>
-								<td><span id="damage_chaos"></span></td>
-							</tr>
-							<tr>
-								<th>武器傷害（混合）</th>
-								<td><span id="damage_total"></span></td>
-							</tr>
-					</table>
-				</div>
+            // 元素傷害
+            regex = /^元素傷害:(.*?)$/gm;
+            if ( match = regex.exec( source )) {
+                elemental = match[1];
+                regex = /(\d+)-(\d+)/g;
+                while(match = regex.exec( elemental )) {
+                    this.DPS.elemental.max += parseInt(match[2] , 10);
+                    this.DPS.elemental.min += parseInt(match[1] , 10);
+                }
+            }
 
-				<h4>&lt;烏拉博士&gt;cowshut: <span id="description"></span></h4>
-
-			</div>
-		</div>
-
-	</div>
-
-		<!--/.container-fluid -->
-	</div>
-
-
-</div>
-<!-- /container -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script>
-
-var damage = {
-	physical: { max: 0, min: 0 },
-	elemental: { max: 0, min: 0 },
-	chaos: { max: 0, min: 0},
-};
-
-function update_damage() {
-
-	//var match = $("#raw_data").val().match(/(.*?)傷害: (\d+)-(\d+)/g);
-	var regex;
-	var match;
-	var elemental;
-	var attack_speed;
-	var damage_physical = 0;
-	var damage_elemental = 0;
-	var damage_chaos = 0;
-	var damage_check = false;
-	var rarity;
-	var itemlevel = 0;
-
-	damage = {
-		physical: { max: 0, min: 0 },
-		elemental: { max: 0, min: 0 },
-		chaos: { max: 0, min: 0},
-	};
-
-	// 稀有度
-	regex = /稀有度: (.*)/g;
-	match = regex.exec( $("#raw_data").val() );
-	rarity = match[1];
-
-	// 物品等級
-	regex = /物品等級: (.*)/g;
-	match = regex.exec( $("#raw_data").val() );
-	itemlevel = parseInt(match[1] , 10);
-
-	// 物理傷害
-	regex = /(.*?)傷害: (\d+)-(\d+)/g;
-	while(match = regex.exec( $("#raw_data").val() )) {
-		//console.debug( match );
-		if ( match[1] == "元素") continue;
-		if ( match[1] == "物理") {
-			damage.physical.max = parseInt(match[3], 10);
-			damage.physical.min = parseInt(match[2], 10);
-
-			damage_check = true;
-		}
-		else if ( match[1] == "混沌") {
-			damage.chaos.max = parseInt(match[3], 10);
-			damage.chaos.min = parseInt(match[2], 10);
-		}
-	}
-
-	if ( damage_check != true ) {
-		alert("竟然貼不是武器的裝備上來，算你厲害。");
-		return;
-	}
-
-	// 元素傷害
-	regex = /^元素傷害:(.*?)$/gm;
-	if ( match = regex.exec( $("#raw_data").val() )) {
-		elemental = match[1];
-		regex = /(\d+)-(\d+)/g;
-		while(match = regex.exec( elemental )) {
-			damage.elemental.max += parseInt(match[2] , 10);
-			damage.elemental.min += parseInt(match[1] , 10);
-		}
-	}
-
-	// 攻速
-	regex = /每秒攻擊次數: ([\d\.]+)/g;
-	match = regex.exec( $("#raw_data").val() );
-
-	attack_speed = parseFloat( match[1] );
-
-	damage_physical = (damage.physical.max + damage.physical.min) / 2 * attack_speed;
-	damage_elemental = (damage.elemental.max + damage.elemental.min) / 2 * attack_speed;
-	damage_chaos = (damage.chaos.max + damage.chaos.min) / 2 * attack_speed;
-
-	$("#damage_physical").html( damage_physical );
-	$("#damage_elemental").html( damage_elemental );
-	$("#damage_chaos").html( damage_chaos );
-	$("#damage_total").html( damage_elemental + damage_physical + damage_chaos );
-
-	if ( damage_elemental + damage_physical + damage_chaos < 200 ) {
-		if ( rarity == "傳奇" ) {
-			return $("#description").html("小朋友金裝嗎？可以考慮留一下");
-		}
-
-		if (itemlevel < 60) {
-			return $("#description").html("可以賣店了！");
-		}
-
-		return $("#description").html("就只是個 DPS < 200 但是 itemlevel >= 60 的裝備。");
-	}
-	else if ( damage_elemental + damage_physical + damage_chaos > 400 ) {
-		return $("#description").html("這把兇兇的！竟然大於 400！");
-	}
-	else {
-		return $("#description").html("200 - 400 中間");
-	}
-}
-
-$(document).ready(function() {
-	$("#raw_data").on("change", function() {
-		update_damage();
-	});
+            regex = /每秒攻擊次數: ([\d\.]+)/g;
+            match = regex.exec( source );
+            this.DPS.attack_speed = parseFloat( match[1] );
+        }
+    }
 });
-</script>
-</body>
+        </script>
+    </body>
 </html>
