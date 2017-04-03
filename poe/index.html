@@ -185,6 +185,11 @@ var app = new Vue({
         dpsSourceUpdate: function() {
             var source = this.DPS.source;
 
+            this.DPS.attack_speed = 1;
+            this.DPS.physical = { max: 0, min: 0 };
+            this.DPS.elemental = { max: 0, min: 0 };
+            this.DPS.chaos = { max: 0, min: 0};
+
             // 物理傷害
             regex = /(.*?)傷害: (\d+)-(\d+)/g;
             while(match = regex.exec( source )) {
