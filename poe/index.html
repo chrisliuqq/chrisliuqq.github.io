@@ -112,6 +112,59 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-sm-6">
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><h3 class="panel-title">通貨 計算</h3></div>
+                        <table class="table">
+                            <tr>
+                                <th class="col-sm-3">崇高石 EX</th>
+                                <td class="col-sm-3">1</td>
+                                <th class="col-sm-3">混沌石 C</th>
+                                <td class="col-sm-3"><input type="text" class="form-control" v-model="CURRENCY.c" /></td>
+                            <tr>
+                            <tr>
+                                <th class="col-sm-3">崇高石 EX</th>
+                                <td class="col-sm-3">1</td>
+                                <th class="col-sm-3">
+                                    <select v-model="CURRENCY.type" class="form-control">
+                                        <option v-for="(name, index) in CURRENCY.names" :value="index">{{ name }}</option>
+                                    </select>
+                                </th>
+                                <td class="col-sm-3"><input type="text" class="form-control" v-model="CURRENCY.currency" /></td>
+                            <tr>
+                            </tr>
+                                <th colspan="2">1 混沌石 = <span class="text-danger">{{ currencyExchange }}</span> {{ CURRENCY.names[CURRENCY.type] }}</th>
+                                <td colspan="2"></td>
+                            <tr>
+                            </tr>
+                                <th>連結石 = </th>
+                                <td>1E : <span class="text-danger">{{ currencyBalence('Fusing', 'e') }}</span></td>
+                                <th>連結石 = </th>
+                                <td>10C :<span class="text-danger"> {{ currencyBalence('Fusing', 'c') }}</span></td>
+                            <tr>
+                            </tr>
+                                <th>工匠石 = </th>
+                                <td>1E : <span class="text-danger">{{ currencyBalence('Jeweller', 'e') }}</span></td>
+                                <th>工匠石 = </th>
+                                <td>10C :<span class="text-danger"> {{ currencyBalence('Jeweller', 'c') }}</span></td>
+                            <tr>
+                            </tr>
+                                <th>改造石 = </th>
+                                <td>1E : <span class="text-danger">{{ currencyBalence('Alteration', 'e') }}</span></td>
+                                <th>改造石 = </th>
+                                <td>10C :<span class="text-danger"> {{ currencyBalence('Alteration', 'c') }}</span></td>
+                            </tr>
+                            </tr>
+                                <th>增幅石 = </th>
+                                <td>1E : <span class="text-danger">{{ currencyBalence('Augmentation', 'e') }}</span></td>
+                                <th>增幅石 = </th>
+                                <td>10C :<span class="text-danger"> {{ currencyBalence('Augmentation', 'c') }}</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -144,9 +197,18 @@ var app = new Vue({
             physical: { max: 0, min: 0 },
             elemental: { max: 0, min: 0 },
             chaos: { max: 0, min: 0},
+        },
+        CURRENCY: {
+            currency: 0,
+            c: 0,
+            type: 0,
+            names: ['連結石', '工匠石', '改造石', '增幅石'],
         }
     },
     computed: {
+        // -------------
+        // dps
+        // -------------
         dpsPhysical: function() {
             var dps = (this.DPS.physical.max + this.DPS.physical.min) / 2 * this.DPS.attack_speed;
             return dps;
@@ -163,6 +225,9 @@ var app = new Vue({
             var dps = this.dpsPhysical + this.dpsElemental + this.dpsChaos;
             return dps;
         },
+        // -------------
+        // es
+        // -------------
         esBase: function() {
             var ES = this.ES;
             return parseInt(ES.helmet, 10) + parseInt(ES.body, 10) + parseInt(ES.glove, 10) + parseInt(ES.boot, 10) + parseInt(ES.belt, 10) + parseInt(ES.amulet, 10) + parseInt(ES.ring1, 10) + parseInt(ES.ring2, 10) + parseInt(ES.hand1, 10) + parseInt(ES.hand2, 10) + parseInt(ES.passive, 10);
@@ -179,7 +244,14 @@ var app = new Vue({
         esP1: function() {
             var ES = this.ES;
             return this.esBase * ((parseInt(ES.pes, 10) + 10 + Math.floor(ES.wisdom/5))/100 + 1) * ES.mes - this.esTotal;
-        }
+        },
+        // -------------
+        // currency
+        // -------------
+        currencyExchange: function() {
+            if (this.CURRENCY.c == 0) return 0;
+            return Math.floor( this.CURRENCY.currency / this.CURRENCY.c * 100 ) / 100;
+        },
     },
     methods: {
         dpsSourceUpdate: function() {
@@ -218,7 +290,57 @@ var app = new Vue({
             regex = /每秒攻擊次數: ([\d\.]+)/g;
             match = regex.exec( source );
             this.DPS.attack_speed = parseFloat( match[1] );
-        }
+        },
+        currencyBalence: function(type, unit) {
+
+            var fusing = this._currencyBalenceFusing();
+            var result = 0;
+
+            if (type === 'Fusing') {
+                result = fusing;
+            }
+
+            if (type === 'Jeweller') {
+                result = fusing * 4;
+            }
+
+            if (type === 'Chromatic') {
+                // result = fusing * 4 * 2;
+            }
+
+            if (type === 'Alteration') {
+                result = fusing * 4 * 2;
+            }
+
+            if (type === 'Augmentation') {
+                result = fusing * 4 * 2 * 4;
+            }
+
+            if (unit === 'c') {
+                result = result / this.CURRENCY.c * 10;
+            }
+
+            return Math.floor(result * 100) / 100;
+        },
+        _currencyBalenceFusing: function() {
+            if (this.CURRENCY.type === 0) {
+                return this.CURRENCY.currency;
+            }
+
+            if (this.CURRENCY.type === 1) {
+                return this.CURRENCY.currency / 4;
+            }
+
+            if (this.CURRENCY.type === 2) {
+                return this.CURRENCY.currency / 4 / 2;
+            }
+
+            if (this.CURRENCY.type === 3) {
+                return this.CURRENCY.currency / 4 / 2 / 4;
+            }
+
+            return 0;
+        },
     }
 });
         </script>
