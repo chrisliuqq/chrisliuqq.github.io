@@ -17,7 +17,6 @@
     <style>
     .content { min-height: 100px; }
     .output { border: 1px solid #ccc; border-radius: 10px; width: 400px; min-height: 100px; padding: 10px 15px; background-color: #fff;}
-    .html2canvas-container { width: 400px !important; }
     </style>
     <body>
 
@@ -77,16 +76,16 @@ ga('send', 'pageview');
 
             $('.btn-generate-image').click(function() {
                 let output = document.querySelector('.output');
-                domtoimage.toJpeg(output, { quality: 0.6 })
+                domtoimage.toJpeg(output, { quality: 0.6, width: 400 })
                     .then(function (dataUrl) {
                         var link = document.createElement('a');
-                        link.download = 'my-image-name.jpeg';
+                        link.download = $('.title').val() + '.jpg';
                         link.href = dataUrl;
                         link.click();
                     })
                     .catch(function (error) {
                         console.error('oops, something went wrong!', error);
-                });
+                    });
             });
         });
         </script>
