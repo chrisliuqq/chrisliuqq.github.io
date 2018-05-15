@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zh-TW">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="ChrisLiu">
+        <title>Tieba Image Generate :: Chris Liu :: 2018 (c)</title>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <style>
+    .content { min-height: 100px; }
+    .output { border: 1px solid #ccc; border-radius: 10px; width: 400px; min-height: 100px; padding: 10px 15px; background-color: #fff;}
+    .html2canvas-container { width: 400px !important; }
+    </style>
+    <body>
+
+        <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">Tieba Image Generate</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/tieba-image">首頁 <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="title form-control input" />
+                    <textarea class="content form-control input"></textarea>
+                    <button type="button" class="btn btn-primary btn-generate-image">Generate Image</button>
+                    <p><em>Only tested at and support to Chrome.</em></p>
+                </div>
+                <div class="col">
+                    <div class="row justify-content-md-center">
+                        <div class="output">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-59043056-1', 'auto');
+ga('send', 'pageview');
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('.input').change(function() {
+                let result = '<h5 class="title">' + $('.title').val() + '</h5>';
+                result += $('.content').val().replace(/^(.*)$/gum, '<p>$1</p>');
+                $('.output').html(result);
+            });
+
+            $('.btn-generate-image').click(function() {
+                let output = document.querySelector('.output');
+                domtoimage.toJpeg(output, { quality: 0.6 })
+                    .then(function (dataUrl) {
+                        var link = document.createElement('a');
+                        link.download = 'my-image-name.jpeg';
+                        link.href = dataUrl;
+                        link.click();
+                    })
+                    .catch(function (error) {
+                        console.error('oops, something went wrong!', error);
+                });
+            });
+        });
+        </script>
+    </body>
+</html>
