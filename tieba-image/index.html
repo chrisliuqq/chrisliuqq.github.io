@@ -100,16 +100,22 @@ ga('send', 'pageview');
             $('.btn-generate-image').click(function() {
                 let outputs = document.querySelectorAll('.output');
                 Array.from(outputs).forEach((output, index) => {
-                    domtoimage.toJpeg(output, { quality: 0.6, width: 400 })
-                        .then(function (dataUrl) {
-                            var link = document.createElement('a');
-                            link.download = $('.title').val() + '-' + index + '.jpg';
-                            link.href = dataUrl;
-                            link.click();
-                        })
-                        .catch(function (error) {
-                            console.error('oops, something went wrong!', error);
-                        });
+                    setTimeout(function() {
+                        console.log(`${index} start`);
+                        domtoimage.toJpeg(output, { quality: 0.6, width: 400 })
+                            .then(function (dataUrl) {
+                                console.log(`${index} done`);
+                                var link = document.createElement('a');
+                                link.download = $('.title').val() + '-' + index + '.jpg';
+                                link.href = dataUrl;
+                                link.click();
+                            })
+                            .catch(function (error) {
+                                console.log(`${index} error`);
+                                console.error(`oops, something went wrong! at ${index}`);
+                                console.error(error);
+                            });
+                    }, index * 1000);
                 });
             });
 
