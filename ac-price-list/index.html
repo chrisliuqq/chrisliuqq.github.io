@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-TW">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="ChrisLiu">
+    <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+    <link href="assets/css/app.css" rel="stylesheet">
+    <title>動物之森賣價查詢</title>
+</head>
+
+<body class="height-full">
+    <div id="wrapper" class="wrapper height-full">
+        <div class="bg-gray-dark">
+            <div class="Header container-lg">
+                <div class="Header-item">
+                    <a href="/ac-price-list/" class="Header-link f4 d-flex flex-items-center"><span>動物之森賣價查詢</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-container mt-5">
+            <div class="d-flex flex-justify-center">
+                <div class="search-input-box col-6 d-flex flex-items-center">
+                    <input class="form-control col-12" type="text" placeholder="請輸入關鍵字" v-model="keyword" />
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="d-flex flex-justify-center">
+                <div class="search-input-box col-6 d-flex flex-items-center">
+
+                    <table class="table col-12">
+                        <thead>
+                            <th class="text-center">類別</th>
+                            <th class="text-center">名稱</th>
+                            <th class="text-center">賣價</th>
+                            <th class="text-center">出沒月份</th>
+                            <th class="text-center">出沒時間</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="entry in list">
+                                <td v-html="entry.type" class="text-center"></td>
+                                <td v-html="entry.name" class="text-center"></td>
+                                <td v-html="entry.price" class="text-center"></td>
+                                <td v-html="entry.month" class="text-center"></td>
+                                <td v-html="entry.time" class="text-center"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="assets/js/app.js"></script>
+
+</body>
+</html>
