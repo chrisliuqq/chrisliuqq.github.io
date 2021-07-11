@@ -18,6 +18,29 @@ Array.prototype.union = function(a)
     return r;
 };
 
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 const app = Vue.createApp({
     setup() {
         const monsters = Vue.reactive([]);
@@ -26,6 +49,13 @@ const app = Vue.createApp({
         const shortcuts = Vue.reactive([]);
 
         return {monsters, monsters2, keyword, shortcuts};
+    },
+    created() {
+        let self = this;
+        var content = getCookie('shortcuts');
+        if (content) {
+            self.shortcuts = content.split('|');
+        }
     },
     computed: {
         showResult() {
@@ -90,14 +120,21 @@ const app = Vue.createApp({
                 return;
             }
             self.shortcuts.push(self.keyword);
+            self.updateCookie();
         },
         removeShortCut(i) {
             let self = this;
             self.shortcuts.splice(i, 1);
+            self.updateCookie();
         },
         switchKeywords(sc) {
             let self = this;
             self.keyword = sc;
+        },
+        updateCookie() {
+            let self = this;
+            var content = self.shortcuts.join('|');
+            setCookie('shortcuts', content, 365);
         },
         parser(data) {
             let self = this;
