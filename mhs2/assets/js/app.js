@@ -10,6 +10,14 @@ const nameReplace = [
     ['虫', '蟲'],
     ['獣', '獸']
 ];
+
+Array.prototype.union = function(a)
+{
+    var r = this.slice(0);
+    a.forEach(function(i) { if (r.indexOf(i) < 0) r.push(i); });
+    return r;
+};
+
 const app = Vue.createApp({
     setup() {
         const monsters = Vue.reactive([]);
@@ -24,7 +32,26 @@ const app = Vue.createApp({
                 return self.monsters;
             }
 
-            return self.monsters.filter( m => m.name.indexOf(self.keyword) >= 0);
+            var keywords = self.keyword.split(' ').filter( x => x.length > 0);
+
+            if (keywords.length <= 0) {
+                return self.monsters;
+            }
+
+            var result = self.monsters;
+            result = self.monsters.filter( m => m.name.indexOf(keywords[0]) >= 0);
+
+            if (keywords.length === 1) {
+                return result;
+            }
+
+            result = result.map(x => x.name);
+
+            for(var i = 1; i <= keywords.length - 1; i++) {
+                result = result.union(self.monsters.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+            }
+
+            return self.monsters.filter( m => result.indexOf(m.name) >= 0);
         }
     },
     methods: {
@@ -57,7 +84,12 @@ const app = Vue.createApp({
                 name = name.replace(r[0], r[1]);
             });
             return name;
-        }
+        },
+        replaceAttackType(input) {
+            input = input.replace(/技/, '<span><span class="bg-green-500 text-white weak-p">技</span></span>');
+            input = input.replace(/力/, '<span><span class="bg-red-500 text-white weak-s">力</span></span>');
+            return input.replace(/速/, '<span><span class="bg-blue-500 text-white weak-t">速</span></span>');
+        },
     }
 });
 

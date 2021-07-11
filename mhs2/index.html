@@ -59,7 +59,7 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200 text-center">
-                            <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm-w-1/2 w-3/4" type="text" v-model="keyword" placeholder="請輸入魔物的名字" />
+                            <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm-w-1/2 w-3/4" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空格隔開兩種以上的名稱" />
                         </div>
 
                         <div class="p-6 bg-white border-b border-gray-200">
@@ -67,8 +67,8 @@
                             <div class="p-6 sm:rounded-lg" v-for="monster in showResult">
                                 <ul>
                                     <li>魔物名稱：{{ monster.name }}</li>
-                                    <li v-show="monster.mainAttack">一般攻擊類型：{{ monster.mainAttack }}</li>
-                                    <li v-show="monster.angryAttack">生氣攻擊類型：{{ monster.angryAttack}}</li>
+                                    <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
+                                    <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
                                     <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
                                     <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain}}</li>
                                     <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>

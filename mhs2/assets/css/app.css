@@ -26,3 +26,30 @@
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
   border-color: #2563eb;
 }
+
+.weak-p, .weak-s, .weak-t {
+  position: relative;
+}
+
+.weak-p:after, .weak-s:after, .weak-t:after {
+  position: relative;
+  left: 0;
+}
+
+.weak-p:after {
+  content: '弱點：力';
+  --tw-bg-opacity: 1;
+  background-color: rgba(239,68,68,var(--tw-bg-opacity));
+}
+
+.weak-t:after {
+  content: '弱點：技';
+  --tw-bg-opacity: 1;
+  background-color: rgba(16,185,129,var(--tw-bg-opacity));
+}
+
+.weak-s:after {
+  content: '弱點：速';
+  --tw-bg-opacity: 1;
+  background-color: rgba(59,130,246,var(--tw-bg-opacity));
+}
