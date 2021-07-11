@@ -21,9 +21,10 @@ Array.prototype.union = function(a)
 const app = Vue.createApp({
     setup() {
         const monsters = Vue.reactive([]);
+        const monsters2 = Vue.reactive([]);
         const keyword = Vue.ref('');
 
-        return {monsters, keyword};
+        return {monsters, monsters2, keyword};
     },
     computed: {
         showResult() {
@@ -52,10 +53,61 @@ const app = Vue.createApp({
             }
 
             return self.monsters.filter( m => result.indexOf(m.name) >= 0);
-        }
+        },
+        showResult2() {
+            let self = this;
+            if (self.keyword.length <= 0) {
+                return self.monsters2;
+            }
+
+            var keywords = self.keyword.split(' ').filter( x => x.length > 0);
+
+            if (keywords.length <= 0) {
+                return self.monsters2;
+            }
+
+            var result = self.monsters2;
+            result = self.monsters2.filter( m => m.name.indexOf(keywords[0]) >= 0);
+
+            if (keywords.length === 1) {
+                return result;
+            }
+
+            result = result.map(x => x.name);
+
+            for(var i = 1; i <= keywords.length - 1; i++) {
+                result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+            }
+
+            return self.monsters2.filter( m => result.indexOf(m.name) >= 0);
+        },
     },
     methods: {
         parser(data) {
+            let self = this;
+            if (!data || !(data.hasOwnProperty('feed')) || !('entry' in data.feed)) {
+                return;
+            }
+            data.feed.entry.forEach(function(m) {
+                var monster = {};
+                var name = self.replaceName(m['gsx$魔物']['$t'].trim());
+                if(name) {
+                    monster.name = name;
+                    monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
+                    monster.mainAttack = m['gsx$平常狀態力技速']['$t'].trim();
+                    monster.weakAttr = m['gsx$弱點屬性']['$t'].trim();
+                    monster.angryAttack = m['gsx$發怒狀態力技速']['$t'].trim();
+                    monster.weakPartHead = m['gsx$頭斬刺打']['$t'].trim();
+                    monster.weakPartWing = m['gsx$翼斬刺打']['$t'].trim();
+                    monster.weakPartBelly = m['gsx$腹斬刺打']['$t'].trim();
+                    monster.weakPartBody = m['gsx$身體斬刺打']['$t'].trim();
+                    monster.weakPartFoot = m['gsx$腳斬刺打']['$t'].trim();
+                    monster.weakPartTail = m['gsx$尾斬刺打']['$t'].trim();
+                    self.monsters.push(monster);
+                }
+            });
+        },
+        parser2(data) {
             let self = this;
             if (!data || !(data.hasOwnProperty('feed')) || !('entry' in data.feed)) {
                 return;
@@ -77,7 +129,7 @@ const app = Vue.createApp({
                     monster.weakPartTail = m['gsx$尾巴']['$t'].trim();
                     monster.requireLevel = m['gsx$可掃蕩等級']['$t'].trim();
                     monster.home = m['gsx$歸巢加成']['$t'].trim();
-                    self.monsters.push(monster);
+                    self.monsters2.push(monster);
                 }
             });
         },

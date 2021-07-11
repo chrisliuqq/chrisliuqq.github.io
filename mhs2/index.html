@@ -62,25 +62,48 @@
                             <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm-w-1/2 w-3/4" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空格隔開兩種以上的名稱" />
                         </div>
 
-                        <div class="p-6 bg-white border-b border-gray-200">
+                        <div class="p-6 bg-white border-b border-gray-200 grid gap-4 grid-cols-2">
 
-                            <div class="p-6 sm:rounded-lg" v-for="monster in showResult">
-                                <ul>
-                                    <li>魔物名稱：{{ monster.name }}</li>
-                                    <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
-                                    <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
-                                    <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
-                                    <!-- <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain}}</li> -->
-                                    <li v-show="monster.home">歸巢加成：{{ monster.home }}</li>
-                                    <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>
-                                    <li v-show="monster.weakPartWing">翅翼武器弱點：{{ monster.weakPartWing}}</li>
-                                    <li v-show="monster.weakPartBody">身體武器弱點：{{ monster.weakPartBody}}</li>
-                                    <li v-show="monster.weakPartWing">腹部武器弱點：{{ monster.weakPartWing}}</li>
-                                    <li v-show="monster.weakPartFoot">腳部武器弱點：{{ monster.weakPartFoot}}</li>
-                                    <li v-show="monster.weakPartTail">尾巴武器弱點：{{ monster.weakPartTail}}</li>
-                                </ul>
+                            <div>
+                                <h2>來源一：黑白熊@巴哈</h2>
+                                <div class="p-6 sm:rounded-lg" v-for="monster in showResult">
+                                    <ul>
+                                        <li>魔物名稱：{{ monster.name }}</li>
+                                        <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
+                                        <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
+                                        <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
+                                        <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain}}</li>
+                                        <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>
+                                        <li v-show="monster.weakPartWing">翅翼武器弱點：{{ monster.weakPartWing}}</li>
+                                        <li v-show="monster.weakPartBody">身體武器弱點：{{ monster.weakPartBody}}</li>
+                                        <li v-show="monster.weakPartWing">腹部武器弱點：{{ monster.weakPartWing}}</li>
+                                        <li v-show="monster.weakPartFoot">腳部武器弱點：{{ monster.weakPartFoot}}</li>
+                                        <li v-show="monster.weakPartTail">尾巴武器弱點：{{ monster.weakPartTail}}</li>
+                                    </ul>
+                                </div>
+
                             </div>
 
+                            <div>
+                                <h2>來源二：小謙@巴哈</h2>
+                                <div class="p-6 sm:rounded-lg" v-for="monster in showResult2">
+                                    <ul>
+                                        <li>魔物名稱：{{ monster.name }}</li>
+                                        <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
+                                        <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
+                                        <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
+                                        <!-- <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain}}</li> -->
+                                        <li v-show="monster.home">歸巢加成：{{ monster.home }}</li>
+                                        <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>
+                                        <li v-show="monster.weakPartWing">翅翼武器弱點：{{ monster.weakPartWing}}</li>
+                                        <li v-show="monster.weakPartBody">身體武器弱點：{{ monster.weakPartBody}}</li>
+                                        <li v-show="monster.weakPartWing">腹部武器弱點：{{ monster.weakPartWing}}</li>
+                                        <li v-show="monster.weakPartFoot">腳部武器弱點：{{ monster.weakPartFoot}}</li>
+                                        <li v-show="monster.weakPartTail">尾巴武器弱點：{{ monster.weakPartTail}}</li>
+                                        <li v-show="monster.requireLevel">掃蕩等級：{{ monster.requireLevel}}</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,8 +119,8 @@
         <!-- <script src="//chrisliuqq.github.io/assets/js/console.js"></script> -->
         <!-- <script src="taffy-min.js"></script> -->
         <script src="assets/js/app.js"></script>
-        <script src="https://spreadsheets.google.com/feeds/list/1FPJUw3JRK6EwBSkyqUZklCLS_ABG_Qwh8MQG1vR5_ao/1/public/values?alt=json-in-script&callback=vm.parser" defer></script>
-<!--         <script src="https://spreadsheets.google.com/feeds/list/1hADTXoj_JDdR_RJwoRxZGCuPwK7zyZKx3xjKvKNPpUA/od6/public/values?alt=json-in-script&callback=vm.parser" defer></script> -->
+        <script src="https://spreadsheets.google.com/feeds/list/1FPJUw3JRK6EwBSkyqUZklCLS_ABG_Qwh8MQG1vR5_ao/1/public/values?alt=json-in-script&callback=vm.parser2" defer></script>
+        <script src="https://spreadsheets.google.com/feeds/list/1hADTXoj_JDdR_RJwoRxZGCuPwK7zyZKx3xjKvKNPpUA/od6/public/values?alt=json-in-script&callback=vm.parser" defer></script>
         <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
