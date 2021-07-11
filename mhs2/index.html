@@ -63,16 +63,16 @@
                             <div class="p-6 sm:rounded-lg" v-for="monster in showResult">
                                 <ul>
                                     <li>魔物名稱：{{ monster.name }}</li>
-                                    <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain }}</li>
+                                    <li v-show="monster.weakPartMain">一般武器弱點：{{ monster.weakPartMain }}</li>
                                     <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
                                     <li v-show="monster.weakType">一般技能弱點：{{ monster.weakType}}</li>
                                     <li v-show="monster.weakAngryType">生氣技能弱點：{{ monster.weakAngryType}}</li>
-                                    <li v-show="monster.weakPartHead">頭部部位弱點：{{ monster.weakPartHead}}</li>
-                                    <li v-show="monster.weakPartWing">翅翼部位弱點：{{ monster.weakPartWing}}</li>
-                                    <li v-show="monster.weakPartBody">身體部位弱點：{{ monster.weakPartBody}}</li>
-                                    <li v-show="monster.weakPartWing">腹部部位弱點：{{ monster.weakPartWing}}</li>
-                                    <li v-show="monster.weakPartFoot">腳部部位弱點：{{ monster.weakPartFoot}}</li>
-                                    <li v-show="monster.weakPartTail">尾巴部位弱點：{{ monster.weakPartTail}}</li>
+                                    <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>
+                                    <li v-show="monster.weakPartWing">翅翼武器弱點：{{ monster.weakPartWing}}</li>
+                                    <li v-show="monster.weakPartBody">身體武器弱點：{{ monster.weakPartBody}}</li>
+                                    <li v-show="monster.weakPartWing">腹部武器弱點：{{ monster.weakPartWing}}</li>
+                                    <li v-show="monster.weakPartFoot">腳部武器弱點：{{ monster.weakPartFoot}}</li>
+                                    <li v-show="monster.weakPartTail">尾巴武器弱點：{{ monster.weakPartTail}}</li>
                                 </ul>
                             </div>
 
