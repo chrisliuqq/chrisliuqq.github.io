@@ -59,8 +59,19 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200 text-center">
-                            <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm-w-1/2 w-3/4" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空格隔開兩種以上的名稱" />
+                            <!-- <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm-w-1/2 w-3/4" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空格隔開兩種以上的名稱" /> -->
+                            <div class="relative text-gray-700 sm-w-1/2 w-3/4 m-auto">
+                                <input class="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" type="text" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空格隔開兩種以上的名稱" />
+                                <button class="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-indigo-600 rounded-r-lg hover:bg-indigo-500 focus:bg-indigo-700" @click="addCurrentToShortCuts">＋</button>
+                            </div>
+
+                            <div class="p-3 bg-white text-center">
+                                <ul>
+                                    <li v-for="(sc, i) in shortcuts" class="inline-block mx-2"><a href="javascript:void(0)" @click="switchKeywords(sc)">{{ sc }}</a><span class="text-red-500 cursor-pointer font-bold" @click="removeShortCut(i)">X</span></li>
+                                </ul>
+                            </div>
                         </div>
+
 
                         <div class="p-6 bg-white border-b border-gray-200 grid gap-4 grid-cols-2">
 

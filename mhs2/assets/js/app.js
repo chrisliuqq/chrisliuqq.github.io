@@ -23,8 +23,9 @@ const app = Vue.createApp({
         const monsters = Vue.reactive([]);
         const monsters2 = Vue.reactive([]);
         const keyword = Vue.ref('');
+        const shortcuts = Vue.reactive([]);
 
-        return {monsters, monsters2, keyword};
+        return {monsters, monsters2, keyword, shortcuts};
     },
     computed: {
         showResult() {
@@ -83,6 +84,21 @@ const app = Vue.createApp({
         },
     },
     methods: {
+        addCurrentToShortCuts() {
+            let self = this;
+            if (self.keyword.length <= 0) {
+                return;
+            }
+            self.shortcuts.push(self.keyword);
+        },
+        removeShortCut(i) {
+            let self = this;
+            self.shortcuts.splice(i, 1);
+        },
+        switchKeywords(sc) {
+            let self = this;
+            self.keyword = sc;
+        },
         parser(data) {
             let self = this;
             if (!data || !(data.hasOwnProperty('feed')) || !('entry' in data.feed)) {
