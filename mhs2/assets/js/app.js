@@ -65,16 +65,18 @@ const app = Vue.createApp({
                 var name = self.replaceName(m['gsx$魔物']['$t'].trim());
                 if(name) {
                     monster.name = name;
-                    monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
-                    monster.mainAttack = m['gsx$平常狀態力技速']['$t'].trim();
+                    // monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
+                    monster.mainAttack = m['gsx$普通狀態']['$t'].trim();
                     monster.weakAttr = m['gsx$弱點屬性']['$t'].trim();
-                    monster.angryAttack = m['gsx$發怒狀態力技速']['$t'].trim();
-                    monster.weakPartHead = m['gsx$頭斬刺打']['$t'].trim();
-                    monster.weakPartWing = m['gsx$翼斬刺打']['$t'].trim();
-                    monster.weakPartBelly = m['gsx$腹斬刺打']['$t'].trim();
-                    monster.weakPartBody = m['gsx$身體斬刺打']['$t'].trim();
-                    monster.weakPartFoot = m['gsx$腳斬刺打']['$t'].trim();
-                    monster.weakPartTail = m['gsx$尾斬刺打']['$t'].trim();
+                    monster.angryAttack = m['gsx$生氣狀態']['$t'].trim();
+                    monster.weakPartHead = m['gsx$頭部']['$t'].trim();
+                    monster.weakPartWing = m['gsx$翅膀']['$t'].trim();
+                    monster.weakPartBelly = m['gsx$腹部']['$t'].trim();
+                    monster.weakPartBody = m['gsx$身體']['$t'].trim();
+                    monster.weakPartFoot = m['gsx$腳']['$t'].trim();
+                    monster.weakPartTail = m['gsx$尾巴']['$t'].trim();
+                    monster.requireLevel = m['gsx$可掃蕩等級']['$t'].trim();
+                    monster.home = m['gsx$歸巢加成']['$t'].trim();
                     self.monsters.push(monster);
                 }
             });
@@ -86,9 +88,9 @@ const app = Vue.createApp({
             return name;
         },
         replaceAttackType(input) {
-            input = input.replace(/技/, '<span><span class="bg-green-500 text-white weak-p">技</span></span>');
-            input = input.replace(/力/, '<span><span class="bg-red-500 text-white weak-s">力</span></span>');
-            return input.replace(/速/, '<span><span class="bg-blue-500 text-white weak-t">速</span></span>');
+            input = input.replace(/技巧|技/, '<span><span class="bg-green-500 text-white weak-p">技巧</span></span>');
+            input = input.replace(/力量|力/, '<span><span class="bg-red-500 text-white weak-s">力量</span></span>');
+            return input.replace(/速度|速/, '<span><span class="bg-blue-500 text-white weak-t">速度</span></span>');
         },
     }
 });

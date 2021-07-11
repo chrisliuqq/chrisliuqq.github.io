@@ -37,19 +37,19 @@
 }
 
 .weak-p:after {
-  content: '弱點：力';
+  content: '弱點：力量';
   --tw-bg-opacity: 1;
   background-color: rgba(239,68,68,var(--tw-bg-opacity));
 }
 
 .weak-t:after {
-  content: '弱點：技';
+  content: '弱點：技巧';
   --tw-bg-opacity: 1;
   background-color: rgba(16,185,129,var(--tw-bg-opacity));
 }
 
 .weak-s:after {
-  content: '弱點：速';
+  content: '弱點：速度';
   --tw-bg-opacity: 1;
   background-color: rgba(59,130,246,var(--tw-bg-opacity));
 }

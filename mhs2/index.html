@@ -47,7 +47,7 @@
 
                                     <a class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="https://forum.gamer.com.tw/C.php?bsn=5786&snA=162396&tnum=1" target="_blank">巴哈原文</a>
 
-                                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRBdbPhJdAaW6KVJI0PpzWIUTpuPzyqt4vdR96nw9oR9XZcOl60TbczOd6DKxXSpTTwNl6uBI9RCU_9/pubhtml" target="_blank">原始 Google Sheet</a>
+                                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="https://docs.google.com/spreadsheets/d/1FPJUw3JRK6EwBSkyqUZklCLS_ABG_Qwh8MQG1vR5_ao/edit#gid=1749993598" target="_blank">原始 Google Sheet</a>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +70,8 @@
                                     <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
                                     <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
                                     <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
-                                    <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain}}</li>
+                                    <!-- <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain}}</li> -->
+                                    <li v-show="monster.home">歸巢加成：{{ monster.home }}</li>
                                     <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>
                                     <li v-show="monster.weakPartWing">翅翼武器弱點：{{ monster.weakPartWing}}</li>
                                     <li v-show="monster.weakPartBody">身體武器弱點：{{ monster.weakPartBody}}</li>
@@ -95,7 +96,8 @@
         <!-- <script src="//chrisliuqq.github.io/assets/js/console.js"></script> -->
         <!-- <script src="taffy-min.js"></script> -->
         <script src="assets/js/app.js"></script>
-        <script src="https://spreadsheets.google.com/feeds/list/1hADTXoj_JDdR_RJwoRxZGCuPwK7zyZKx3xjKvKNPpUA/od6/public/values?alt=json-in-script&callback=vm.parser" defer></script>
+        <script src="https://spreadsheets.google.com/feeds/list/1FPJUw3JRK6EwBSkyqUZklCLS_ABG_Qwh8MQG1vR5_ao/1/public/values?alt=json-in-script&callback=vm.parser" defer></script>
+<!--         <script src="https://spreadsheets.google.com/feeds/list/1hADTXoj_JDdR_RJwoRxZGCuPwK7zyZKx3xjKvKNPpUA/od6/public/values?alt=json-in-script&callback=vm.parser" defer></script> -->
         <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
