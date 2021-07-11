@@ -54,7 +54,7 @@ const app = Vue.createApp({
         let self = this;
         var content = getCookie('shortcuts');
         if (content) {
-            self.shortcuts = content.split('|');
+            self.shortcuts = Vue.reactive(content.split('|'));
         }
     },
     computed: {
