@@ -31,9 +31,9 @@ const app = Vue.createApp({
                 if(name) {
                     monster.name = name;
                     monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
-                    monster.weakType = m['gsx$平常狀態力技速']['$t'].trim();
+                    monster.mainAttack = m['gsx$平常狀態力技速']['$t'].trim();
                     monster.weakAttr = m['gsx$弱點屬性']['$t'].trim();
-                    monster.weakAngryType = m['gsx$發怒狀態力技速']['$t'].trim();
+                    monster.angryAttack = m['gsx$發怒狀態力技速']['$t'].trim();
                     monster.weakPartHead = m['gsx$頭斬刺打']['$t'].trim();
                     monster.weakPartWing = m['gsx$翼斬刺打']['$t'].trim();
                     monster.weakPartBelly = m['gsx$腹斬刺打']['$t'].trim();
