@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zh-TW">
+    <!--<![endif]-->
+    <!--
+    Excuse 那邊的各位 person 到 me 的 homepage 有 what 事
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" >
+        <meta content="ChrisLiu" name="author">
+        <title>《魔物獵人物語2 破滅之翼MHS2》魔物弱點搜尋</title>
+        <meta content="website" property="og:type">
+        <meta content="《魔物獵人物語2 破滅之翼MHS2》魔物弱點搜尋" property="og:title">
+        <meta content="《魔物獵人物語2 破滅之翼MHS2》魔物弱點搜尋" name="twitter:title">
+        <meta content="快速從由網友建立的資料中搜尋《魔物獵人物語2 破滅之翼MHS2》的魔物弱點！" name="description">
+        <meta content="快速從由網友建立的資料中搜尋《魔物獵人物語2 破滅之翼MHS2》的魔物弱點！" property="og:description">
+        <meta content="快速從由網友建立的資料中搜尋《魔物獵人物語2 破滅之翼MHS2》的魔物弱點！" name="twitter:description">
+        <!-- <meta content="http://chrisliuqq.github.io/wiz-tw/logo.jpg" property="og:image"> -->
+        <!-- <meta content="http://chrisliuqq.github.io/wiz-tw/logo.jpg" name="twitter:image:src"> -->
+        <meta content="http://chrisliuqq.github.io/wiz-tw/" property="og:url">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.2/tailwind.min.css" integrity="sha512-RntatPOhEcQEA81gC/esYoCkGkL7AYV7TeTPoU+R9zE44/yWxVvLIBfBSaMu78rhoDd73ZeRHXRJN5+aPEK53Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.2/components.min.css" integrity="sha512-f6TS5CFJrH/EWmarcBwG54/kW9wwejYMcw+I7fRnGf33Vv4yCvy4BecCKTti3l8e8HnUiIbxx3V3CuUYGqR1uQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link media="all" type="text/css" rel="stylesheet" href="assets/css/app.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.2/utilities.min.css" integrity="sha512-NrQ4Uz/HpYtzXuDDl8xVLXOkYe18AzMcEYI96vQBJ/BTniQJAEWPn9tmzMwgBfUdANlpzB0J5+sTLeQ6jmY4bg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body class="font-sans antialiased">
+        <div id="app" class="min-h-screen bg-gray-100">
+
+            <nav class="bg-white border-b border-gray-100">
+                <!-- Primary Navigation Menu -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            <div class="flex">
+                                <!-- Navigation Links -->
+                                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                    <a class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href=".">《魔物獵人物語2 破滅之翼MHS2》魔物弱點搜尋</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 bg-white border-b border-gray-200 text-center">
+                            <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-1/2" type="text" v-model="keyword" placeholder="請輸入魔物的名字" />
+                        </div>
+
+                        <div class="p-6 bg-white border-b border-gray-200">
+
+                            <div class="p-6 sm:rounded-lg" v-for="monster in showResult">
+                                <ul>
+                                    <li>魔物名稱：{{ monster.name }}</li>
+                                    <li v-show="monster.weakPartMain">一般部位弱點：{{ monster.weakPartMain }}</li>
+                                    <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
+                                    <li v-show="monster.weakType">一般技能弱點：{{ monster.weakType}}</li>
+                                    <li v-show="monster.weakAngryType">生氣技能弱點：{{ monster.weakAngryType}}</li>
+                                    <li v-show="monster.weakPartHead">頭部部位弱點：{{ monster.weakPartHead}}</li>
+                                    <li v-show="monster.weakPartWing">翅翼部位弱點：{{ monster.weakPartWing}}</li>
+                                    <li v-show="monster.weakPartBody">身體部位弱點：{{ monster.weakPartBody}}</li>
+                                    <li v-show="monster.weakPartWing">腹部部位弱點：{{ monster.weakPartWing}}</li>
+                                    <li v-show="monster.weakPartFoot">腳部部位弱點：{{ monster.weakPartFoot}}</li>
+                                    <li v-show="monster.weakPartTail">尾巴部位弱點：{{ monster.weakPartTail}}</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+
+            </div>
+        </div>
+        <!-- <script src="https://unpkg.com/vue@next"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.1.4/vue.global.prod.min.js" integrity="sha512-31OANjYZOrhBwte3yZqU2WTNyScvSGcSthuZFcezrGkHk5T+OjLMVsWdmAcnll1mdubArJZn1dvjKqwJwllztQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- <script src="//cdn.rawgit.com/sytelus/CryptoJS/master/rollups/md5.js"></script> -->
+        <!-- <script src="//chrisliuqq.github.io/assets/js/console.js"></script> -->
+        <!-- <script src="taffy-min.js"></script> -->
+        <script src="assets/js/app.js"></script>
+        <script src="https://spreadsheets.google.com/feeds/list/1hADTXoj_JDdR_RJwoRxZGCuPwK7zyZKx3xjKvKNPpUA/od6/public/values?alt=json-in-script&callback=vm.parser" defer></script>
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-59043056-1', 'auto');
+        ga('send', 'pageview');
+        </script>
+    </body>
+</html>
