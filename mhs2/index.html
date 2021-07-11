@@ -67,10 +67,10 @@
                             <div class="p-6 sm:rounded-lg" v-for="monster in showResult">
                                 <ul>
                                     <li>魔物名稱：{{ monster.name }}</li>
-                                    <li v-show="monster.weakPartMain">一般攻擊類型：{{ monster.mainAttack }}</li>
+                                    <li v-show="monster.mainAttack">一般攻擊類型：{{ monster.mainAttack }}</li>
                                     <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
                                     <li v-show="monster.weakType">一般技能弱點：{{ monster.weakType}}</li>
-                                    <li v-show="monster.weakAngryType">生氣攻擊類型：{{ monster.angryAttack}}</li>
+                                    <li v-show="monster.angryAttack">生氣攻擊類型：{{ monster.angryAttack}}</li>
                                     <li v-show="monster.weakPartHead">頭部武器弱點：{{ monster.weakPartHead}}</li>
                                     <li v-show="monster.weakPartWing">翅翼武器弱點：{{ monster.weakPartWing}}</li>
                                     <li v-show="monster.weakPartBody">身體武器弱點：{{ monster.weakPartBody}}</li>
