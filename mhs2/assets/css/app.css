@@ -53,3 +53,8 @@
   --tw-bg-opacity: 1;
   background-color: rgba(59,130,246,var(--tw-bg-opacity));
 }
+
+.odd-even-section > div:nth-child(2n) {
+      --tw-bg-opacity: .4;
+    background-color: rgba(209,250,229,var(--tw-bg-opacity));
+}

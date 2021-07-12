@@ -82,11 +82,11 @@
 
                         <div class="p-6 bg-white border-b border-gray-200 grid gap-4 grid-cols-2">
 
-                            <div>
+                            <div class="odd-even-section">
                                 <h2>來源一：黑白熊@巴哈</h2>
                                 <div class="p-2 sm:p-6 sm:rounded-lg" v-for="monster in showResult">
-                                    <ul>
-                                        <li>魔物名稱：{{ monster.name }}</li>
+                                    <ul class="">
+                                        <li><h2 class="text-xl font-bold cursor-pointer"><span @click="switchKeywords(monster.name)">{{ monster.name }}</span><span class="text-purple-600" @click="appendKeywords(monster.name)">＋</span></h2></li>
                                         <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
                                         <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
                                         <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>
@@ -102,11 +102,11 @@
 
                             </div>
 
-                            <div>
+                            <div class="odd-even-section">
                                 <h2>來源二：小謙@巴哈</h2>
                                 <div class="p-2 sm:p-6 sm:rounded-lg" v-for="monster in showResult2">
                                     <ul>
-                                        <li>魔物名稱：{{ monster.name }}</li>
+                                        <li><h2 class="text-xl font-bold cursor-pointer"><span @click="switchKeywords(monster.name)">{{ monster.name }}</span><span class="text-purple-600" @click="appendKeywords(monster.name)">＋</span></h2></li>
                                         <li v-show="monster.mainAttack">一般攻擊類型：<span v-html="replaceAttackType(monster.mainAttack)"></span></li>
                                         <li v-show="monster.angryAttack">生氣攻擊類型：<span v-html="replaceAttackType(monster.angryAttack)"></span></li>
                                         <li v-show="monster.weakAttr">一般屬性弱點：{{ monster.weakAttr }}</li>

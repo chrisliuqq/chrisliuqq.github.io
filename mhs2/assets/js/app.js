@@ -131,6 +131,10 @@ const app = Vue.createApp({
             let self = this;
             self.keyword = sc;
         },
+        appendKeywords(k) {
+            let self = this;
+            self.keyword = self.keyword.trim() + ' ' + k;
+        },
         updateCookie() {
             let self = this;
             var content = self.shortcuts.join('|');
