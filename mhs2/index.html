@@ -31,6 +31,15 @@
         <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59043056-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-59043056-1');
+        </script>
+
     </head>
     <body class="font-sans antialiased">
         <div id="app" class="min-h-screen bg-gray-100">
@@ -130,13 +139,5 @@
         <script src="assets/js/app.js"></script>
         <script src="https://spreadsheets.google.com/feeds/list/1FPJUw3JRK6EwBSkyqUZklCLS_ABG_Qwh8MQG1vR5_ao/1/public/values?alt=json-in-script&callback=vm.parser2" defer></script>
         <script src="https://spreadsheets.google.com/feeds/list/1hADTXoj_JDdR_RJwoRxZGCuPwK7zyZKx3xjKvKNPpUA/od6/public/values?alt=json-in-script&callback=vm.parser" defer></script>
-        <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-59043056-1', 'auto');
-        ga('send', 'pageview');
-        </script>
     </body>
 </html>
