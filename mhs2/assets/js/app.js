@@ -171,7 +171,7 @@ const app = Vue.createApp({
             }
             data.feed.entry.forEach(function(m) {
                 var monster = {};
-                var name = self.replaceName(m['gsx$魔物']['$t'].trim());
+                var name = self.replaceName(m['gsx$魔物名稱']['$t'].trim());
                 if(name) {
                     monster.name = name;
                     // monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
