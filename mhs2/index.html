@@ -74,7 +74,7 @@
 
                             <div class="p-3 bg-white text-center">
                                 <ul>
-                                    <li v-for="(sc, i) in shortcuts" class="inline-block mx-2"><a href="javascript:void(0)" @click="switchKeywords(sc)">{{ sc }}</a><span class="text-red-500 cursor-pointer font-bold" @click="removeShortCut(i)">X</span></li>
+                                    <li v-for="(sc, i) in shortcuts" class="inline-block mx-2 bg-green-100 p-1 px-2 sm:rounded-lg"><a href="javascript:void(0)" @click="switchKeywords(sc)">{{ sc }}</a><span class="ml-1 text-red-500 cursor-pointer font-bold" @click="removeShortCut(i)">X</span></li>
                                 </ul>
                             </div>
                         </div>
