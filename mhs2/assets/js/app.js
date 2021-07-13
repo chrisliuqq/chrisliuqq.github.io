@@ -64,7 +64,7 @@ const app = Vue.createApp({
                 return self.monsters;
             }
 
-            var keywords = self.keyword.split(' ').filter( x => x.length > 0);
+            var keywords = self.keyword.split(',').filter( x => x.length > 0);
 
             if (keywords.length <= 0) {
                 return self.monsters;
@@ -91,14 +91,14 @@ const app = Vue.createApp({
                 return self.monsters2;
             }
 
-            var keywords = self.keyword.split(' ').filter( x => x.length > 0);
+            var keywords = self.keyword.toLowerCase().split(',').filter( x => x.length > 0);
 
             if (keywords.length <= 0) {
                 return self.monsters2;
             }
 
             var result = self.monsters2;
-            result = self.monsters2.filter( m => m.name.indexOf(keywords[0]) >= 0);
+            result = self.monsters2.filter( m => m.keywords.indexOf(keywords[0]) >= 0);
 
             if (keywords.length === 1) {
                 return result;
@@ -107,7 +107,8 @@ const app = Vue.createApp({
             result = result.map(x => x.name);
 
             for(var i = 1; i <= keywords.length - 1; i++) {
-                result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+                // result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+                result = result.union(self.monsters2.filter( m => m.keywords.indexOf(keywords[i]) >= 0).map(x => x.name));
             }
 
             return self.monsters2.filter( m => result.indexOf(m.name) >= 0);
@@ -133,7 +134,7 @@ const app = Vue.createApp({
         },
         appendKeywords(k) {
             let self = this;
-            self.keyword = self.keyword.trim() + ' ' + k;
+            self.keyword = self.keyword.trim() + ',' + k;
         },
         updateCookie() {
             let self = this;
@@ -160,6 +161,7 @@ const app = Vue.createApp({
                     monster.weakPartBody = m['gsx$身體斬刺打']['$t'].trim();
                     monster.weakPartFoot = m['gsx$腳斬刺打']['$t'].trim();
                     monster.weakPartTail = m['gsx$尾斬刺打']['$t'].trim();
+                    monster.keywords = monster.name;
                     self.monsters.push(monster);
                 }
             });
@@ -174,6 +176,7 @@ const app = Vue.createApp({
                 var name = self.replaceName(m['gsx$魔物名稱']['$t'].trim());
                 if(name) {
                     monster.name = name;
+                    monster.enName = m['gsx$英文名稱']['$t'].trim();
                     // monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
                     monster.mainAttack = m['gsx$普通狀態']['$t'].trim();
                     monster.weakAttr = m['gsx$弱點屬性']['$t'].trim();
@@ -186,6 +189,7 @@ const app = Vue.createApp({
                     monster.weakPartTail = m['gsx$尾巴']['$t'].trim();
                     monster.requireLevel = m['gsx$可掃蕩等級']['$t'].trim();
                     monster.home = m['gsx$歸巢加成']['$t'].trim();
+                    monster.keywords = monster.name + monster.enName.toLowerCase();
                     self.monsters2.push(monster);
                 }
             });
