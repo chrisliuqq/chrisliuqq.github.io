@@ -64,7 +64,7 @@ const app = Vue.createApp({
                 return self.monsters;
             }
 
-            var keywords = self.keyword.split(',').filter( x => x.length > 0);
+            var keywords = self.keyword.split(' ').filter( x => x.length > 0);
 
             if (keywords.length <= 0) {
                 return self.monsters;
@@ -90,12 +90,40 @@ const app = Vue.createApp({
             if (self.keyword.length <= 0) {
                 return self.monsters2;
             }
-
-            var keywords = self.keyword.toLowerCase().split(',').filter( x => x.length > 0);
+            var keywords = /[a-z ,]+/.test(self.keyword.toString()) ? self.keyword.split(',').filter( x => x.length > 0) : self.keyword.split(' ').filter( x => x.length > 0);
 
             if (keywords.length <= 0) {
                 return self.monsters2;
             }
+
+            var result = self.monsters2;
+            result = self.monsters2.filter( m => m.name.indexOf(keywords[0]) >= 0);
+
+            if (keywords.length === 1) {
+                return result;
+            }
+
+            result = result.map(x => x.name);
+
+            for(var i = 1; i <= keywords.length - 1; i++) {
+                result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+            }
+
+            return self.monsters2.filter( m => result.indexOf(m.name) >= 0);
+        },
+        showResult2EnName() {
+            let self = this;
+            if (self.keyword.length <= 0) {
+                return self.monsters2;
+            }
+
+            var keywords = /^[a-z ,]+$/.test(self.keyword.toString()) ? self.keyword.split(',').filter( x => x.length > 0) : self.keyword.split(' ').filter( x => x.length > 0);
+
+            if (keywords.length <= 0) {
+                return self.monsters2;
+            }
+
+            console.log(keywords);
 
             var result = self.monsters2;
             result = self.monsters2.filter( m => m.keywords.indexOf(keywords[0]) >= 0);
@@ -134,7 +162,7 @@ const app = Vue.createApp({
         },
         appendKeywords(k) {
             let self = this;
-            self.keyword = self.keyword.trim() + ',' + k;
+            self.keyword = self.keyword.trim() + ' ' + k;
         },
         updateCookie() {
             let self = this;

@@ -68,7 +68,7 @@
                         <div class="p-6 bg-white border-b border-gray-200 text-center">
                             <!-- <input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm-w-1/2 w-3/4" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空格隔開兩種以上的名稱" /> -->
                             <div class="relative text-gray-700 sm-w-1/2 w-3/4 m-auto">
-                                <input class="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" type="text" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用,隔開兩種以上的名稱" />
+                                <input class="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" type="text" type="text" v-model="keyword" placeholder="請輸入魔物的名字：可用空白隔開兩種以上的名稱，英文請用," />
                                 <button class="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-white bg-indigo-600 rounded-r-lg hover:bg-indigo-500 focus:bg-indigo-700" @click="addCurrentToShortCuts">＋</button>
                             </div>
 
@@ -104,7 +104,7 @@
 
                             <div class="odd-even-section">
                                 <h2>來源二：小謙@巴哈</h2>
-                                <div class="p-2 sm:p-6 sm:rounded-lg" v-for="monster in showResult2">
+                                <div class="p-2 sm:p-6 sm:rounded-lg" v-for="monster in showResult2EnName">
                                     <ul>
                                         <li><h2 class="text-xl font-bold cursor-pointer"><span @click="switchKeywords(monster.name)">{{ monster.name }}</span><span class="text-purple-600" @click="appendKeywords(monster.name)">＋</span></h2></li>
                                         <li><h2 class="text-xl font-bold cursor-pointer"><span @click="switchKeywords(monster.enName)">{{ monster.enName }}</span><span class="text-purple-600" @click="appendKeywords(monster.enName)">＋</span></h2></li>
