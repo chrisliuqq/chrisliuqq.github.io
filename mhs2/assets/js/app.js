@@ -71,7 +71,15 @@ const app = Vue.createApp({
             }
 
             var result = self.monsters;
-            result = self.monsters.filter( m => m.name.indexOf(keywords[0]) >= 0);
+
+            var keywordType = self.parseKeyword(keywords[0]);
+
+            if (keywordType.type === 'like') {
+                result = self.monsters.filter( m => m.name.indexOf(keywordType.keyword) >= 0);
+            }
+            else {
+                result = self.monsters.filter( m => m.name == keywordType.keyword );
+            }
 
             if (keywords.length === 1) {
                 return result;
@@ -79,8 +87,19 @@ const app = Vue.createApp({
 
             result = result.map(x => x.name);
 
+            // for(var i = 1; i <= keywords.length - 1; i++) {
+            //     result = result.union(self.monsters.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+            // }
             for(var i = 1; i <= keywords.length - 1; i++) {
-                result = result.union(self.monsters.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+
+                keywordType = self.parseKeyword(keywords[i]);
+
+                if (keywordType.type === 'like') {
+                    result = result.union(self.monsters.map(x => x.name).filter( m => m.indexOf(keywordType.keyword) >= 0));
+                }
+                else {
+                    result = result.union(self.monsters.map(x => x.name).filter( m => m == keywordType.keyword));
+                }
             }
 
             return self.monsters.filter( m => result.indexOf(m.name) >= 0);
@@ -90,14 +109,22 @@ const app = Vue.createApp({
             if (self.keyword.length <= 0) {
                 return self.monsters2;
             }
-            var keywords = /[a-z ,]+/.test(self.keyword.toString()) ? self.keyword.split(',').filter( x => x.length > 0) : self.keyword.split(' ').filter( x => x.length > 0);
+            var keywords = /^[a-z ]+$/.test(self.keyword.toString()) ? self.keyword.split(',').filter( x => x.length > 0) : self.keyword.split(' ').filter( x => x.length > 0);
 
             if (keywords.length <= 0) {
                 return self.monsters2;
             }
 
             var result = self.monsters2;
-            result = self.monsters2.filter( m => m.name.indexOf(keywords[0]) >= 0);
+
+            var keywordType = self.parseKeyword(keywords[0]);
+
+            if (keywordType.type === 'like') {
+                result = self.monsters2.filter( m => m.name.indexOf(keywordType.keyword) >= 0);
+            }
+            else {
+                result = self.monsters2.filter( m => m.name == keywordType.keyword );
+            }
 
             if (keywords.length === 1) {
                 return result;
@@ -106,41 +133,18 @@ const app = Vue.createApp({
             result = result.map(x => x.name);
 
             for(var i = 1; i <= keywords.length - 1; i++) {
-                result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
+                keywordType = self.parseKeyword(keywords[i]);
+
+                if (keywordType.type === 'like') {
+                    result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywordType.keyword) >= 0));
+                }
+                else {
+                    result = result.union(self.monsters2.map(x => x.name).filter( m => m == keywordType.keyword));
+                }
             }
 
             return self.monsters2.filter( m => result.indexOf(m.name) >= 0);
-        },
-        showResult2EnName() {
-            let self = this;
-            if (self.keyword.length <= 0) {
-                return self.monsters2;
-            }
-
-            var keywords = /^[a-z ,]+$/.test(self.keyword.toString()) ? self.keyword.split(',').filter( x => x.length > 0) : self.keyword.split(' ').filter( x => x.length > 0);
-
-            if (keywords.length <= 0) {
-                return self.monsters2;
-            }
-
-            console.log(keywords);
-
-            var result = self.monsters2;
-            result = self.monsters2.filter( m => m.keywords.indexOf(keywords[0]) >= 0);
-
-            if (keywords.length === 1) {
-                return result;
-            }
-
-            result = result.map(x => x.name);
-
-            for(var i = 1; i <= keywords.length - 1; i++) {
-                // result = result.union(self.monsters2.map(x => x.name).filter( m => m.indexOf(keywords[i]) >= 0));
-                result = result.union(self.monsters2.filter( m => m.keywords.indexOf(keywords[i]) >= 0).map(x => x.name));
-            }
-
-            return self.monsters2.filter( m => result.indexOf(m.name) >= 0);
-        },
+        }
     },
     methods: {
         addCurrentToShortCuts() {
@@ -233,6 +237,18 @@ const app = Vue.createApp({
             input = input.replace(/力量|力/, '<span><span class="bg-red-500 text-white weak-s">力量</span></span>');
             return input.replace(/速度|速/, '<span><span class="bg-blue-500 text-white weak-t">速度</span></span>');
         },
+        parseKeyword(input) {
+            var result = {
+                type: 'like',
+                keyword: input,
+            };
+            if (input.substr(-1, 1) === '$') {
+                result.type = 'equal';
+                result.keyword = input.slice(0, -1);
+            }
+
+            return result;
+        }
     }
 });
 
