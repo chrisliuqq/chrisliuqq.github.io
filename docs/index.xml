@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>https://blog.chrisliu.net/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <image>
+      <url>https://blog.chrisliu.net/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://blog.chrisliu.net/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Thu, 15 Jul 2021 00:36:31 +0800</lastBuildDate><atom:link href="https://blog.chrisliu.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My First Post</title>
+      <link>https://blog.chrisliu.net/posts/my-first-post/</link>
+      <pubDate>Thu, 15 Jul 2021 00:36:31 +0800</pubDate>
+      
+      <guid>https://blog.chrisliu.net/posts/my-first-post/</guid>
+      <description>hello how are you! hello how are you! hello how are you! hello how are you! hello how are you! hello how are you! hello how are you! hello how are you! hello how are you! hello how are you!</description>
+    </item>
+    
+  </channel>
+</rss>
