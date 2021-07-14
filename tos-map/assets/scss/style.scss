@@ -1,0 +1,109 @@
+@import "compass/css3";
+
+body {
+    font-family: 'Open Sans', 'cwTeXHei', Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    scroll: none;
+}
+
+@font-face {
+  font-family: 'cwTeXHei';
+  font-style: normal;
+  font-weight: 500;
+  src: url(//fonts.gstatic.com/ea/cwtexhei/v3/cwTeXHei-zhonly.eot);
+  src: url(//fonts.gstatic.com/ea/cwtexhei/v3/cwTeXHei-zhonly.eot?#iefix) format('embedded-opentype'),
+       url(//fonts.gstatic.com/ea/cwtexhei/v3/cwTeXHei-zhonly.woff2) format('woff2'),
+       url(//fonts.gstatic.com/ea/cwtexhei/v3/cwTeXHei-zhonly.woff) format('woff'),
+       url(//fonts.gstatic.com/ea/cwtexhei/v3/cwTeXHei-zhonly.ttf) format('truetype');
+}
+
+#container {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar {
+    overflow: auto;
+}
+
+#map-container {
+    overflow: auto;
+}
+
+#map-content {
+    position: relative;
+    height: 1969px;
+    width: 1050px;
+    background-image: url(../img/worldmap.jpg);
+}
+
+#keyword-result {
+    .level {
+        font-size: 12px;
+        font-weight: 800;
+        color: #66f;
+    }
+}
+
+.map-pointer {
+    position: absolute;
+    width: 70px;
+    height: 78px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: table;
+
+    // -webkit-text-stroke: 1px #333;
+    @include text-shadow(
+       2px 2px 0 #333,
+     -1px -1px 0 #333,
+      1px -1px 0 #333,
+      -1px 1px 0 #333,
+       1px 1px 0 #333);
+
+    &.highlight {
+        color: #26a69a;
+    }
+
+    &.selected {
+        color: red;
+    }
+
+    &.nearby {
+        color: #FF9400;
+    }
+
+    .content {
+        display: table-cell;
+        line-height: 13px;
+        vertical-align: middle;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .level {
+        display: inline-block;
+    }
+
+    i.tiny {
+        font-size: 0.8rem;
+    }
+}
+
+#map-modal {
+  width: 500px;
+  max-height: 700px;
+
+  .map-image {
+      position: relative;
+  }
+
+  .map-pointer {
+      position: absolute;
+      cursor: pointer;
+      color: #26a69a;
+  }
+}
